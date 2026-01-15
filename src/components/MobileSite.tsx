@@ -33,8 +33,10 @@ const WORK_PROJECTS: Project[] = [
     id: 'wild-rose',
     title: 'Wild Rose',
     media: [
-      { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video", isLandscape: true },
-      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4", type: "video", isLandscape: false },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688609/rendition/720p/file.mp4?loc=external&signature=8deb578d405daaeae5cd7bd615e8aab65ea5f391f86fa1feccccceee9148ec1f", type: "video", isLandscape: true },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688545/rendition/1080p/file.mp4?loc=external&signature=01b06c04cb4362f49812b56aeb7fd2d8ec114308744dcfe51bc315276d3d68cb", type: "video", isLandscape: true },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688574/rendition/1080p/file.mp4?loc=external&signature=d960aa76f2ad681321877bb558ceea5752abefe80f58df80c613aa99aa963c5f", type: "video", isLandscape: true },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688635/rendition/540p/file.mp4?loc=external&signature=535a30939900da32caf9e3f3f44d41fc1fcb316e2d1635eb320b7d82eb7fd123", type: "video", isLandscape: true },
     ],
   },
   {
@@ -57,8 +59,10 @@ const WORK_PROJECTS: Project[] = [
     id: 'abstracts',
     title: 'Abstracts',
     media: [
-      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", isLandscape: false },
-      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video", isLandscape: false },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154689508/rendition/720p/file.mp4?loc=external&signature=a3cea3781f2b18fb240ede0b1b21f6206a902ae0eadf111510458ff96443c8c5", type: "video", isLandscape: true },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154689448/rendition/720p/file.mp4?loc=external&signature=88fd805d62b16ed2f5f92541ad80e6a28308b1404aeb2e16fa37a428903a8a34", type: "video", isLandscape: true },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688746/rendition/720p/file.mp4?loc=external&signature=78b6e47aae68b06c2f8b2c76de579df7e9657bf1913f43b722d4a9c41c018bad", type: "video", isLandscape: true },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688698/rendition/1080p/file.mp4?loc=external&signature=5e6642cb9374d1142585bb4607b6f992288071f6987c531c4f2777fb92dce762", type: "video", isLandscape: true },
     ],
   },
 ];
