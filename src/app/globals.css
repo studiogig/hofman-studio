@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-calibre: var(--font-calibre);
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --foreground: #e5e5e5;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Minimal link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Image styles */
+img {
+  display: block;
+}
+
+/* Hide scrollbar */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
+/* Luxury easing for smooth animations */
+.transition-luxury {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Standard transition durations */
+.duration-smooth {
+  transition-duration: 500ms;
+}
+
+/* Smooth opacity transitions */
+.transition-opacity-smooth {
+  transition-property: opacity;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Smooth transform transitions */
+.transition-transform-smooth {
+  transition-property: transform;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Smooth all transitions */
+.transition-all-smooth {
+  transition-property: all;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
