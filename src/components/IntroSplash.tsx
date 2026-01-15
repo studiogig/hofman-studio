@@ -89,14 +89,16 @@ export const IntroSplash = ({ onComplete }: IntroSplashProps) => {
 
                     {/* Center content */}
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                        {/* Hofman Studio */}
+                        {/* Hofman/Studio */}
                         <motion.h1
-                            className="font-calibre text-4xl md:text-6xl tracking-wide text-black dark:text-white"
+                            className="text-6xl md:text-8xl tracking-wide text-black dark:text-white"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: luxuryEase, delay: 0.3 }}
                         >
-                            Hofman Studio
+                            <span className="font-calibre">Hofman</span>
+                            <span className="font-calibre">/</span>
+                            <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
                         </motion.h1>
 
                         {/* Tagline */}

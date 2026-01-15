@@ -177,19 +177,20 @@ export const MobileSite = () => {
             className="absolute inset-0 w-full h-full object-cover opacity-20"
           />
           {/* Studio name overlay */}
-          <h1
-            className="relative z-10 text-2xl tracking-wide"
-            style={{ fontFamily: 'Georgia, serif' }}
-          >
-            Hofman Studio
+          <h1 className="relative z-10 text-2xl tracking-wide">
+            <span className="font-calibre">Hofman</span>
+            <span className="font-calibre">/</span>
+            <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
           </h1>
         </div>
       )}
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#1a1a1a] px-6 py-5 flex justify-between items-center border-b border-black/10 dark:border-white/10">
-        <a href="/" className="text-xl font-calibre tracking-wide">
-          Hofman Studio
+        <a href="/" className="text-xl tracking-wide">
+          <span className="font-calibre">Hofman</span>
+          <span className="font-calibre">/</span>
+          <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
         </a>
         <nav className="flex gap-6">
           <button
