@@ -13,6 +13,7 @@ type MediaItem = {
   src: string;
   type: 'image' | 'video';
   isLandscape?: boolean;
+  vimeoId?: string; // Vimeo video ID for production streaming
 };
 
 type Project = {
@@ -35,7 +36,7 @@ const INFO_CONTENT: InfoItem[] = [
 const CONTACT_CONTENT = {
   title: 'Contact',
   email: 'hello@hofman.studio',
-  instagram: '@hofman.studio'
+  instagram: '@Hofman/studio'
 };
 
 // Work projects with grouped media
@@ -55,10 +56,10 @@ const WORK_PROJECTS = [
     id: 'wild-rose',
     title: 'Wild Rose',
     media: [
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688609/rendition/720p/file.mp4?loc=external&signature=8deb578d405daaeae5cd7bd615e8aab65ea5f391f86fa1feccccceee9148ec1f", type: "video" as const, isLandscape: true },
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688545/rendition/1080p/file.mp4?loc=external&signature=01b06c04cb4362f49812b56aeb7fd2d8ec114308744dcfe51bc315276d3d68cb", type: "video" as const, isLandscape: true },
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688574/rendition/1080p/file.mp4?loc=external&signature=d960aa76f2ad681321877bb558ceea5752abefe80f58df80c613aa99aa963c5f", type: "video" as const, isLandscape: true },
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688635/rendition/540p/file.mp4?loc=external&signature=535a30939900da32caf9e3f3f44d41fc1fcb316e2d1635eb320b7d82eb7fd123", type: "video" as const, isLandscape: true },
+      { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688609" },
+      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688545" },
+      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_094147.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688574" },
+      { src: "/videos/Wild rose/2026-01-07T21-52-22_luma_prompt__.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688635" },
     ],
   },
   {
@@ -81,10 +82,10 @@ const WORK_PROJECTS = [
     id: 'abstracts',
     title: 'Abstracts',
     media: [
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154689508/rendition/720p/file.mp4?loc=external&signature=a3cea3781f2b18fb240ede0b1b21f6206a902ae0eadf111510458ff96443c8c5", type: "video" as const, isLandscape: true },
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154689448/rendition/720p/file.mp4?loc=external&signature=88fd805d62b16ed2f5f92541ad80e6a28308b1404aeb2e16fa37a428903a8a34", type: "video" as const, isLandscape: true },
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688746/rendition/720p/file.mp4?loc=external&signature=78b6e47aae68b06c2f8b2c76de579df7e9657bf1913f43b722d4a9c41c018bad", type: "video" as const, isLandscape: true },
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1154688698/rendition/1080p/file.mp4?loc=external&signature=5e6642cb9374d1142585bb4607b6f992288071f6987c531c4f2777fb92dce762", type: "video" as const, isLandscape: true },
+      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689508" },
+      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689448" },
+      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688746" },
+      { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video" as const, isLandscape: true, vimeoId: "1154688698" },
     ],
   },
 ];
@@ -111,7 +112,7 @@ export default function Home() {
   const [showContact, setShowContact] = useState(false);
   const [visibleFrameIndices, setVisibleFrameIndices] = useState<number[]>([]);
   const [contactFrameIndex, setContactFrameIndex] = useState<number | null>(null);
-  const [expandedMedia, setExpandedMedia] = useState<{ src: string; type: 'image' | 'video' } | null>(null);
+  const [expandedMedia, setExpandedMedia] = useState<{ src: string; type: 'image' | 'video'; vimeoId?: string } | null>(null);
   const [returnToGrid, setReturnToGrid] = useState(false); // Track if we should return to grid after closing info/contact
   const [isTransitioning, setIsTransitioning] = useState(false); // Track view mode transition
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -623,14 +624,24 @@ export default function Home() {
                           {/* Media container with permanent divider for landscape */}
                           <div className="relative h-full">
                             {item.type === 'video' ? (
-                              <video
-                                src={item.src}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                className={`h-full w-auto object-contain transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
-                              />
+                              // Use Vimeo iframe in production when vimeoId exists, local file in dev
+                              item.vimeoId && process.env.NODE_ENV === 'production' ? (
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                                  className={`h-full w-auto aspect-video border-0 transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                                  allow="autoplay; fullscreen"
+                                  style={{ pointerEvents: 'none' }}
+                                />
+                              ) : (
+                                <video
+                                  src={item.src}
+                                  autoPlay
+                                  loop
+                                  muted
+                                  playsInline
+                                  className={`h-full w-auto object-contain transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                                />
+                              )
                             ) : (
                               <img
                                 src={item.src}
@@ -800,19 +811,28 @@ export default function Home() {
                       key={`${project.id}-${mediaIndex}`}
                       className="relative cursor-pointer group overflow-hidden flex-shrink-0 h-[calc((100vh-150px-0.5rem)/2)]"
                       style={{
-                        aspectRatio: item.isLandscape ? '16/9' : '3/4'
+                        aspectRatio: item.type === 'video' ? '4/5' : (item.isLandscape ? '16/9' : '3/4')
                       }}
                       onClick={() => setExpandedMedia(item)}
                     >
                       {item.type === 'video' ? (
-                        <video
-                          src={item.src}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="w-full h-full object-cover transition-transform-smooth group-hover:scale-105"
-                        />
+                        item.vimeoId && process.env.NODE_ENV === 'production' ? (
+                          <iframe
+                            src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                            className="w-full h-full border-0 transition-transform-smooth group-hover:scale-105"
+                            allow="autoplay; fullscreen"
+                            style={{ pointerEvents: 'none' }}
+                          />
+                        ) : (
+                          <video
+                            src={item.src}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover transition-transform-smooth group-hover:scale-105"
+                          />
+                        )
                       ) : (
                         <img
                           src={item.src}
@@ -840,14 +860,22 @@ export default function Home() {
           >
             <div className="relative max-w-[95vw] max-h-[90vh]" onClick={e => e.stopPropagation()}>
               {expandedMedia.type === 'video' ? (
-                <video
-                  src={expandedMedia.src}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="max-w-full max-h-[90vh] object-contain"
-                />
+                expandedMedia.vimeoId && process.env.NODE_ENV === 'production' ? (
+                  <iframe
+                    src={`https://player.vimeo.com/video/${expandedMedia.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                    className="w-[90vw] max-h-[90vh] aspect-video border-0"
+                    allow="autoplay; fullscreen"
+                  />
+                ) : (
+                  <video
+                    src={expandedMedia.src}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="max-w-full max-h-[90vh] object-contain"
+                  />
+                )
               ) : (
                 <img
                   src={expandedMedia.src}
