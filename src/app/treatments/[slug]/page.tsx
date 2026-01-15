@@ -3,6 +3,12 @@ import { SectionLabel } from "@/components/SectionLabel";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export function generateStaticParams() {
+    return treatments.map((treatment) => ({
+        slug: treatment.slug,
+    }));
+}
+
 export default async function TreatmentDetail({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const treatment = treatments.find((t) => t.slug === slug);
