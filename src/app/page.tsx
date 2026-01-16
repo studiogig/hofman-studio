@@ -201,10 +201,13 @@ export default function Home() {
     setIsTransitioning(true);
     setTimeout(() => {
       setViewMode(mode);
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 50); // Small delay to ensure new view is rendered before fading in
-    }, 500); // Duration of fade out - matches luxury easing
+      // Use requestAnimationFrame for smoother paint timing
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsTransitioning(false);
+        });
+      });
+    }, 600); // Duration matches CSS transition-opacity-smooth
   };
 
   // Get all media items flattened with their global indices (uses randomized order)
@@ -258,10 +261,12 @@ export default function Home() {
           if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollLeft = 0;
           }
-          setTimeout(() => {
-            setIsTransitioning(false);
-          }, 50);
-        }, 500);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
       } else {
         // In carousel mode, select the most CENTRAL visible frames for info overlay
         // Portrait frames show 1 section, landscape frames show 2 sections
@@ -339,10 +344,12 @@ export default function Home() {
         setTimeout(() => {
           setReturnToGrid(false);
           setViewMode('grid');
-          setTimeout(() => {
-            setIsTransitioning(false);
-          }, 50);
-        }, 500);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
       } else {
         setShowInfo(false);
       }
@@ -369,10 +376,12 @@ export default function Home() {
           if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollLeft = 0;
           }
-          setTimeout(() => {
-            setIsTransitioning(false);
-          }, 50);
-        }, 500);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
       } else {
         // Capture the most central visible frame BEFORE toggling contact on
         const container = scrollContainerRef.current;
@@ -422,10 +431,12 @@ export default function Home() {
         setTimeout(() => {
           setReturnToGrid(false);
           setViewMode('grid');
-          setTimeout(() => {
-            setIsTransitioning(false);
-          }, 50);
-        }, 500);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
       } else {
         setShowContact(false);
       }
@@ -691,10 +702,12 @@ export default function Home() {
                                 setTimeout(() => {
                                   setReturnToGrid(false);
                                   setViewMode('grid');
-                                  setTimeout(() => {
-                                    setIsTransitioning(false);
-                                  }, 50);
-                                }, 500);
+                                  requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                      setIsTransitioning(false);
+                                    });
+                                  });
+                                }, 600);
                               } else {
                                 setShowInfo(false);
                               }
@@ -708,10 +721,12 @@ export default function Home() {
                                 setTimeout(() => {
                                   setReturnToGrid(false);
                                   setViewMode('grid');
-                                  setTimeout(() => {
-                                    setIsTransitioning(false);
-                                  }, 50);
-                                }, 500);
+                                  requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                      setIsTransitioning(false);
+                                    });
+                                  });
+                                }, 600);
                               } else {
                                 setShowContact(false);
                               }
@@ -775,10 +790,12 @@ export default function Home() {
                                   setTimeout(() => {
                                     setReturnToGrid(false);
                                     setViewMode('grid');
-                                    setTimeout(() => {
-                                      setIsTransitioning(false);
-                                    }, 50);
-                                  }, 500);
+                                    requestAnimationFrame(() => {
+                                      requestAnimationFrame(() => {
+                                        setIsTransitioning(false);
+                                      });
+                                    });
+                                  }, 600);
                                 } else {
                                   setShowInfo(false);
                                 }

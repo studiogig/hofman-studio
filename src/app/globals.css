@@ -92,35 +92,50 @@ img {
   display: none;
 }
 
-/* Luxury easing for smooth animations */
+/* ========================================
+   ANIMATION SYSTEM
+   Luxury easing curves for fluid motion
+   ======================================== */
+
+/* Luxury easing - slower deceleration for elegant feel */
 .transition-luxury {
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* Standard transition durations */
 .duration-smooth {
-  transition-duration: 500ms;
+  transition-duration: 600ms;
 }
 
-/* Smooth opacity transitions */
+/* Smooth opacity transitions - for view crossfades */
 .transition-opacity-smooth {
   transition-property: opacity;
-  transition-duration: 500ms;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: opacity;
 }
 
-/* Smooth transform transitions */
+/* Smooth transform transitions - for hover effects */
 .transition-transform-smooth {
   transition-property: transform;
   transition-duration: 500ms;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
 }
 
 /* Smooth all transitions */
 .transition-all-smooth {
-  transition-property: all;
-  transition-duration: 500ms;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-property: opacity, transform;
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: opacity, transform;
+}
+
+/* Fast but smooth for UI elements */
+.transition-fast-smooth {
+  transition-property: opacity, transform;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* Cormorant Garamond serif font (Canela alternative) */
