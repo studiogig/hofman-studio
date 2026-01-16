@@ -20,6 +20,7 @@ type Project = {
   id: string;
   title: string;
   media: MediaItem[];
+  priority?: number; // Higher number = shown first, undefined = random order after priority items
 };
 
 type InfoItem = { title: string; content: string; isEmail?: boolean };
@@ -73,6 +74,7 @@ const WORK_PROJECTS = [
   {
     id: 'gucci',
     title: 'Gucci Beauty',
+    priority: 1, // Featured project - appears first
     media: [
       { src: "/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg", type: "image" as const, isLandscape: false },
       { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg", type: "image" as const, isLandscape: false },
@@ -89,6 +91,38 @@ const WORK_PROJECTS = [
     ],
   },
 ];
+
+// Shuffle array with a seed (consistent per session)
+const shuffleArray = <T,>(array: T[], seed: number): T[] => {
+  const shuffled = [...array];
+  let currentIndex = shuffled.length;
+
+  // Simple seeded random
+  const seededRandom = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+
+  while (currentIndex > 0) {
+    const randomIndex = Math.floor(seededRandom() * currentIndex);
+    currentIndex--;
+    [shuffled[currentIndex], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[currentIndex]];
+  }
+
+  return shuffled;
+};
+
+// Sort projects: priority items first (by priority desc), then shuffle the rest
+const getOrderedProjects = (projects: typeof WORK_PROJECTS, seed: number) => {
+  const priorityProjects = projects
+    .filter(p => p.priority !== undefined)
+    .sort((a, b) => (b.priority || 0) - (a.priority || 0));
+
+  const nonPriorityProjects = projects.filter(p => p.priority === undefined);
+  const shuffledNonPriority = shuffleArray(nonPriorityProjects, seed);
+
+  return [...priorityProjects, ...shuffledNonPriority];
+};
 
 // Research projects - separate content for research tab
 // Add your research images/videos here
@@ -119,18 +153,24 @@ export default function Home() {
   const frameRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const animationRef = useRef<number | null>(null);
 
-  // Filter projects based on category
+  // Generate a random seed once per session for consistent ordering
+  const [sessionSeed] = useState(() => Math.floor(Math.random() * 10000));
+
+  // Get randomized projects with priority items first
+  const orderedProjects = useMemo(() => getOrderedProjects(WORK_PROJECTS, sessionSeed), [sessionSeed]);
+
+  // Filter projects based on category (uses randomized order)
   const filteredProjects = useMemo(() => {
     if (activeCategory === 'research') return RESEARCH_PROJECTS;
-    if (activeCategory === 'all') return WORK_PROJECTS;
+    if (activeCategory === 'all') return orderedProjects;
 
-    return WORK_PROJECTS.map(project => ({
+    return orderedProjects.map(project => ({
       ...project,
       media: project.media.filter(item =>
         activeCategory === 'motion' ? item.type === 'video' : item.type === 'image'
       )
     })).filter(project => project.media.length > 0);
-  }, [activeCategory]);
+  }, [activeCategory, orderedProjects]);
 
   // Reset scroll position when category changes
   useEffect(() => {
@@ -160,18 +200,18 @@ export default function Home() {
     }, 500); // Duration of fade out - matches luxury easing
   };
 
-  // Get all media items flattened with their global indices
+  // Get all media items flattened with their global indices (uses randomized order)
   const allMediaItems = useMemo(() => {
     const items: { globalIndex: number; isLandscape: boolean }[] = [];
     let index = 0;
-    WORK_PROJECTS.forEach(project => {
+    orderedProjects.forEach(project => {
       project.media.forEach(item => {
         items.push({ globalIndex: index, isLandscape: item.isLandscape || false });
         index++;
       });
     });
     return items;
-  }, []);
+  }, [orderedProjects]);
 
   // Helper to get frame indices for info display
   // Select frames to cover all info sections (landscape = 2 sections, portrait = 1)
@@ -510,7 +550,7 @@ export default function Home() {
             <div key={activeCategory} className="flex h-full items-center px-[300px]" style={{ width: 'max-content' }}>
               {filteredProjects.map((project, projectIndex) => {
               // Calculate project start index for global frame numbering
-              const projectStartIndex = WORK_PROJECTS.slice(0, WORK_PROJECTS.findIndex(p => p.id === project.id))
+              const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
                 .reduce((acc, p) => acc + p.media.length, 0);
 
               return (
@@ -811,7 +851,7 @@ export default function Home() {
                       key={`${project.id}-${mediaIndex}`}
                       className="relative cursor-pointer group overflow-hidden flex-shrink-0 h-[calc((100vh-150px-0.5rem)/2)]"
                       style={{
-                        aspectRatio: item.type === 'video' ? '4/5' : (item.isLandscape ? '16/9' : '3/4')
+                        aspectRatio: item.isLandscape ? '16/9' : '4/5'
                       }}
                       onClick={() => setExpandedMedia(item)}
                     >
