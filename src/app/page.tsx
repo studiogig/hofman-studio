@@ -14,6 +14,7 @@ type MediaItem = {
   type: 'image' | 'video';
   isLandscape?: boolean;
   vimeoId?: string; // Vimeo video ID for production streaming
+  process?: string; // Process tag: "In-Camera", "AI Still", "AI Motion", "Iterative Render", etc.
 };
 
 type Project = {
@@ -47,28 +48,28 @@ const WORK_PROJECTS = [
     id: 'horlogerie',
     title: 'Horlogerie',
     media: [
-      { src: "/images/Watch report/freepik__enhance__46843.jpg", type: "image" as const, isLandscape: false },
-      { src: "/images/Watch report/freepik__enhance__73551.jpg", type: "image" as const, isLandscape: false },
-      { src: "/images/Watch report/freepik__enhance__83979.jpg", type: "image" as const, isLandscape: false },
-      { src: "/images/Watch report/freepik__enhance__83980.jpg", type: "image" as const, isLandscape: false },
+      { src: "/images/Watch report/freepik__enhance__46843.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Watch report/freepik__enhance__73551.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Watch report/freepik__enhance__83979.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Watch report/freepik__enhance__83980.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
     ],
   },
   {
     id: 'wild-rose',
     title: 'Wild Rose',
     media: [
-      { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688609" },
-      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688545" },
-      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_094147.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688574" },
-      { src: "/videos/Wild rose/2026-01-07T21-52-22_luma_prompt__.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688635" },
+      { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688609", process: "AI Motion" },
+      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688545", process: "AI Motion" },
+      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_094147.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688574", process: "AI Motion" },
+      { src: "/videos/Wild rose/2026-01-07T21-52-22_luma_prompt__.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688635", process: "AI Motion" },
     ],
   },
   {
     id: 'merit',
     title: 'Merit Beauty',
     media: [
-      { src: "/images/Merit/freepik__enhance__74134.jpg", type: "image" as const, isLandscape: false },
-      { src: "/images/Merit/SH_t9w9cp.jpg", type: "image" as const, isLandscape: false },
+      { src: "/images/Merit/freepik__enhance__74134.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render" },
+      { src: "/images/Merit/SH_t9w9cp.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
     ],
   },
   {
@@ -76,18 +77,18 @@ const WORK_PROJECTS = [
     title: 'Gucci Beauty',
     priority: 1, // Featured project - appears first
     media: [
-      { src: "/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg", type: "image" as const, isLandscape: false },
-      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg", type: "image" as const, isLandscape: false },
+      { src: "/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render" },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
     ],
   },
   {
     id: 'abstracts',
     title: 'Abstracts',
     media: [
-      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689508" },
-      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689448" },
-      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688746" },
-      { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video" as const, isLandscape: true, vimeoId: "1154688698" },
+      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689508", process: "AI Motion" },
+      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689448", process: "AI Motion" },
+      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688746", process: "AI Motion" },
+      { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video" as const, isLandscape: true, vimeoId: "1154688698", process: "AI Motion" },
     ],
   },
 ];
@@ -146,7 +147,11 @@ export default function Home() {
   const [showContact, setShowContact] = useState(false);
   const [visibleFrameIndices, setVisibleFrameIndices] = useState<number[]>([]);
   const [contactFrameIndex, setContactFrameIndex] = useState<number | null>(null);
-  const [expandedMedia, setExpandedMedia] = useState<{ src: string; type: 'image' | 'video'; vimeoId?: string } | null>(null);
+  const [expandedMedia, setExpandedMedia] = useState<{
+    item: MediaItem;
+    projectTitle: string;
+    globalIndex: number;
+  } | null>(null);
   const [returnToGrid, setReturnToGrid] = useState(false); // Track if we should return to grid after closing info/contact
   const [isTransitioning, setIsTransitioning] = useState(false); // Track view mode transition
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -428,6 +433,34 @@ export default function Home() {
     };
   }, [expandedMedia]);
 
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!expandedMedia) return;
+
+    const allFlatMedia = filteredProjects.flatMap(project =>
+      project.media.map(item => ({ item, projectTitle: project.title }))
+    );
+    const currentIndex = expandedMedia.globalIndex;
+    const totalItems = allFlatMedia.length;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setExpandedMedia(null);
+      } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        const prevIndex = currentIndex - 1;
+        const prev = allFlatMedia[prevIndex];
+        setExpandedMedia({ item: prev.item, projectTitle: prev.projectTitle, globalIndex: prevIndex });
+      } else if (e.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+        const nextIndex = currentIndex + 1;
+        const next = allFlatMedia[nextIndex];
+        setExpandedMedia({ item: next.item, projectTitle: next.projectTitle, globalIndex: nextIndex });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [expandedMedia, filteredProjects]);
+
   // Mouse position scroll effect (for carousel and grid)
   useEffect(() => {
     // Don't scroll when intro is showing or contact is active
@@ -657,7 +690,7 @@ export default function Home() {
                             }
                             // Normal click behavior - expand media (but not in contact mode)
                             if (!showContact) {
-                              setExpandedMedia(item);
+                              setExpandedMedia({ item, projectTitle: project.title, globalIndex });
                             }
                           }}
                         >
@@ -840,11 +873,13 @@ export default function Home() {
         {viewMode === 'grid' && (
           <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden px-[150px] flex items-center transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none' }}>
             <div className="h-[calc(100vh-150px)] flex flex-col flex-wrap content-start gap-2" style={{ width: 'max-content' }}>
-              {filteredProjects.map((project) => (
-                project.media.map((item, mediaIndex) => {
-                  // Use isLandscape from media item data
-                  // All items same height (half the container)
-                  // Landscape takes 2x the width of a portrait
+              {filteredProjects.map((project) => {
+                // Calculate project start index for global frame numbering
+                const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
+                  .reduce((acc, p) => acc + p.media.length, 0);
+
+                return project.media.map((item, mediaIndex) => {
+                  const globalIndex = projectStartIndex + mediaIndex;
 
                   return (
                     <div
@@ -853,7 +888,7 @@ export default function Home() {
                       style={{
                         aspectRatio: item.isLandscape ? '16/9' : '4/5'
                       }}
-                      onClick={() => setExpandedMedia(item)}
+                      onClick={() => setExpandedMedia({ item, projectTitle: project.title, globalIndex })}
                     >
                       {item.type === 'video' ? (
                         item.vimeoId && process.env.NODE_ENV === 'production' ? (
@@ -893,55 +928,141 @@ export default function Home() {
                       </div>
                     </div>
                   );
-                })
-              ))}
+                });
+              })}
             </div>
           </div>
         )}
 
-        {/* Expanded overlay */}
-        {expandedMedia && (
-          <div
-            className="fixed inset-0 z-50 bg-white dark:bg-[#1a1a1a] flex items-center justify-center cursor-pointer"
-            onClick={() => setExpandedMedia(null)}
-          >
-            <div className="relative max-w-[95vw] max-h-[90vh]" onClick={e => e.stopPropagation()}>
-              {expandedMedia.type === 'video' ? (
-                expandedMedia.vimeoId && process.env.NODE_ENV === 'production' ? (
-                  <iframe
-                    src={`https://player.vimeo.com/video/${expandedMedia.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                    className="w-[90vw] max-h-[90vh] aspect-video border-0"
-                    allow="autoplay; fullscreen"
-                  />
+        {/* Expanded overlay / Lightbox */}
+        {expandedMedia && (() => {
+          // Get flattened list of all media with project info for navigation
+          const allFlatMedia = filteredProjects.flatMap(project =>
+            project.media.map(item => ({ item, projectTitle: project.title }))
+          );
+          const currentIndex = expandedMedia.globalIndex;
+          const totalItems = allFlatMedia.length;
+
+          const goToPrev = () => {
+            if (currentIndex > 0) {
+              const prevIndex = currentIndex - 1;
+              const prev = allFlatMedia[prevIndex];
+              setExpandedMedia({ item: prev.item, projectTitle: prev.projectTitle, globalIndex: prevIndex });
+            }
+          };
+
+          const goToNext = () => {
+            if (currentIndex < totalItems - 1) {
+              const nextIndex = currentIndex + 1;
+              const next = allFlatMedia[nextIndex];
+              setExpandedMedia({ item: next.item, projectTitle: next.projectTitle, globalIndex: nextIndex });
+            }
+          };
+
+          const { item } = expandedMedia;
+
+          return (
+            <div
+              className="fixed inset-0 z-50 bg-white dark:bg-[#1a1a1a] flex items-center justify-center"
+              onClick={() => setExpandedMedia(null)}
+            >
+              {/* Left click zone for previous */}
+              <div
+                className="absolute left-0 top-0 bottom-0 w-1/3 cursor-w-resize z-10"
+                onClick={(e) => { e.stopPropagation(); goToPrev(); }}
+              />
+
+              {/* Right click zone for next */}
+              <div
+                className="absolute right-0 top-0 bottom-0 w-1/3 cursor-e-resize z-10"
+                onClick={(e) => { e.stopPropagation(); goToNext(); }}
+              />
+
+              {/* Media container */}
+              <div className="relative max-w-[95vw] max-h-[80vh]" onClick={e => e.stopPropagation()}>
+                {item.type === 'video' ? (
+                  item.vimeoId && process.env.NODE_ENV === 'production' ? (
+                    <iframe
+                      src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                      className="w-[90vw] max-h-[80vh] aspect-video border-0"
+                      allow="autoplay; fullscreen"
+                    />
+                  ) : (
+                    <video
+                      src={item.src}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="max-w-full max-h-[80vh] object-contain"
+                    />
+                  )
                 ) : (
-                  <video
-                    src={expandedMedia.src}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="max-w-full max-h-[90vh] object-contain"
+                  <img
+                    src={item.src}
+                    alt=""
+                    className="max-w-full max-h-[80vh] object-contain"
                   />
-                )
-              ) : (
-                <img
-                  src={expandedMedia.src}
-                  alt=""
-                  className="max-w-full max-h-[90vh] object-contain"
-                />
+                )}
+              </div>
+
+              {/* Info bar at bottom - centered */}
+              <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-1 pointer-events-none">
+                <span
+                  className="text-2xl text-black dark:text-white"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                >
+                  {expandedMedia.projectTitle}
+                </span>
+                <div className="flex items-center gap-4">
+                  {item.process && (
+                    <span
+                      className="text-sm text-black/50 dark:text-white/50 uppercase tracking-widest"
+                      style={{ fontFamily: 'Calibre, Arial, sans-serif' }}
+                    >
+                      {item.process}
+                    </span>
+                  )}
+                  <span
+                    className="text-sm text-black/30 dark:text-white/30"
+                    style={{ fontFamily: 'Calibre, Arial, sans-serif' }}
+                  >
+                    {currentIndex + 1} / {totalItems}
+                  </span>
+                </div>
+              </div>
+
+              {/* Close button */}
+              <button
+                className="absolute top-5 right-5 text-black dark:text-white text-2xl hover:opacity-50 transition-opacity duration-300 z-20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setExpandedMedia(null);
+                }}
+              >
+                ×
+              </button>
+
+              {/* Navigation arrows (visible on hover) */}
+              {currentIndex > 0 && (
+                <button
+                  className="absolute left-8 top-1/2 -translate-y-1/2 text-black/30 dark:text-white/30 hover:text-black dark:hover:text-white text-4xl transition-opacity duration-300 z-20"
+                  onClick={(e) => { e.stopPropagation(); goToPrev(); }}
+                >
+                  ←
+                </button>
+              )}
+              {currentIndex < totalItems - 1 && (
+                <button
+                  className="absolute right-8 top-1/2 -translate-y-1/2 text-black/30 dark:text-white/30 hover:text-black dark:hover:text-white text-4xl transition-opacity duration-300 z-20"
+                  onClick={(e) => { e.stopPropagation(); goToNext(); }}
+                >
+                  →
+                </button>
               )}
             </div>
-            <button
-              className="absolute top-5 right-5 text-black dark:text-white text-2xl hover:opacity-50 transition-opacity duration-300"
-              onClick={(e) => {
-                e.stopPropagation();
-                setExpandedMedia(null);
-              }}
-            >
-              ×
-            </button>
-          </div>
-        )}
+          );
+        })()}
       </div>
 
       {/* Navigation Footer */}
