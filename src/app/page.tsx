@@ -727,12 +727,23 @@ export default function Home() {
                           {item.type === 'video' ? (
                             // Use Vimeo iframe in production when vimeoId exists, local file in dev
                             item.vimeoId && process.env.NODE_ENV === 'production' ? (
-                              <iframe
-                                src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                                className={`w-full h-full border-0 transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
-                                allow="autoplay; fullscreen"
-                                style={{ pointerEvents: 'none' }}
-                              />
+                              <div
+                                className={`w-full h-full overflow-hidden transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                              >
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                                  className="border-0"
+                                  allow="autoplay; fullscreen"
+                                  style={{
+                                    pointerEvents: 'none',
+                                    // For portrait 9:16 video in 4:5 frame: scale width to 177.78% (16/9) and center with negative margin
+                                    // For landscape 16:9 video in 16:9 frame: no scaling needed
+                                    width: isLandscapeFrame ? '100%' : '177.78%',
+                                    height: '100%',
+                                    marginLeft: isLandscapeFrame ? '0' : '-38.89%',
+                                  }}
+                                />
+                              </div>
                             ) : (
                               <video
                                 src={item.src}
