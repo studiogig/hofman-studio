@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Logo } from './Logo';
 
 const ASSETS = [
     { type: 'image', src: '/images/Watch report/freepik__enhance__46843.jpg' },
@@ -89,17 +90,14 @@ export const IntroSplash = ({ onComplete }: IntroSplashProps) => {
 
                     {/* Center content */}
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                        {/* Hofman/Studio */}
-                        <motion.h1
-                            className="text-6xl md:text-8xl tracking-wide text-black dark:text-white"
+                        {/* Hofman/Studio Logo */}
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: luxuryEase, delay: 0.3 }}
                         >
-                            <span className="font-calibre">Hofman</span>
-                            <span className="font-calibre">/</span>
-                            <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
-                        </motion.h1>
+                            <Logo className="h-32 md:h-48 w-auto text-black dark:text-white" />
+                        </motion.div>
 
                         {/* Tagline */}
                         <motion.p

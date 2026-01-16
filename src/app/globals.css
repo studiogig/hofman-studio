@@ -2,11 +2,54 @@
 
 @theme {
   --font-calibre: var(--font-calibre);
+  --font-canela: 'Cormorant Garamond', Georgia, serif;
 }
 
 :root {
   --background: #FFFFFF;
   --foreground: #000000;
+
+  /* ========================================
+     TYPOGRAPHY SYSTEM - LOCKED
+     Do not change these values
+     ======================================== */
+
+  /* Font families */
+  --font-sans: 'Calibre', 'Calibre Medium', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+
+  /* Font weights - LOCKED */
+  --font-weight-sans: 500;           /* Calibre medium weight */
+  --font-weight-serif-logo: 600;     /* Logo "Studio" text */
+  --font-weight-serif-body: 700;     /* Project titles, body serif text */
+
+  /* Logo typography - LOCKED */
+  --logo-sans-size: 120px;           /* "Hofman" and "/" size */
+  --logo-serif-size: 126px;          /* "Studio" size */
+
+  /* ========================================
+     SPACING SYSTEM - LOCKED
+     Do not change these values
+     ======================================== */
+
+  /* Carousel spacing system - LOCKED */
+  --carousel-gap: 8px;           /* Gap between media items within a project */
+  --carousel-project-gap: 64px;  /* Gap before each project title */
+  --carousel-title-gap: 16px;    /* Gap after project title */
+  --carousel-padding: 150px;     /* Horizontal padding at carousel edges */
+  --carousel-height: calc(100vh - 150px);  /* Height of carousel items */
+
+  /* Grid spacing system - LOCKED */
+  --grid-gap: 8px;               /* Gap between grid items */
+  --grid-padding: 150px;         /* Horizontal padding at grid edges */
+  --grid-row-height: calc((100vh - 150px - var(--grid-gap)) / 2);  /* Height of each grid row */
+
+  /* Practice/Info overlay system - LOCKED */
+  --info-padding: 40px;          /* Padding inside info sections */
+  --info-divider-width: 2px;     /* Width of divider line on landscape */
+  --info-bg-opacity: 0.4;        /* Background overlay opacity */
+  --info-title-size: clamp(2rem, 5vw, 3.5rem);  /* Responsive title size */
+  --info-content-size: clamp(1.125rem, 2vw, 1.5rem);  /* Responsive content size */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,4 +121,9 @@ img {
   transition-property: all;
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cormorant Garamond serif font (Canela alternative) */
+.font-canela {
+  font-family: 'Cormorant Garamond', Georgia, serif;
 }

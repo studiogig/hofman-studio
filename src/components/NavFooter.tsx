@@ -1,5 +1,7 @@
 'use client';
 
+import { Logo } from './Logo';
+
 type Category = 'all' | 'motion' | 'stills' | 'research';
 type ViewMode = 'carousel' | 'grid';
 
@@ -46,10 +48,8 @@ export const NavFooter = ({
 }: NavFooterProps) => {
   return (
     <footer className="fixed bottom-[50px] left-[150px] right-8 bg-white dark:bg-[#1a1a1a] py-4 flex justify-between items-center z-[150]">
-      <a href="/" className="text-2xl md:text-3xl font-normal tracking-wide hover:opacity-50 transition-opacity-smooth">
-        <span className="font-calibre">Hofman</span>
-        <span className="font-calibre">/</span>
-        <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
+      <a href="/" className="hover:opacity-50 transition-opacity-smooth">
+        <Logo className="h-16 w-auto text-black dark:text-white" />
       </a>
 
       <nav className="flex gap-6 items-center">

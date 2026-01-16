@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { IntroSplash } from '@/components/IntroSplash';
 import { NavFooter } from '@/components/NavFooter';
 import { MobileSite } from '@/components/MobileSite';
+import { InfoOverlay } from '@/components/InfoSection';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 type Category = 'all' | 'motion' | 'stills' | 'research';
@@ -12,7 +13,7 @@ type ViewMode = 'carousel' | 'grid';
 type MediaItem = {
   src: string;
   type: 'image' | 'video';
-  isLandscape?: boolean;
+  isLandscape?: boolean; // true = 16:9 landscape frame, false/undefined = 4:5 portrait frame
   vimeoId?: string; // Vimeo video ID for production streaming
   process?: string; // Process tag: "In-Camera", "AI Still", "AI Motion", "Iterative Render", etc.
 };
@@ -43,7 +44,7 @@ const CONTACT_CONTENT = {
 
 // Work projects with grouped media
 // isLandscape: true for 16:9 aspect ratio, false/undefined for 3:4 portrait
-const WORK_PROJECTS = [
+const WORK_PROJECTS: Project[] = [
   {
     id: 'horlogerie',
     title: 'Horlogerie',
@@ -58,10 +59,10 @@ const WORK_PROJECTS = [
     id: 'wild-rose',
     title: 'Wild Rose',
     media: [
-      { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688609", process: "AI Motion" },
-      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688545", process: "AI Motion" },
-      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_094147.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688574", process: "AI Motion" },
-      { src: "/videos/Wild rose/2026-01-07T21-52-22_luma_prompt__.mp4", type: "video" as const, isLandscape: false, vimeoId: "1154688635", process: "AI Motion" },
+      { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688609", process: "AI Motion" },
+      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688545", process: "AI Motion" },
+      { src: "/videos/Wild rose/kling_25_turbo_oil_drip_orbit_094147.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688574", process: "AI Motion" },
+      { src: "/videos/Wild rose/2026-01-07T21-52-22_luma_prompt__.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688635", process: "AI Motion" },
     ],
   },
   {
@@ -85,10 +86,11 @@ const WORK_PROJECTS = [
     id: 'abstracts',
     title: 'Abstracts',
     media: [
-      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689508", process: "AI Motion" },
-      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154689448", process: "AI Motion" },
-      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video" as const, isLandscape: true, vimeoId: "1154688746", process: "AI Motion" },
-      { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video" as const, isLandscape: true, vimeoId: "1154688698", process: "AI Motion" },
+      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", isLandscape: false, vimeoId: "1154689508", process: "AI Motion" },
+      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video", isLandscape: false, vimeoId: "1154689448", process: "AI Motion" },
+      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video", isLandscape: false, vimeoId: "1154688746", process: "AI Motion" },
+      // NOTE: .mov files don't work in browsers - convert to .mp4 to re-enable
+      // { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video", isLandscape: false, vimeoId: "1154688698", process: "AI Motion" },
     ],
   },
 ];
@@ -252,33 +254,43 @@ export default function Home() {
         setTimeout(() => {
           setViewMode('carousel');
           setShowInfo(true);
+          // Reset scroll to 0 so content starts at left edge (no extra padding)
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = 0;
+          }
           setTimeout(() => {
             setIsTransitioning(false);
           }, 50);
         }, 500);
       } else {
-        // In carousel mode, overlay info on currently visible frames
+        // In carousel mode, select the most CENTRAL visible frames for info overlay
         // Portrait frames show 1 section, landscape frames show 2 sections
         const container = scrollContainerRef.current;
         if (container) {
           const containerRect = container.getBoundingClientRect();
-          const visibleFrames: { index: number; isLandscape: boolean }[] = [];
+          const containerCenter = containerRect.left + containerRect.width / 2;
 
-          // Find all frames that are currently visible in the viewport
+          // Find all visible frames with their distance from center
+          const visibleFrames: { index: number; isLandscape: boolean; distanceFromCenter: number }[] = [];
+
           frameRefs.current.forEach((el, index) => {
             const rect = el.getBoundingClientRect();
             const mediaItem = allMediaItems.find(m => m.globalIndex === index);
             // Check if frame is at least partially visible
             if (rect.right > containerRect.left && rect.left < containerRect.right) {
-              visibleFrames.push({ index, isLandscape: mediaItem?.isLandscape || false });
+              const frameCenter = rect.left + rect.width / 2;
+              visibleFrames.push({
+                index,
+                isLandscape: mediaItem?.isLandscape || false,
+                distanceFromCenter: Math.abs(frameCenter - containerCenter)
+              });
             }
           });
 
-          // Sort by position (left to right)
-          visibleFrames.sort((a, b) => a.index - b.index);
+          // Sort by distance from center (most central first)
+          visibleFrames.sort((a, b) => a.distanceFromCenter - b.distanceFromCenter);
 
-          // Select frames to cover all INFO_CONTENT sections
-          // Landscape = 2 sections, Portrait = 1 section
+          // Select frames starting from center until we have enough sections
           const framesToUse: number[] = [];
           let sectionsUsed = 0;
 
@@ -288,37 +300,32 @@ export default function Home() {
             sectionsUsed += frame.isLandscape ? 2 : 1;
           }
 
-          // If we don't have enough visible frames, add more frames
+          // If we don't have enough visible frames, add adjacent frames
           if (sectionsUsed < INFO_CONTENT.length) {
             const allFrameIndices = allMediaItems.map(m => ({ index: m.globalIndex, isLandscape: m.isLandscape }));
-            const availableFrames = allFrameIndices.filter(f => !framesToUse.includes(f.index));
+            const usedIndices = new Set(framesToUse);
 
-            // Add frames after the visible ones first
-            const lastVisibleIdx = framesToUse[framesToUse.length - 1] ?? -1;
-            const laterFrames = availableFrames.filter(f => f.index > lastVisibleIdx);
+            // Get the range of used frames
+            const minUsed = Math.min(...framesToUse);
+            const maxUsed = Math.max(...framesToUse);
 
-            for (const frame of laterFrames) {
-              if (sectionsUsed >= INFO_CONTENT.length) break;
-              framesToUse.push(frame.index);
-              sectionsUsed += frame.isLandscape ? 2 : 1;
-            }
+            // Alternate between adding frames after and before
+            let addAfter = true;
+            while (sectionsUsed < INFO_CONTENT.length) {
+              const nextAfter = allFrameIndices.find(f => f.index > maxUsed && !usedIndices.has(f.index));
+              const nextBefore = [...allFrameIndices].reverse().find(f => f.index < minUsed && !usedIndices.has(f.index));
 
-            // If still not enough, add earlier frames
-            if (sectionsUsed < INFO_CONTENT.length) {
-              const firstVisibleIdx = framesToUse[0] ?? Infinity;
-              const earlierFrames = availableFrames
-                .filter(f => f.index < firstVisibleIdx && !framesToUse.includes(f.index))
-                .reverse(); // Start from closest to visible
+              const frameToAdd = addAfter ? (nextAfter || nextBefore) : (nextBefore || nextAfter);
+              if (!frameToAdd) break;
 
-              for (const frame of earlierFrames) {
-                if (sectionsUsed >= INFO_CONTENT.length) break;
-                framesToUse.unshift(frame.index); // Add to beginning
-                sectionsUsed += frame.isLandscape ? 2 : 1;
-              }
+              framesToUse.push(frameToAdd.index);
+              usedIndices.add(frameToAdd.index);
+              sectionsUsed += frameToAdd.isLandscape ? 2 : 1;
+              addAfter = !addAfter;
             }
           }
 
-          // Sort final list
+          // Sort final list by index for consistent display order
           framesToUse.sort((a, b) => a - b);
           setVisibleFrameIndices(framesToUse);
         }
@@ -358,6 +365,10 @@ export default function Home() {
         setTimeout(() => {
           setViewMode('carousel');
           setShowContact(true);
+          // Reset scroll to 0 so content starts at left edge (no extra padding)
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = 0;
+          }
           setTimeout(() => {
             setIsTransitioning(false);
           }, 50);
@@ -580,29 +591,37 @@ export default function Home() {
         {/* Carousel View */}
         {viewMode === 'carousel' && (
           <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none' }}>
-            <div key={activeCategory} className="flex h-full items-center px-[300px]" style={{ width: 'max-content' }}>
+            <div key={activeCategory} className="flex h-full items-center" style={{ width: 'max-content', paddingLeft: ((showInfo || showContact) && returnToGrid) ? 'var(--info-padding)' : '150px', paddingRight: '150px' }}>
               {filteredProjects.map((project, projectIndex) => {
               // Calculate project start index for global frame numbering
               const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
                 .reduce((acc, p) => acc + p.media.length, 0);
 
+              // All projects use the same gap for spacing between projects
+              // First project has no extra left margin since carousel padding provides the edge spacing
+              const isFirstProject = projectIndex === 0;
+
               return (
                 <div key={`${activeCategory}-${project.id}`} className="flex items-center h-full">
                   {/* Project title - vertical (invisible but keeps space in info/contact mode to prevent jump) */}
-                  <div className={`flex-shrink-0 h-[calc(100vh-150px)] flex items-end pb-4 mr-4 transition-opacity-smooth ${showInfo || showContact ? 'opacity-0' : 'opacity-100'}`}>
+                  <div
+                    className={`flex-shrink-0 flex items-end pb-4 transition-opacity-smooth ${showInfo || showContact ? 'opacity-0' : 'opacity-100'}`}
+                    style={{ height: 'var(--carousel-height)', marginLeft: isFirstProject ? '0' : 'var(--carousel-project-gap)', marginRight: 'var(--carousel-title-gap)' }}
+                  >
                     <span
                       className="text-4xl tracking-wide text-black/60 dark:text-white/60"
                       style={{
                         writingMode: 'vertical-rl',
                         transform: 'rotate(180deg)',
-                        fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                        fontFamily: '"Cormorant Garamond", Georgia, serif',
+                        fontWeight: 700,
                       }}
                     >
                       {project.title}
                     </span>
                   </div>
                   {/* Project group */}
-                  <div className="flex items-center gap-2 h-full">
+                  <div className="flex items-center h-full" style={{ gap: 'var(--carousel-gap)' }}>
                     {project.media.map((item, mediaIndex) => {
                       // Calculate global media index
                       const globalIndex = projectStartIndex + mediaIndex;
@@ -628,13 +647,17 @@ export default function Home() {
                           sectionIndex += prevMediaItem?.isLandscape ? 2 : 1;
                         }
 
-                        if (isLandscape) {
-                          // Landscape: show 2 sections side-by-side
-                          infoItem = INFO_CONTENT[sectionIndex] || null;
-                          infoItem2 = INFO_CONTENT[sectionIndex + 1] || null;
-                        } else {
-                          // Portrait: show 1 section
-                          infoItem = INFO_CONTENT[sectionIndex] || null;
+                        // Only show content if we haven't exceeded our sections
+                        if (sectionIndex < INFO_CONTENT.length) {
+                          if (isLandscape) {
+                            // Landscape: show 2 sections side-by-side (second may be null if we run out)
+                            infoItem = INFO_CONTENT[sectionIndex];
+                            infoItem2 = INFO_CONTENT[sectionIndex + 1] || null;
+                          } else {
+                            // Portrait: show exactly 1 section, never 2
+                            infoItem = INFO_CONTENT[sectionIndex];
+                            infoItem2 = null; // Explicitly null for portrait
+                          }
                         }
                       }
 
@@ -645,6 +668,9 @@ export default function Home() {
 
                       if (!shouldShowFrame) return null;
 
+                      // Determine aspect ratio: landscape = 16:9, portrait = 4:5
+                      const isLandscapeFrame = item.isLandscape === true;
+
                       return (
                         <div
                           key={`${project.id}-${mediaIndex}`}
@@ -652,7 +678,10 @@ export default function Home() {
                             if (el) frameRefs.current.set(globalIndex, el);
                             else frameRefs.current.delete(globalIndex);
                           }}
-                          className="relative h-[calc(100vh-150px)] flex-shrink-0 cursor-pointer"
+                          className={`relative flex-shrink-0 cursor-pointer ${isLandscapeFrame ? 'aspect-video' : 'aspect-[4/5]'}`}
+                          style={{
+                            height: 'var(--carousel-height)',
+                          }}
                           onClick={() => {
                             // If info is showing, close it and return to gallery (or grid if we came from there)
                             if (showInfo) {
@@ -694,142 +723,56 @@ export default function Home() {
                             }
                           }}
                         >
-                          {/* Media container with permanent divider for landscape */}
-                          <div className="relative h-full">
-                            {item.type === 'video' ? (
-                              // Use Vimeo iframe in production when vimeoId exists, local file in dev
-                              item.vimeoId && process.env.NODE_ENV === 'production' ? (
-                                <iframe
-                                  src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                                  className={`h-full w-auto aspect-video border-0 transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
-                                  allow="autoplay; fullscreen"
-                                  style={{ pointerEvents: 'none' }}
-                                />
-                              ) : (
-                                <video
-                                  src={item.src}
-                                  autoPlay
-                                  loop
-                                  muted
-                                  playsInline
-                                  className={`h-full w-auto object-contain transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
-                                />
-                              )
-                            ) : (
-                              <img
-                                src={item.src}
-                                alt=""
-                                className={`h-full w-auto object-contain transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                          {/* Media - use object-cover to fill frame completely */}
+                          {item.type === 'video' ? (
+                            // Use Vimeo iframe in production when vimeoId exists, local file in dev
+                            item.vimeoId && process.env.NODE_ENV === 'production' ? (
+                              <iframe
+                                src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                                className={`w-full h-full border-0 transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                                allow="autoplay; fullscreen"
+                                style={{ pointerEvents: 'none' }}
                               />
-                            )}
-
-                            {/* Divider for landscape frames - only show when Practice is active */}
-                            {isLandscape && showInfo && (
-                              <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-black/30 dark:bg-white/30 pointer-events-none" />
-                            )}
-                          </div>
-
-                          {/* Info overlay on this frame - landscape frames get 2 info sections side-by-side */}
-                          {showInfo && infoItem && (
-                            isLandscape ? (
-                              // Landscape video: 2 info sections side-by-side (editorial)
-                              <div className="absolute inset-0 flex bg-white/40 dark:bg-[#1a1a1a]/40 cursor-pointer" onClick={() => setShowInfo(false)}>
-                                {/* Left half - First info section */}
-                                <div className={`w-1/2 flex flex-col ${infoItem2 ? 'justify-between' : 'justify-between'}`} style={{ padding: '40px' }}>
-                                  <h2
-                                    className="text-4xl md:text-6xl font-bold uppercase tracking-tight leading-none text-black dark:text-white"
-                                    style={{ fontFamily: 'Calibre, Arial, sans-serif' }}
-                                  >
-                                    {infoItem.title}
-                                  </h2>
-                                  {infoItem.isEmail ? (
-                                    <a
-                                      href={`mailto:${infoItem.content}`}
-                                      className="text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
-                                      style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', fontStyle: 'italic' }}
-                                    >
-                                      {infoItem.content}
-                                    </a>
-                                  ) : (
-                                    <p
-                                      className="text-xl md:text-2xl leading-tight text-black/80 dark:text-white/80 tracking-tight"
-                                      style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                                    >
-                                      {infoItem.content.split('\n\n').map((para: string, i: number) => (
-                                        <span key={i}>{i > 0 && <><br /><br /></>}{para}</span>
-                                      ))}
-                                    </p>
-                                  )}
-                                </div>
-                                {/* Divider line - always show for landscape layout */}
-                                <div className="w-[2px] bg-black/40 dark:bg-white/40 my-[40px]" />
-                                {/* Right half - Second info section (or empty) */}
-                                <div className="w-1/2 flex flex-col justify-between" style={{ padding: '40px' }}>
-                                  {infoItem2 && (
-                                    <>
-                                      <h2
-                                        className="text-4xl md:text-6xl font-bold uppercase tracking-tight leading-none text-black dark:text-white"
-                                        style={{ fontFamily: 'Calibre, Arial, sans-serif' }}
-                                      >
-                                        {infoItem2.title}
-                                      </h2>
-                                      {infoItem2.isEmail ? (
-                                        <a
-                                          href={`mailto:${infoItem2.content}`}
-                                          className="text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
-                                          style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', fontStyle: 'italic' }}
-                                        >
-                                          {infoItem2.content}
-                                        </a>
-                                      ) : (
-                                        <p
-                                          className="text-xl md:text-2xl leading-tight text-black/80 dark:text-white/80 tracking-tight"
-                                          style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                                        >
-                                          {infoItem2.content.split('\n\n').map((para: string, i: number) => (
-                                            <span key={i}>{i > 0 && <><br /><br /></>}{para}</span>
-                                          ))}
-                                        </p>
-                                      )}
-                                    </>
-                                  )}
-                                </div>
-                              </div>
                             ) : (
-                              // Portrait image: editorial stacked layout
-                              <div className="absolute inset-0 flex flex-col justify-between bg-white/40 dark:bg-[#1a1a1a]/40 cursor-pointer" style={{ padding: '40px' }} onClick={() => setShowInfo(false)}>
-                                {/* Title at top - bold sans-serif */}
-                                <div>
-                                  <h2
-                                    className="text-4xl md:text-6xl font-bold uppercase tracking-tight leading-none text-black dark:text-white"
-                                    style={{ fontFamily: 'Calibre, Arial, sans-serif' }}
-                                  >
-                                    {infoItem.title}
-                                  </h2>
-                                </div>
-                                {/* Content at bottom - elegant serif */}
-                                <div>
-                                  {infoItem.isEmail ? (
-                                    <a
-                                      href={`mailto:${infoItem.content}`}
-                                      className="text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
-                                      style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', fontStyle: 'italic' }}
-                                    >
-                                      {infoItem.content}
-                                    </a>
-                                  ) : (
-                                    <p
-                                      className="text-xl md:text-2xl leading-tight text-black/80 dark:text-white/80 tracking-tight"
-                                      style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                                    >
-                                      {infoItem.content.split('\n\n').map((para: string, i: number) => (
-                                        <span key={i}>{i > 0 && <><br /><br /></>}{para}</span>
-                                      ))}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
+                              <video
+                                src={item.src}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                              />
                             )
+                          ) : (
+                            <img
+                              src={item.src}
+                              alt=""
+                              className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                            />
+                          )}
+
+                          {/* Info overlay on this frame */}
+                          {showInfo && infoItem && (
+                            <InfoOverlay
+                              isLandscape={isLandscape}
+                              infoItem={infoItem}
+                              infoItem2={infoItem2}
+                              onClose={() => {
+                                if (returnToGrid) {
+                                  setIsTransitioning(true);
+                                  setShowInfo(false);
+                                  setTimeout(() => {
+                                    setReturnToGrid(false);
+                                    setViewMode('grid');
+                                    setTimeout(() => {
+                                      setIsTransitioning(false);
+                                    }, 50);
+                                  }, 500);
+                                } else {
+                                  setShowInfo(false);
+                                }
+                              }}
+                            />
                           )}
 
                           {/* Contact overlay on this frame */}
@@ -858,10 +801,6 @@ export default function Home() {
                     })}
                   </div>
 
-                  {/* Spacer between projects (except after last, invisible in info/contact mode to prevent jump) */}
-                  {projectIndex < filteredProjects.length - 1 && (
-                    <div className={`w-24 flex-shrink-0 transition-opacity-smooth ${showInfo || showContact ? 'opacity-0' : 'opacity-100'}`} />
-                  )}
                 </div>
               );
             })}
@@ -871,8 +810,8 @@ export default function Home() {
 
         {/* Grid View - horizontal scroll with 2 rows, landscape takes 2x width */}
         {viewMode === 'grid' && (
-          <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden px-[150px] flex items-center transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none' }}>
-            <div className="h-[calc(100vh-150px)] flex flex-col flex-wrap content-start gap-2" style={{ width: 'max-content' }}>
+          <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden flex items-center transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none', paddingLeft: 'var(--grid-padding)', paddingRight: 'var(--grid-padding)' }}>
+            <div className="flex flex-col flex-wrap content-start" style={{ width: 'max-content', height: 'var(--carousel-height)', gap: 'var(--grid-gap)' }}>
               {filteredProjects.map((project) => {
                 // Calculate project start index for global frame numbering
                 const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
@@ -881,12 +820,15 @@ export default function Home() {
                 return project.media.map((item, mediaIndex) => {
                   const globalIndex = projectStartIndex + mediaIndex;
 
+                  // Determine aspect ratio: landscape = 16:9, portrait = 4:5
+                  const isLandscapeGridFrame = item.isLandscape === true;
+
                   return (
                     <div
                       key={`${project.id}-${mediaIndex}`}
-                      className="relative cursor-pointer group overflow-hidden flex-shrink-0 h-[calc((100vh-150px-0.5rem)/2)]"
+                      className={`relative cursor-pointer group overflow-hidden flex-shrink-0 ${isLandscapeGridFrame ? 'aspect-video' : 'aspect-[4/5]'}`}
                       style={{
-                        aspectRatio: item.isLandscape ? '16/9' : '4/5'
+                        height: 'var(--grid-row-height)',
                       }}
                       onClick={() => setExpandedMedia({ item, projectTitle: project.title, globalIndex })}
                     >
@@ -984,18 +926,39 @@ export default function Home() {
                   item.vimeoId && process.env.NODE_ENV === 'production' ? (
                     <iframe
                       src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                      className="w-[90vw] max-h-[80vh] aspect-video border-0"
+                      className="max-h-[80vh] border-0"
+                      style={{
+                        aspectRatio: item.isLandscape ? '16/9' : '9/16',
+                        width: item.isLandscape ? '90vw' : 'auto',
+                        height: item.isLandscape ? 'auto' : '80vh',
+                      }}
                       allow="autoplay; fullscreen"
                     />
                   ) : (
-                    <video
-                      src={item.src}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="max-w-full max-h-[80vh] object-contain"
-                    />
+                    item.isLandscape ? (
+                      <video
+                        src={item.src}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="max-h-[80vh] max-w-[95vw] object-contain"
+                      />
+                    ) : (
+                      <div
+                        className="relative h-[80vh] overflow-hidden"
+                        style={{ width: 'calc(80vh * 9 / 16)' }}
+                      >
+                        <video
+                          src={item.src}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full object-cover"
+                        />
+                      </div>
+                    )
                   )
                 ) : (
                   <img
