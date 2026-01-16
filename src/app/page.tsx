@@ -857,12 +857,19 @@ export default function Home() {
                     >
                       {item.type === 'video' ? (
                         item.vimeoId && process.env.NODE_ENV === 'production' ? (
-                          <iframe
-                            src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                            className="w-full h-full border-0 transition-transform-smooth group-hover:scale-105"
-                            allow="autoplay; fullscreen"
-                            style={{ pointerEvents: 'none' }}
-                          />
+                          <div className="w-full h-full overflow-hidden transition-transform-smooth group-hover:scale-105">
+                            <iframe
+                              src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                              className="border-0"
+                              allow="autoplay; fullscreen"
+                              style={{
+                                pointerEvents: 'none',
+                                width: item.isLandscape ? '100%' : '177.78%',
+                                height: item.isLandscape ? '100%' : '100%',
+                                marginLeft: item.isLandscape ? '0' : '-38.89%',
+                              }}
+                            />
+                          </div>
                         ) : (
                           <video
                             src={item.src}
