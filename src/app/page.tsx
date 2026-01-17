@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { IntroSplash } from '@/components/IntroSplash';
 import { NavFooter } from '@/components/NavFooter';
 import { MobileSite } from '@/components/MobileSite';
-import { InfoOverlay } from '@/components/InfoSection';
+import { InfoOverlay, ArticleOverlay } from '@/components/InfoSection';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 type Category = 'all' | 'motion' | 'stills' | 'research';
@@ -26,6 +26,63 @@ type Project = {
 };
 
 type InfoItem = { title: string; content: string; isEmail?: boolean };
+
+type ArticleItem = {
+  slug: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  content: string[];
+};
+
+// Writing/Articles content - each article displays as overlay like Practice
+const WRITING_CONTENT: ArticleItem[] = [
+  {
+    slug: 'what-clients-actually-ask-about-ai',
+    title: 'What Clients Actually Ask About AI',
+    subtitle: 'The questions that determine whether we move forward',
+    date: '2025',
+    content: [
+      `I've been in a lot of these meetings lately, and there's a pattern. There's genuine curiosity. They've seen the demos, they know things are moving fast. The questions that actually determine whether we move forward aren't about capability anymore. They're about workflow, consistency, and whether we can deliver what they need, when they need it.`,
+      `The first question is almost always some version of: can you match this closely enough? They'll have a key visual, a specific look. Not "can AI make something beautiful." They assume that. Can it make this. Consistently. At the level we need for a global campaign.`,
+      `The answer, increasingly, is yes.`,
+      `AI has matured past the demo reel stage. The tools now allow for precise control — consistent lighting, repeatable setups, exact asset matching across deliverables. What used to require a full studio build can now be directed through iterative refinement. Same craft principles. Different execution.`,
+      `The second question is about predictability. What should we expect from the workflow?`,
+      `This is where trust gets built. Clients aren't looking for magic. They're looking for a process they can manage. What they need is someone who understands both the creative direction and the technical pipeline — someone who can speak their language.`,
+      `What I've found works is documentation. Keep records of which models, which versions, which prompts. Maintain project files so assets can be recreated and refined. Structure the workflow so revisions are fast and variations are efficient. This gives clients something concrete. Something they can put in a deck and defend to their boss.`,
+      `The mistake I see most often is leading with novelty. Here's what AI can do, look at these amazing examples, imagine the possibilities.`,
+      `That's the wrong frame. It makes AI sound like magic, and magic makes producers nervous. Magic means they don't understand how it works, which means they can't manage it.`,
+      `The better frame is craft. AI as an extension of the craft you already do. Another tool alongside motion control rigs and macro lenses and CG augmentation. The strengths are real: speed, variation, exploration, and increasingly, precision. You choose when to use it based on what the project needs.`,
+      `This means talking like a producer, not an evangelist. Costs and timelines. Deliverable formats. Revision rounds. The operational details that actually determine whether something ships successfully.`,
+      `When I talk this way, clients relax. They're not being sold a mystery. They're being offered a workflow they can understand and manage. That's what moves projects forward.`,
+    ],
+  },
+  {
+    slug: 'the-studio-or-the-screen',
+    title: 'The Studio or the Screen',
+    subtitle: 'The tension I sit with every day',
+    date: '2025',
+    content: [
+      `I'd rather be in a Studio with lights to move and people to direct than stuck in the inferno of my computer talking to a creative chatbot.`,
+      `But I don't know which one wins.`,
+      `That's the honest position. Not a prediction, not a stance, not a vision of the future. Just the tension I sit with every day, and the tension I suspect anyone working in commercial image-making sits with too.`,
+      `On one side: the studio. Real materials, real physics, real people making decisions in real time. The creative energy that comes from a shared space. Clients love being there. Agencies love the collaboration. There's something in the pace of a physical shoot that no screen can replicate.`,
+      `On the other side: the screen. Speed, efficiency, infinite iteration. The ability to explore fifty directions before lunch. Budgets shrinking, markets tightening, clients asking harder questions about costs. The pressure to deliver more for less, faster.`,
+      `I don't know which side wins. I'm not sure anyone does.`,
+      `The backlash is real. You saw the Coca-Cola AI Christmas ads. The polar bears looked synthetic. The humans looked wrong. Even the revised versions, with just animals, got called "AI slop." The original 1995 spot had warmth and nostalgia. The AI version had neither.`,
+      `Meanwhile, Apple TV released a new ident built entirely from real glass, shot in-camera. No CG. Every shimmer captured for real. The response was praise for the craft.`,
+      `There's something in that contrast. Coca-Cola's ad is about human connection. That's exactly what AI struggles with. Apple's ident is about light and material and precision. That's what physical craft does beautifully.`,
+      `The question isn't whether AI can make an image. It's what the image is actually about, and whether AI serves that.`,
+      `So here's the paradox: You need to implement these tools because the budgets are shrinking and the efficiency gains are real. But you can't appear to be using them because the backlash is also real and looking cheap destroys the value of what you're making.`,
+      `That's the position luxury brands are stuck in. It's the position a lot of us are stuck in.`,
+      `I keep coming back to the same question: what happens to the room? The room is where the craft lives. It's where materials behave, where light does what light does, where people make decisions together. It's slow and expensive and irreplaceable.`,
+      `The screen is where the efficiency lives. It's fast and cheap and isolating. The outputs can be impressive. The process is not the same.`,
+      `I'd rather be in the room. That's the honest answer. But I'm also making sure I can work on the screen, because I don't know which one wins.`,
+      `The directors who survive this will be the ones who can work both sides. Not by abandoning craft, but by figuring out how to channel it through new tools. The job becomes taste, judgment, direction — knowing what to ask for and recognising when you've got it.`,
+      `That's not a small thing. It might be the whole thing.`,
+    ],
+  },
+];
 
 // Methodology content to display in frames (4 sections)
 const INFO_CONTENT: InfoItem[] = [
@@ -147,8 +204,10 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('carousel');
   const [showInfo, setShowInfo] = useState(false);
   const [showContact, setShowContact] = useState(false);
+  const [showWriting, setShowWriting] = useState(false);
   const [visibleFrameIndices, setVisibleFrameIndices] = useState<number[]>([]);
   const [contactFrameIndex, setContactFrameIndex] = useState<number | null>(null);
+  const [writingFrameIndices, setWritingFrameIndices] = useState<number[]>([]);
   const [expandedMedia, setExpandedMedia] = useState<{
     item: MediaItem;
     projectTitle: string;
@@ -186,17 +245,23 @@ export default function Home() {
     }
   }, [activeCategory]);
 
-  // Handle category change - close info/contact and change category
+  // Handle category change - close info/contact/writing and change category
   const handleCategoryChange = (category: Category) => {
     if (showInfo) setShowInfo(false);
     if (showContact) setShowContact(false);
+    if (showWriting) {
+      setShowWriting(false);
+    }
     setActiveCategory(category);
   };
 
-  // Handle view mode change - close info/contact and crossfade when switching views
+  // Handle view mode change - close info/contact/writing and crossfade when switching views
   const handleViewModeChange = (mode: ViewMode) => {
     if (showInfo) setShowInfo(false);
     if (showContact) setShowContact(false);
+    if (showWriting) {
+      setShowWriting(false);
+    }
     // Trigger crossfade transition
     setIsTransitioning(true);
     setTimeout(() => {
@@ -244,9 +309,12 @@ export default function Home() {
   // Function to detect visible frames and toggle info mode
   const handleInfoToggle = () => {
     if (!showInfo) {
-      // Close contact if open (mutually exclusive)
+      // Close contact and writing if open (mutually exclusive)
       if (showContact) {
         setShowContact(false);
+      }
+      if (showWriting) {
+        setShowWriting(false);
       }
       // If in grid mode, crossfade to carousel and mark to return
       if (viewMode === 'grid') {
@@ -359,9 +427,12 @@ export default function Home() {
   // Function to detect most central visible frame and toggle contact mode
   const handleContactToggle = () => {
     if (!showContact) {
-      // Close info if open (mutually exclusive)
+      // Close info and writing if open (mutually exclusive)
       if (showInfo) {
         setShowInfo(false);
+      }
+      if (showWriting) {
+        setShowWriting(false);
       }
       // If in grid mode, crossfade to carousel and mark to return
       if (viewMode === 'grid') {
@@ -443,6 +514,131 @@ export default function Home() {
     }
   };
 
+  // Helper to get frame indices for writing display
+  // Landscape frames hold 2 articles, portrait frames hold 1
+  const getFrameIndicesForWriting = (): number[] => {
+    const articleCount = WRITING_CONTENT.length;
+    if (allMediaItems.length === 0) return Array.from({ length: articleCount }, (_, i) => i);
+
+    const framesToUse: number[] = [];
+    let articlesAssigned = 0;
+
+    for (const item of allMediaItems) {
+      if (articlesAssigned >= articleCount) break;
+      framesToUse.push(item.globalIndex);
+      // Landscape frames hold 2 articles, portrait frames hold 1
+      articlesAssigned += item.isLandscape ? 2 : 1;
+    }
+
+    return framesToUse;
+  };
+
+  // Function to toggle writing mode - shows articles across multiple frames
+  const handleWritingToggle = () => {
+    if (!showWriting) {
+      // Close info and contact if open (mutually exclusive)
+      if (showInfo) {
+        setShowInfo(false);
+      }
+      if (showContact) {
+        setShowContact(false);
+      }
+      // If in grid mode, crossfade to carousel and mark to return
+      if (viewMode === 'grid') {
+        setReturnToGrid(true);
+        setIsTransitioning(true);
+        // Use first frames for writing display when coming from grid
+        setWritingFrameIndices(getFrameIndicesForWriting());
+        setTimeout(() => {
+          setViewMode('carousel');
+          setShowWriting(true);
+          // Reset scroll to 0 so content starts at left edge
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = 0;
+          }
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
+      } else {
+        // In carousel mode, select visible/central frames for writing
+        const container = scrollContainerRef.current;
+        if (container) {
+          const containerRect = container.getBoundingClientRect();
+          const containerCenter = containerRect.left + containerRect.width / 2;
+
+          // Find all visible frames with their distance from center
+          const visibleFrames: { index: number; distanceFromCenter: number }[] = [];
+
+          frameRefs.current.forEach((el, index) => {
+            const rect = el.getBoundingClientRect();
+            // Check if frame is at least partially visible
+            if (rect.right > containerRect.left && rect.left < containerRect.right) {
+              const frameCenter = rect.left + rect.width / 2;
+              visibleFrames.push({
+                index,
+                distanceFromCenter: Math.abs(frameCenter - containerCenter)
+              });
+            }
+          });
+
+          // Sort by distance from center (most central first)
+          visibleFrames.sort((a, b) => a.distanceFromCenter - b.distanceFromCenter);
+
+          // Select frames to hold all articles
+          // Landscape frames hold 2 articles, portrait frames hold 1
+          const framesToUse: number[] = [];
+          let articlesAssigned = 0;
+          const articleCount = WRITING_CONTENT.length;
+
+          for (const frame of visibleFrames) {
+            if (articlesAssigned >= articleCount) break;
+            framesToUse.push(frame.index);
+            const mediaItem = allMediaItems.find(m => m.globalIndex === frame.index);
+            articlesAssigned += mediaItem?.isLandscape ? 2 : 1;
+          }
+
+          // If we don't have enough visible frames, add adjacent frames
+          if (articlesAssigned < articleCount) {
+            const usedIndices = new Set(framesToUse);
+            for (const item of allMediaItems) {
+              if (articlesAssigned >= articleCount) break;
+              if (!usedIndices.has(item.globalIndex)) {
+                framesToUse.push(item.globalIndex);
+                usedIndices.add(item.globalIndex);
+                articlesAssigned += item.isLandscape ? 2 : 1;
+              }
+            }
+          }
+
+          // Sort by index for consistent display order
+          framesToUse.sort((a, b) => a - b);
+          setWritingFrameIndices(framesToUse);
+        }
+        setShowWriting(true);
+      }
+    } else {
+      // Closing writing - return to grid if we came from there
+      if (returnToGrid) {
+        setIsTransitioning(true);
+        setShowWriting(false);
+        setTimeout(() => {
+          setReturnToGrid(false);
+          setViewMode('grid');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
+      } else {
+        setShowWriting(false);
+      }
+    }
+  };
+
   // Lock scroll when expanded
   useEffect(() => {
     if (expandedMedia) {
@@ -497,20 +693,33 @@ export default function Home() {
     const edgeSpeed = 15; // Faster speed at extreme edges
     const menuHeight = 150; // Height from bottom where menu is (bottom-[50px] + some padding)
 
-    // Function to calculate max scroll for info mode dynamically
+    // Function to calculate max scroll for info or writing mode dynamically
     const getMaxScroll = (): number => {
-      if (!showInfo || visibleFrameIndices.length === 0) return Infinity;
+      // For info mode
+      if (showInfo && visibleFrameIndices.length > 0) {
+        const lastInfoIndex = visibleFrameIndices[visibleFrameIndices.length - 1];
+        const lastFrame = frameRefs.current.get(lastInfoIndex);
+        if (!lastFrame) return Infinity;
 
-      const lastInfoIndex = visibleFrameIndices[visibleFrameIndices.length - 1];
-      const lastFrame = frameRefs.current.get(lastInfoIndex);
-      if (!lastFrame) return Infinity;
+        const containerRect = container.getBoundingClientRect();
+        const frameRect = lastFrame.getBoundingClientRect();
+        const currentScroll = container.scrollLeft;
+        return currentScroll + (frameRect.right - containerRect.right) + 50;
+      }
 
-      // Max scroll is when the last info frame reaches the right edge of the viewport
-      const containerRect = container.getBoundingClientRect();
-      const frameRect = lastFrame.getBoundingClientRect();
-      const currentScroll = container.scrollLeft;
-      // Allow scrolling until the right edge of the last frame aligns with viewport right
-      return currentScroll + (frameRect.right - containerRect.right) + 50; // 50px padding
+      // For writing mode - limit to article frames
+      if (showWriting && writingFrameIndices.length > 0) {
+        const lastWritingIndex = writingFrameIndices[writingFrameIndices.length - 1];
+        const lastFrame = frameRefs.current.get(lastWritingIndex);
+        if (!lastFrame) return Infinity;
+
+        const containerRect = container.getBoundingClientRect();
+        const frameRect = lastFrame.getBoundingClientRect();
+        const currentScroll = container.scrollLeft;
+        return currentScroll + (frameRect.right - containerRect.right) + 50;
+      }
+
+      return Infinity;
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -559,8 +768,8 @@ export default function Home() {
     const animate = () => {
       if (scrollSpeed !== 0 && container) {
         const newScroll = container.scrollLeft + scrollSpeed;
-        // In info mode, limit scroll to not go past the last info frame
-        if (showInfo) {
+        // In info or writing mode, limit scroll to not go past the last frame
+        if (showInfo || showWriting) {
           const maxScroll = getMaxScroll();
           container.scrollLeft = Math.max(0, Math.min(newScroll, maxScroll));
         } else {
@@ -581,7 +790,7 @@ export default function Home() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [showIntro, showContact, showInfo, viewMode, visibleFrameIndices]);
+  }, [showIntro, showContact, showWriting, showInfo, viewMode, visibleFrameIndices, writingFrameIndices]);
 
   // Show mobile site on small screens, loading state while detecting
   if (!isLoaded) {
@@ -602,7 +811,7 @@ export default function Home() {
         {/* Carousel View */}
         {viewMode === 'carousel' && (
           <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none' }}>
-            <div key={activeCategory} className="flex h-full items-center" style={{ width: 'max-content', paddingLeft: ((showInfo || showContact) && returnToGrid) ? 'var(--info-padding)' : '150px', paddingRight: '150px' }}>
+            <div key={activeCategory} className="flex h-full items-center" style={{ width: 'max-content', paddingLeft: ((showInfo || showContact || showWriting) && returnToGrid) ? 'var(--info-padding)' : '150px', paddingRight: '150px' }}>
               {filteredProjects.map((project, projectIndex) => {
               // Calculate project start index for global frame numbering
               const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
@@ -614,9 +823,9 @@ export default function Home() {
 
               return (
                 <div key={`${activeCategory}-${project.id}`} className="flex items-center h-full">
-                  {/* Project title - vertical (invisible but keeps space in info/contact mode to prevent jump) */}
+                  {/* Project title - vertical (invisible but keeps space in info/contact/writing mode to prevent jump) */}
                   <div
-                    className={`flex-shrink-0 flex items-end pb-4 transition-opacity-smooth ${showInfo || showContact ? 'opacity-0' : 'opacity-100'}`}
+                    className={`flex-shrink-0 flex items-end pb-4 transition-opacity-smooth ${showInfo || showContact || showWriting ? 'opacity-0' : 'opacity-100'}`}
                     style={{ height: 'var(--carousel-height)', marginLeft: isFirstProject ? '0' : 'var(--carousel-project-gap)', marginRight: 'var(--carousel-title-gap)' }}
                   >
                     <span
@@ -743,7 +952,7 @@ export default function Home() {
                             // Use Vimeo iframe in production when vimeoId exists, local file in dev
                             item.vimeoId && process.env.NODE_ENV === 'production' ? (
                               <div
-                                className={`w-full h-full overflow-hidden transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                                className={`w-full h-full overflow-hidden transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) || (showWriting && writingFrameIndices.includes(globalIndex)) ? 'opacity-30' : 'opacity-100'}`}
                               >
                                 <iframe
                                   src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
@@ -766,14 +975,14 @@ export default function Home() {
                                 loop
                                 muted
                                 playsInline
-                                className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                                className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) || (showWriting && writingFrameIndices.includes(globalIndex)) ? 'opacity-30' : 'opacity-100'}`}
                               />
                             )
                           ) : (
                             <img
                               src={item.src}
                               alt=""
-                              className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
+                              className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) || (showWriting && writingFrameIndices.includes(globalIndex)) ? 'opacity-30' : 'opacity-100'}`}
                             />
                           )}
 
@@ -824,6 +1033,53 @@ export default function Home() {
                               </a>
                             </div>
                           )}
+
+                          {/* Writing overlay on this frame - show article based on position in writingFrameIndices */}
+                          {showWriting && writingFrameIndices.includes(globalIndex) && (() => {
+                            const writingPosition = writingFrameIndices.indexOf(globalIndex);
+
+                            // Calculate which article index this frame should start at
+                            // by counting articles used by previous frames
+                            let articleStartIndex = 0;
+                            for (let i = 0; i < writingPosition; i++) {
+                              const prevFrameIndex = writingFrameIndices[i];
+                              const prevMediaItem = allMediaItems.find(m => m.globalIndex === prevFrameIndex);
+                              articleStartIndex += prevMediaItem?.isLandscape ? 2 : 1;
+                            }
+
+                            // Only show content if we haven't exceeded our articles
+                            if (articleStartIndex >= WRITING_CONTENT.length) return null;
+
+                            const article = WRITING_CONTENT[articleStartIndex];
+                            // For landscape: show 2 articles side-by-side (second may be null if we run out)
+                            const article2 = isLandscape ? (WRITING_CONTENT[articleStartIndex + 1] || null) : null;
+
+                            if (!article) return null;
+                            return (
+                              <ArticleOverlay
+                                isLandscape={isLandscape}
+                                article={article}
+                                article2={article2}
+                                onClose={() => {
+                                  if (returnToGrid) {
+                                    setIsTransitioning(true);
+                                    setShowWriting(false);
+                                    setTimeout(() => {
+                                      setReturnToGrid(false);
+                                      setViewMode('grid');
+                                      requestAnimationFrame(() => {
+                                        requestAnimationFrame(() => {
+                                          setIsTransitioning(false);
+                                        });
+                                      });
+                                    }, 600);
+                                  } else {
+                                    setShowWriting(false);
+                                  }
+                                }}
+                              />
+                            );
+                          })()}
                         </div>
                       );
                     })}
@@ -1064,6 +1320,8 @@ export default function Home() {
         onInfoToggle={handleInfoToggle}
         showContactOverlay={showContact}
         onContactToggle={handleContactToggle}
+        showWritingOverlay={showWriting}
+        onWritingToggle={handleWritingToggle}
         viewMode={viewMode}
         onViewModeChange={handleViewModeChange}
       />
