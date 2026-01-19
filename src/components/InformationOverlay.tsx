@@ -38,7 +38,7 @@ interface FrameMedia {
 const FRAME_MEDIA: FrameMedia[] = [
   { src: "/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4", type: "video", layout: "full" },
   { src: "/images/Watch report/freepik__enhance__46843.jpg", type: "image", layout: "split" },
-  { src: "/images/Merit/freepik__enhance__74134.jpg", type: "image", layout: "split" },
+  { src: "/images/Merit/SH_Merti_s1.jpg", type: "image", layout: "split" },
   { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", layout: "full" },
 ];
 

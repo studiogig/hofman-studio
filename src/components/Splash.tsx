@@ -6,11 +6,11 @@ import { motion } from 'framer-motion';
 const ASSETS = [
     { type: 'image', src: '/images/Watch report/freepik__enhance__46843.jpg' },
     { type: 'video', src: '/videos/Wild rose/kling_25_turbo_oil_drip_orbit_213420.mp4' },
-    { type: 'image', src: '/images/Merit/freepik__enhance__74134.jpg' },
+    { type: 'image', src: '/images/Merit/SH_Merti_s1.jpg' },
     { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg' },
     { type: 'video', src: '/videos/Wild rose/2026-01-07T20-41-29_top_down_shot__.mp4' },
     { type: 'image', src: '/images/Watch report/freepik__enhance__73551.jpg' },
-    { type: 'image', src: '/images/Merit/SH_t9w9cp.jpg' },
+    { type: 'image', src: '/images/Merit/SH_Merti_S2.jpg' },
     { type: 'video', src: '/videos/Wild rose/2026-01-07T21-52-22_luma_prompt__.mp4' },
 ];
 

@@ -6,10 +6,10 @@ import { Logo } from './Logo';
 
 const ASSETS = [
     { type: 'image', src: '/images/Watch report/freepik__enhance__46843.jpg' },
-    { type: 'image', src: '/images/Merit/freepik__enhance__74134.jpg' },
+    { type: 'image', src: '/images/Merit/SH_Merti_s1.jpg' },
     { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg' },
     { type: 'image', src: '/images/Watch report/freepik__enhance__73551.jpg' },
-    { type: 'image', src: '/images/Merit/SH_t9w9cp.jpg' },
+    { type: 'image', src: '/images/Merit/SH_Merti_S2.jpg' },
     { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg' },
     { type: 'image', src: '/images/Watch report/freepik__enhance__83979.jpg' },
     { type: 'image', src: '/images/Watch report/freepik__enhance__83980.jpg' },

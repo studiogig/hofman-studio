@@ -30,8 +30,8 @@ const DEV_WORK_PROJECTS = [
     id: 'merit',
     title: 'Merit Beauty',
     media: [
-      { src: "/images/Merit/freepik__enhance__74134.jpg", type: "image" as const, isLandscape: false },
-      { src: "/images/Merit/SH_t9w9cp.jpg", type: "image" as const, isLandscape: false },
+      { src: "/images/Merit/SH_Merti_s1.jpg", type: "image" as const, isLandscape: false },
+      { src: "/images/Merit/SH_Merti_S2.jpg", type: "image" as const, isLandscape: false },
     ],
   },
   {
@@ -68,10 +68,10 @@ const DEV_CONTACT = {
 
 const DEV_INTRO_IMAGES = [
   { src: '/images/Watch report/freepik__enhance__46843.jpg', type: 'image' as const },
-  { src: '/images/Merit/freepik__enhance__74134.jpg', type: 'image' as const },
+  { src: '/images/Merit/SH_Merti_s1.jpg', type: 'image' as const },
   { src: '/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg', type: 'image' as const },
   { src: '/images/Watch report/freepik__enhance__73551.jpg', type: 'image' as const },
-  { src: '/images/Merit/SH_t9w9cp.jpg', type: 'image' as const },
+  { src: '/images/Merit/SH_Merti_S2.jpg', type: 'image' as const },
   { src: '/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg', type: 'image' as const },
   { src: '/images/Watch report/freepik__enhance__83979.jpg', type: 'image' as const },
   { src: '/images/Watch report/freepik__enhance__83980.jpg', type: 'image' as const },

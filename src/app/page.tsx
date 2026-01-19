@@ -256,8 +256,8 @@ const WORK_PROJECTS: Project[] = [
     id: 'merit',
     title: 'Merit Beauty',
     media: [
-      { src: "/images/Merit/freepik__enhance__74134.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render" },
-      { src: "/images/Merit/SH_t9w9cp.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Merit/SH_Merti_s1.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render" },
+      { src: "/images/Merit/SH_Merti_S2.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
     ],
   },
   {
