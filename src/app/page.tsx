@@ -197,6 +197,9 @@ export default function Home() {
   const [returnToGrid, setReturnToGrid] = useState(false); // Track if we should return to grid after closing info/contact
   const [isTransitioning, setIsTransitioning] = useState(false); // Track view mode transition
   const [isZoomed, setIsZoomed] = useState(false); // Track zoom state in lightbox
+  const [zoomPan, setZoomPan] = useState({ x: 0, y: 0 }); // Pan position when zoomed
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const frameRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const animationRef = useRef<number | null>(null);
@@ -509,12 +512,17 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsZoomed(false);
+        setZoomPan({ x: 0, y: 0 });
         setExpandedMedia(null);
       } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        setIsZoomed(false);
+        setZoomPan({ x: 0, y: 0 });
         const prevIndex = currentIndex - 1;
         const prev = allFlatMedia[prevIndex];
         setExpandedMedia({ item: prev.item, projectTitle: prev.projectTitle, globalIndex: prevIndex });
       } else if (e.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+        setIsZoomed(false);
+        setZoomPan({ x: 0, y: 0 });
         const nextIndex = currentIndex + 1;
         const next = allFlatMedia[nextIndex];
         setExpandedMedia({ item: next.item, projectTitle: next.projectTitle, globalIndex: nextIndex });
@@ -960,6 +968,7 @@ export default function Home() {
           const goToPrev = () => {
             if (currentIndex > 0) {
               setIsZoomed(false);
+              setZoomPan({ x: 0, y: 0 });
               const prevIndex = currentIndex - 1;
               const prev = allFlatMedia[prevIndex];
               setExpandedMedia({ item: prev.item, projectTitle: prev.projectTitle, globalIndex: prevIndex });
@@ -969,6 +978,7 @@ export default function Home() {
           const goToNext = () => {
             if (currentIndex < totalItems - 1) {
               setIsZoomed(false);
+              setZoomPan({ x: 0, y: 0 });
               const nextIndex = currentIndex + 1;
               const next = allFlatMedia[nextIndex];
               setExpandedMedia({ item: next.item, projectTitle: next.projectTitle, globalIndex: nextIndex });
@@ -980,7 +990,7 @@ export default function Home() {
           return (
             <div
               className="fixed inset-0 z-50 bg-white dark:bg-[#1a1a1a] flex items-center justify-center pt-[80px] pb-[130px]"
-              onClick={() => { setIsZoomed(false); setExpandedMedia(null); }}
+              onClick={() => { setIsZoomed(false); setZoomPan({ x: 0, y: 0 }); setExpandedMedia(null); }}
             >
               {/* Left click zone for previous */}
               <div
@@ -996,28 +1006,43 @@ export default function Home() {
 
               {/* Media container */}
               <div
-                className={`relative overflow-hidden ${isZoomed ? 'fixed inset-0' : `max-w-[98vw] max-h-full ${item.type === 'image' ? 'cursor-zoom-in' : ''}`}`}
+                className={`relative overflow-hidden ${isZoomed ? 'fixed inset-0 cursor-grab active:cursor-grabbing' : `max-w-[98vw] max-h-full ${item.type === 'image' ? 'cursor-zoom-in' : ''}`}`}
                 onClick={e => {
                   e.stopPropagation();
-                  if (item.type === 'image') setIsZoomed(!isZoomed);
+                  if (item.type === 'image' && !isDragging) {
+                    if (isZoomed) {
+                      setIsZoomed(false);
+                      setZoomPan({ x: 0, y: 0 });
+                    } else {
+                      setIsZoomed(true);
+                    }
+                  }
                 }}
-                onMouseMove={isZoomed && item.type === 'image' ? (e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = (e.clientX - rect.left) / rect.width;
-                  const y = (e.clientY - rect.top) / rect.height;
-                  const img = e.currentTarget.querySelector('img');
-                  if (img) {
-                    // Pan based on mouse position - full range to reach all edges
-                    const panX = (0.5 - x) * 100; // -50% to +50%
-                    const panY = (0.5 - y) * 100; // -50% to +50%
-                    img.style.transform = `translate(${panX}%, ${panY}%) scale(2)`;
-                  }
-                } : undefined}
-                onMouseLeave={isZoomed && item.type === 'image' ? (e) => {
-                  const img = e.currentTarget.querySelector('img');
-                  if (img) {
-                    img.style.transform = 'translate(0, 0) scale(2)';
-                  }
+                onMouseDown={isZoomed && item.type === 'image' ? (e) => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  dragStartRef.current = { x: e.clientX, y: e.clientY, panX: zoomPan.x, panY: zoomPan.y };
+
+                  const handleMouseMove = (moveEvent: MouseEvent) => {
+                    const dx = moveEvent.clientX - dragStartRef.current.x;
+                    const dy = moveEvent.clientY - dragStartRef.current.y;
+                    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                      setIsDragging(true);
+                    }
+                    setZoomPan({
+                      x: dragStartRef.current.panX + dx,
+                      y: dragStartRef.current.panY + dy
+                    });
+                  };
+
+                  const handleMouseUp = () => {
+                    document.removeEventListener('mousemove', handleMouseMove);
+                    document.removeEventListener('mouseup', handleMouseUp);
+                    setTimeout(() => setIsDragging(false), 10);
+                  };
+
+                  document.addEventListener('mousemove', handleMouseMove);
+                  document.addEventListener('mouseup', handleMouseUp);
                 } : undefined}
               >
                 {item.type === 'video' ? (
@@ -1066,8 +1091,11 @@ export default function Home() {
                     src={item.src}
                     alt=""
                     draggable={false}
-                    className={`select-none object-contain transition-transform duration-100 ease-out ${isZoomed ? 'cursor-zoom-out w-full h-full' : ''}`}
-                    style={isZoomed ? { transform: 'scale(2)' } : { maxHeight: 'calc(100vh - 210px)', maxWidth: '98vw' }}
+                    className={`select-none object-contain ${isZoomed ? 'w-full h-full' : ''}`}
+                    style={isZoomed
+                      ? { transform: `translate(${zoomPan.x}px, ${zoomPan.y}px) scale(2)`, transformOrigin: 'center' }
+                      : { maxHeight: 'calc(100vh - 210px)', maxWidth: '98vw' }
+                    }
                   />
                 )}
               </div>
@@ -1104,6 +1132,7 @@ export default function Home() {
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsZoomed(false);
+                  setZoomPan({ x: 0, y: 0 });
                   setExpandedMedia(null);
                 }}
               >
