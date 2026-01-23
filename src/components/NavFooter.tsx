@@ -56,20 +56,28 @@ export const NavFooter = ({
         {/* Category filters */}
         {onCategoryChange && (
           <>
-            {(['all', 'motion', 'stills', 'research'] as Category[]).map((category) => (
-              <button
-                key={category}
-                onClick={() => onCategoryChange(category)}
-                className="relative text-lg font-normal font-calibre hover:opacity-50 transition-opacity-smooth"
-              >
-                {category === 'all' ? 'All' : category === 'motion' ? 'Motion' : category === 'stills' ? 'Stills' : 'Research'}
-                <span
-                  className={`absolute bottom-0 left-0 right-0 h-[1px] bg-black dark:bg-white transition-all-smooth ${
-                    activeCategory === category ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-                  }`}
-                />
-              </button>
-            ))}
+            <button
+              onClick={() => onCategoryChange('all')}
+              className="relative text-lg font-normal font-calibre hover:opacity-50 transition-opacity-smooth"
+            >
+              Work
+              <span
+                className={`absolute bottom-0 left-0 right-0 h-[1px] bg-black dark:bg-white transition-all-smooth ${
+                  activeCategory === 'all' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                }`}
+              />
+            </button>
+            <button
+              onClick={() => onCategoryChange('research')}
+              className="relative text-lg font-normal font-calibre hover:opacity-50 transition-opacity-smooth"
+            >
+              Research
+              <span
+                className={`absolute bottom-0 left-0 right-0 h-[1px] bg-black dark:bg-white transition-all-smooth ${
+                  activeCategory === 'research' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                }`}
+              />
+            </button>
             <span className="text-black/20 dark:text-white/20">|</span>
           </>
         )}
