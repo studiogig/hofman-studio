@@ -979,7 +979,7 @@ export default function Home() {
 
           return (
             <div
-              className="fixed inset-0 z-50 bg-white dark:bg-[#1a1a1a] flex items-center justify-center"
+              className="fixed inset-0 z-50 bg-white dark:bg-[#1a1a1a] flex items-center justify-center pt-[80px] pb-[130px]"
               onClick={() => { setIsZoomed(false); setExpandedMedia(null); }}
             >
               {/* Left click zone for previous */}
@@ -996,7 +996,7 @@ export default function Home() {
 
               {/* Media container */}
               <div
-                className={`relative overflow-hidden ${isZoomed ? 'w-full h-full' : `max-w-[98vw] max-h-[95vh] ${item.type === 'image' ? 'cursor-zoom-in' : ''}`}`}
+                className={`relative overflow-hidden ${isZoomed ? 'fixed inset-0' : `max-w-[98vw] max-h-full ${item.type === 'image' ? 'cursor-zoom-in' : ''}`}`}
                 onClick={e => {
                   e.stopPropagation();
                   if (item.type === 'image') setIsZoomed(!isZoomed);
@@ -1024,11 +1024,13 @@ export default function Home() {
                   item.vimeoId && process.env.NODE_ENV === 'production' ? (
                     <iframe
                       src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                      className="max-h-[95vh] border-0"
+                      className="border-0"
                       style={{
                         aspectRatio: item.isLandscape ? '16/9' : '9/16',
-                        width: item.isLandscape ? '95vw' : 'auto',
-                        height: item.isLandscape ? 'auto' : '95vh',
+                        width: item.isLandscape ? '98vw' : 'auto',
+                        height: item.isLandscape ? 'auto' : 'calc(100vh - 210px)',
+                        maxHeight: 'calc(100vh - 210px)',
+                        maxWidth: '98vw',
                       }}
                       allow="autoplay; fullscreen"
                     />
@@ -1040,12 +1042,13 @@ export default function Home() {
                         loop
                         muted
                         playsInline
-                        className="max-h-[95vh] max-w-[98vw] object-contain"
+                        className="max-w-[98vw] object-contain"
+                        style={{ maxHeight: 'calc(100vh - 210px)' }}
                       />
                     ) : (
                       <div
-                        className="relative h-[95vh] overflow-hidden"
-                        style={{ width: 'calc(95vh * 9 / 16)' }}
+                        className="relative overflow-hidden"
+                        style={{ height: 'calc(100vh - 210px)', width: 'calc((100vh - 210px) * 9 / 16)' }}
                       >
                         <video
                           src={item.src}
@@ -1063,14 +1066,14 @@ export default function Home() {
                     src={item.src}
                     alt=""
                     draggable={false}
-                    className={`select-none w-full h-full object-contain transition-transform duration-100 ease-out ${isZoomed ? 'cursor-zoom-out' : ''}`}
-                    style={isZoomed ? { transform: 'scale(1.5)' } : undefined}
+                    className={`select-none object-contain transition-transform duration-100 ease-out ${isZoomed ? 'cursor-zoom-out w-full h-full' : ''}`}
+                    style={isZoomed ? { transform: 'scale(1.5)' } : { maxHeight: 'calc(100vh - 210px)', maxWidth: '98vw' }}
                   />
                 )}
               </div>
 
-              {/* Info bar at bottom - centered */}
-              <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-1 pointer-events-none">
+              {/* Info bar at bottom - centered, above menu */}
+              <div className="absolute bottom-[140px] left-0 right-0 flex flex-col items-center gap-1 pointer-events-none">
                 <span
                   className="text-2xl text-black dark:text-white"
                   style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
