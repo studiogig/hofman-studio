@@ -196,6 +196,7 @@ export default function Home() {
   } | null>(null);
   const [returnToGrid, setReturnToGrid] = useState(false); // Track if we should return to grid after closing info/contact
   const [isTransitioning, setIsTransitioning] = useState(false); // Track view mode transition
+  const [isZoomed, setIsZoomed] = useState(false); // Track zoom state in lightbox
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const frameRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const animationRef = useRef<number | null>(null);
@@ -507,6 +508,7 @@ export default function Home() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        setIsZoomed(false);
         setExpandedMedia(null);
       } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
         const prevIndex = currentIndex - 1;
@@ -957,6 +959,7 @@ export default function Home() {
 
           const goToPrev = () => {
             if (currentIndex > 0) {
+              setIsZoomed(false);
               const prevIndex = currentIndex - 1;
               const prev = allFlatMedia[prevIndex];
               setExpandedMedia({ item: prev.item, projectTitle: prev.projectTitle, globalIndex: prevIndex });
@@ -965,6 +968,7 @@ export default function Home() {
 
           const goToNext = () => {
             if (currentIndex < totalItems - 1) {
+              setIsZoomed(false);
               const nextIndex = currentIndex + 1;
               const next = allFlatMedia[nextIndex];
               setExpandedMedia({ item: next.item, projectTitle: next.projectTitle, globalIndex: nextIndex });
@@ -976,7 +980,7 @@ export default function Home() {
           return (
             <div
               className="fixed inset-0 z-50 bg-white dark:bg-[#1a1a1a] flex items-center justify-center"
-              onClick={() => setExpandedMedia(null)}
+              onClick={() => { setIsZoomed(false); setExpandedMedia(null); }}
             >
               {/* Left click zone for previous */}
               <div
@@ -991,16 +995,40 @@ export default function Home() {
               />
 
               {/* Media container */}
-              <div className="relative max-w-[95vw] max-h-[80vh]" onClick={e => e.stopPropagation()}>
+              <div
+                className={`relative overflow-hidden ${isZoomed ? 'w-full h-full' : `max-w-[98vw] max-h-[95vh] ${item.type === 'image' ? 'cursor-zoom-in' : ''}`}`}
+                onClick={e => {
+                  e.stopPropagation();
+                  if (item.type === 'image') setIsZoomed(!isZoomed);
+                }}
+                onMouseMove={isZoomed && item.type === 'image' ? (e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = (e.clientX - rect.left) / rect.width;
+                  const y = (e.clientY - rect.top) / rect.height;
+                  const img = e.currentTarget.querySelector('img');
+                  if (img) {
+                    // Pan based on mouse position (0-1 maps to full pan range)
+                    const panX = (0.5 - x) * 50; // -25% to +25%
+                    const panY = (0.5 - y) * 50; // -25% to +25%
+                    img.style.transform = `translate(${panX}%, ${panY}%) scale(1.5)`;
+                  }
+                } : undefined}
+                onMouseLeave={isZoomed && item.type === 'image' ? (e) => {
+                  const img = e.currentTarget.querySelector('img');
+                  if (img) {
+                    img.style.transform = 'translate(0, 0) scale(1.5)';
+                  }
+                } : undefined}
+              >
                 {item.type === 'video' ? (
                   item.vimeoId && process.env.NODE_ENV === 'production' ? (
                     <iframe
                       src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                      className="max-h-[80vh] border-0"
+                      className="max-h-[95vh] border-0"
                       style={{
                         aspectRatio: item.isLandscape ? '16/9' : '9/16',
-                        width: item.isLandscape ? '90vw' : 'auto',
-                        height: item.isLandscape ? 'auto' : '80vh',
+                        width: item.isLandscape ? '95vw' : 'auto',
+                        height: item.isLandscape ? 'auto' : '95vh',
                       }}
                       allow="autoplay; fullscreen"
                     />
@@ -1012,12 +1040,12 @@ export default function Home() {
                         loop
                         muted
                         playsInline
-                        className="max-h-[80vh] max-w-[95vw] object-contain"
+                        className="max-h-[95vh] max-w-[98vw] object-contain"
                       />
                     ) : (
                       <div
-                        className="relative h-[80vh] overflow-hidden"
-                        style={{ width: 'calc(80vh * 9 / 16)' }}
+                        className="relative h-[95vh] overflow-hidden"
+                        style={{ width: 'calc(95vh * 9 / 16)' }}
                       >
                         <video
                           src={item.src}
@@ -1034,7 +1062,9 @@ export default function Home() {
                   <img
                     src={item.src}
                     alt=""
-                    className="max-w-full max-h-[80vh] object-contain"
+                    draggable={false}
+                    className={`select-none w-full h-full object-contain transition-transform duration-100 ease-out ${isZoomed ? 'cursor-zoom-out' : ''}`}
+                    style={isZoomed ? { transform: 'scale(1.5)' } : undefined}
                   />
                 )}
               </div>
@@ -1070,6 +1100,7 @@ export default function Home() {
                 className="absolute top-5 right-5 text-black dark:text-white text-2xl hover:opacity-50 transition-opacity duration-300 z-20"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setIsZoomed(false);
                   setExpandedMedia(null);
                 }}
               >
