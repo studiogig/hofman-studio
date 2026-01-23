@@ -1007,16 +1007,16 @@ export default function Home() {
                   const y = (e.clientY - rect.top) / rect.height;
                   const img = e.currentTarget.querySelector('img');
                   if (img) {
-                    // Pan based on mouse position (0-1 maps to full pan range)
-                    const panX = (0.5 - x) * 50; // -25% to +25%
-                    const panY = (0.5 - y) * 50; // -25% to +25%
-                    img.style.transform = `translate(${panX}%, ${panY}%) scale(1.5)`;
+                    // Pan based on mouse position - full range to reach all edges
+                    const panX = (0.5 - x) * 100; // -50% to +50%
+                    const panY = (0.5 - y) * 100; // -50% to +50%
+                    img.style.transform = `translate(${panX}%, ${panY}%) scale(2)`;
                   }
                 } : undefined}
                 onMouseLeave={isZoomed && item.type === 'image' ? (e) => {
                   const img = e.currentTarget.querySelector('img');
                   if (img) {
-                    img.style.transform = 'translate(0, 0) scale(1.5)';
+                    img.style.transform = 'translate(0, 0) scale(2)';
                   }
                 } : undefined}
               >
@@ -1067,7 +1067,7 @@ export default function Home() {
                     alt=""
                     draggable={false}
                     className={`select-none object-contain transition-transform duration-100 ease-out ${isZoomed ? 'cursor-zoom-out w-full h-full' : ''}`}
-                    style={isZoomed ? { transform: 'scale(1.5)' } : { maxHeight: 'calc(100vh - 210px)', maxWidth: '98vw' }}
+                    style={isZoomed ? { transform: 'scale(2)' } : { maxHeight: 'calc(100vh - 210px)', maxWidth: '98vw' }}
                   />
                 )}
               </div>
