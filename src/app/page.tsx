@@ -127,14 +127,57 @@ const getOrderedProjects = (projects: typeof WORK_PROJECTS, seed: number) => {
 // Research projects - separate content for research tab
 // Add your research images/videos here
 const RESEARCH_PROJECTS: Project[] = [
-  // Example structure - add your research content here:
-  // {
-  //   id: 'material-study',
-  //   title: 'Material Study',
-  //   media: [
-  //     { src: "/images/research/study1.jpg", type: "image", isLandscape: false },
-  //   ],
-  // },
+  {
+    id: 'mer',
+    title: 'Mer',
+    media: [
+      { src: "/images/Research/Mer/Emerald_and_diamond_cascade_necklace_pulled_beneath_rough_oce_58973739-9a66-4e86-a428-cd489d31f419_3.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Mer/Pearl_strand_necklace_with_citrine_pendant_on_dark_ocean_surf_62c04ef5-74b6-42df-aedc-6cccf43b5296_2.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Mer/Rose_gold_serpent_necklace_caught_in_rough_dark_ocean_chop_di_a0ca4b1f-1916-4221-8c6b-75bd65be6060_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Mer/White_gold_geometric_necklace_with_blue_sapphires_submerged_i_24f01563-2473-4418-a7d0-538bdf69fb96_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Mer/White_gold_geometric_necklace_with_blue_sapphires_submerged_i_d844512e-109f-4925-bb5d-3c3e0457064d_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Mer/White_gold_statement_necklace_with_radiating_diamond_fringe_c_2f92adca-b6ef-44ea-8fc9-b88952eeb375_3.png", type: "image", isLandscape: false, process: "AI Still" },
+    ],
+  },
+  {
+    id: 'fork',
+    title: 'Fork',
+    media: [
+      { src: "/images/Research/Fork/Studio_Gig_httpss.mj.runiL30C6W1slw_A_hyperreal_macro_photogr_94133535-ee2e-47ec-a622-51e607854694_3.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Fork/Studio_Gig_httpss.mj.runiL30C6W1slw_A_hyperreal_macro_photograp_5b5fb539-4501-49ca-9526-9fabf10f2bcc.png", type: "image", isLandscape: false, process: "AI Still" },
+    ],
+  },
+  {
+    id: 'liquids',
+    title: 'Liquids',
+    media: [
+      { src: "/images/Research/Liquids/Studio_Gig_A_hyper-detailed_macro_photograph_of_clear_and_mil_c9f41145-c091-49dd-ad31-6a596befe070_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_hyper-detailed_macro_photograph_of_clear_and_milky_8ee222c4-44ed-4050-b8ea-244b4604b275.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_macro_photograph_of_poured_and_smeared_gel-like__d46a86a7-7064-405d-b1fb-8a4629bcb8c3_0.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_macro_photograph_of_poured_and_smeared_gel-like_li_d30b057f-c112-4c4e-86b5-a611e0b39adc.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Liquids/Studio_Gig_Black_ink_oil_and_acrylic_paint_on_a_white_backgro_e75a78f3-9ddc-4323-a085-4dbead706d05_2.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Liquids/Studio_Gig_httpss.mj.runu7vJxw1WJjQ_A_hyper-detailed_macro_ph_8be03e22-6a07-4530-80f8-0533fd5f3057_0.png", type: "image", isLandscape: false, process: "AI Still" },
+    ],
+  },
+  {
+    id: 'rose',
+    title: 'Rose',
+    media: [
+      { src: "/images/Research/Rose/Extreme_macro_where_white_petal_kisses_amber_oil_surface_tens_a53bcbf6-e787-4ca1-836b-3218f8d8160a_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Rose/Wild_white_rose_with_golden_stamens_soft_cream_background_bri_485f94b2-2313-4f90-ab2a-cf14fd37882e_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Rose/wild_white_rose_in_soft_cream_void_golden_stamens_tiny_bead_o_b3210fbb-03f1-41cb-8224-a892473f6bc8_3.png", type: "image", isLandscape: false, process: "AI Still" },
+    ],
+  },
+  {
+    id: 'submerged',
+    title: 'Submerged',
+    media: [
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_blue_iris_flower_immersed__cf107d4a-0a7b-4d9d-828d-677656c621d1_1.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_blue_iris_flower_immersed_in_4fd7d986-48a0-4f48-ac55-07488ac99f21.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_white_iris_flower_immersed_29d38bfb-f42a-4535-ad52-eb297bee9303_3.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_white_iris_flower_immersed_a31e50ff-8e35-4c5e-ad38-b9a3686b2192_3.png", type: "image", isLandscape: false, process: "AI Still" },
+    ],
+  },
 ];
 
 export default function Home() {
