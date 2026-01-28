@@ -1,126 +1,106 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import 'photoswipe/style.css';
 
-type GalleryItem = {
+type GalleryImage = {
   src: string;
   width: number;
   height: number;
   alt?: string;
-  thumbnail?: string;
   title?: string;
 };
 
 type PhotoSwipeGalleryProps = {
-  items: GalleryItem[];
   galleryId: string;
-  children: (item: GalleryItem, index: number) => React.ReactNode;
+  images: GalleryImage[];
   className?: string;
+  renderItem: (image: GalleryImage, index: number) => React.ReactNode;
 };
 
-export function PhotoSwipeGallery({ items, galleryId, children, className }: PhotoSwipeGalleryProps) {
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const lightboxRef = useRef<any>(null);
+export function PhotoSwipeGallery({ galleryId, images, className, renderItem }: PhotoSwipeGalleryProps) {
+  const lightboxRef = useRef<PhotoSwipeLightbox | null>(null);
 
   useEffect(() => {
-    let lightbox: any = null;
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: `#${galleryId}`,
+      children: 'a[data-pswp-width]',
+      pswpModule: () => import('photoswipe'),
+      // Options
+      bgOpacity: 1,
+      showHideAnimationType: 'fade',
+      zoom: true,
+      pinchToClose: false,
+      closeOnVerticalDrag: false,
+      clickToCloseNonZoomable: false,
+      tapAction: 'zoom',
+      padding: { top: 80, bottom: 80, left: 20, right: 20 },
+    });
 
-    const initPhotoSwipe = async () => {
-      const PhotoSwipeLightbox = (await import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js' as any)).default;
-      const PhotoSwipe = (await import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js' as any)).default;
-
-      lightbox = new PhotoSwipeLightbox({
-        gallery: `#${galleryId}`,
-        children: 'a',
-        pswpModule: PhotoSwipe,
-        // Default options for smooth experience
-        bgOpacity: 1,
-        showHideAnimationType: 'fade',
-        zoom: true,
-        pinchToClose: true,
-        closeOnVerticalDrag: true,
-      });
-
-      lightbox.init();
-      lightboxRef.current = lightbox;
-    };
-
-    initPhotoSwipe();
+    lightbox.init();
+    lightboxRef.current = lightbox;
 
     return () => {
-      if (lightboxRef.current) {
-        lightboxRef.current.destroy();
-        lightboxRef.current = null;
-      }
+      lightbox.destroy();
+      lightboxRef.current = null;
     };
   }, [galleryId]);
 
   return (
-    <div id={galleryId} ref={galleryRef} className={className}>
-      {items.map((item, index) => (
+    <div id={galleryId} className={className}>
+      {images.map((image, index) => (
         <a
           key={index}
-          href={item.src}
-          data-pswp-width={item.width}
-          data-pswp-height={item.height}
+          href={image.src}
+          data-pswp-width={image.width}
+          data-pswp-height={image.height}
           target="_blank"
           rel="noreferrer"
+          className="block"
         >
-          {children(item, index)}
+          {renderItem(image, index)}
         </a>
       ))}
     </div>
   );
 }
 
-// Simple gallery that just wraps existing content with PhotoSwipe functionality
-type SimplePhotoSwipeProps = {
-  galleryId: string;
-  children: React.ReactNode;
-};
-
-export function SimplePhotoSwipe({ galleryId, children }: SimplePhotoSwipeProps) {
-  const lightboxRef = useRef<any>(null);
+// Hook to initialize PhotoSwipe on an existing gallery element
+export function usePhotoSwipe(galleryId: string, enabled: boolean = true) {
+  const lightboxRef = useRef<PhotoSwipeLightbox | null>(null);
 
   useEffect(() => {
-    let lightbox: any = null;
+    if (!enabled) return;
 
-    const initPhotoSwipe = async () => {
-      try {
-        const PhotoSwipeLightbox = (await import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js' as any)).default;
-        const PhotoSwipe = (await import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js' as any)).default;
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: `#${galleryId}`,
+        children: 'a[data-pswp-width]',
+        pswpModule: () => import('photoswipe'),
+        bgOpacity: 1,
+        showHideAnimationType: 'fade',
+        zoom: true,
+        pinchToClose: false,
+        closeOnVerticalDrag: false,
+        clickToCloseNonZoomable: false,
+        tapAction: 'zoom',
+        padding: { top: 80, bottom: 80, left: 20, right: 20 },
+      });
 
-        lightbox = new PhotoSwipeLightbox({
-          gallery: `#${galleryId}`,
-          children: 'a[data-pswp-width]',
-          pswpModule: PhotoSwipe,
-          bgOpacity: 1,
-          showHideAnimationType: 'fade',
-          zoom: true,
-          pinchToClose: true,
-          closeOnVerticalDrag: true,
-        });
-
-        lightbox.init();
-        lightboxRef.current = lightbox;
-      } catch (err) {
-        console.error('Failed to load PhotoSwipe:', err);
-      }
-    };
-
-    initPhotoSwipe();
+      lightbox.init();
+      lightboxRef.current = lightbox;
+    }, 100);
 
     return () => {
+      clearTimeout(timer);
       if (lightboxRef.current) {
         lightboxRef.current.destroy();
         lightboxRef.current = null;
       }
     };
-  }, [galleryId]);
+  }, [galleryId, enabled]);
 
-  return (
-    <div id={galleryId}>
-      {children}
-    </div>
-  );
+  return lightboxRef;
 }

@@ -6,6 +6,7 @@ import { NavFooter } from '@/components/NavFooter';
 import { MobileSite } from '@/components/MobileSite';
 import { InfoOverlay } from '@/components/InfoSection';
 import { useIsMobile } from '@/lib/useIsMobile';
+import { usePhotoSwipe } from '@/components/PhotoSwipeGallery';
 
 type Category = 'all' | 'motion' | 'stills' | 'research';
 type ViewMode = 'carousel' | 'grid';
@@ -124,6 +125,12 @@ const getOrderedProjects = (projects: typeof WORK_PROJECTS, seed: number) => {
   return [...priorityProjects, ...shuffledNonPriority];
 };
 
+// Research intro content
+const RESEARCH_INTRO = {
+  title: 'Research',
+  content: 'Visual exploration that falls outside projects. Ideas, experiments, things I love along the way.',
+};
+
 // Research projects - separate content for research tab
 // Add your research images/videos here
 const RESEARCH_PROJECTS: Project[] = [
@@ -206,6 +213,9 @@ export default function Home() {
 
   // Generate a random seed once per session for consistent ordering
   const [sessionSeed] = useState(() => Math.floor(Math.random() * 10000));
+
+  // Initialize PhotoSwipe for grid view (images only)
+  usePhotoSwipe('work-gallery', viewMode === 'grid' && !isTransitioning);
 
   // Get randomized projects with priority items first
   const orderedProjects = useMemo(() => getOrderedProjects(WORK_PROJECTS, sessionSeed), [sessionSeed]);
@@ -654,6 +664,40 @@ export default function Home() {
         {viewMode === 'carousel' && (
           <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none' }}>
             <div key={activeCategory} className="flex h-full items-center" style={{ width: 'max-content', paddingLeft: ((showInfo || showContact) && returnToGrid) ? 'var(--info-padding)' : '150px', paddingRight: '150px' }}>
+              {/* Research intro slide - persistent at start of research carousel */}
+              {activeCategory === 'research' && (
+                <div
+                  className="relative flex-shrink-0 aspect-[4/5] flex flex-col justify-between bg-white dark:bg-[#1a1a1a]"
+                  style={{
+                    height: 'var(--carousel-height)',
+                    padding: 'var(--info-padding)',
+                    marginRight: 'var(--carousel-project-gap)',
+                  }}
+                >
+                  {/* Title at top-left */}
+                  <h2
+                    className="font-bold uppercase tracking-tight leading-tight text-black dark:text-white"
+                    style={{
+                      fontFamily: 'Calibre, Arial, sans-serif',
+                      fontSize: 'var(--info-title-size)',
+                    }}
+                  >
+                    {RESEARCH_INTRO.title}
+                  </h2>
+
+                  {/* Content at bottom-left */}
+                  <p
+                    className="text-black dark:text-white"
+                    style={{
+                      fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                      fontSize: 'var(--info-content-size)',
+                      lineHeight: '1.4',
+                    }}
+                  >
+                    {RESEARCH_INTRO.content}
+                  </p>
+                </div>
+              )}
               {filteredProjects.map((project, projectIndex) => {
               // Calculate project start index for global frame numbering
               const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
@@ -890,8 +934,41 @@ export default function Home() {
 
         {/* Grid View - horizontal scroll with 2 rows, landscape takes 2x width */}
         {viewMode === 'grid' && (
-          <div ref={scrollContainerRef} className={`h-full overflow-x-auto overflow-y-hidden flex items-center transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none', paddingLeft: 'var(--grid-padding)', paddingRight: 'var(--grid-padding)' }}>
+          <div ref={scrollContainerRef} id="work-gallery" className={`h-full overflow-x-auto overflow-y-hidden flex items-center transition-opacity-smooth ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} style={{ scrollbarWidth: 'none', paddingLeft: 'var(--grid-padding)', paddingRight: 'var(--grid-padding)' }}>
             <div className="flex flex-col flex-wrap content-start" style={{ width: 'max-content', height: 'var(--carousel-height)', gap: 'var(--grid-gap)' }}>
+              {/* Research intro slide - persistent at start of research grid */}
+              {activeCategory === 'research' && (
+                <div
+                  className="relative flex-shrink-0 aspect-[4/5] flex flex-col justify-between bg-white dark:bg-[#1a1a1a]"
+                  style={{
+                    height: 'var(--grid-row-height)',
+                    padding: 'var(--info-padding)',
+                  }}
+                >
+                  {/* Title at top-left */}
+                  <h2
+                    className="font-bold uppercase tracking-tight leading-tight text-black dark:text-white"
+                    style={{
+                      fontFamily: 'Calibre, Arial, sans-serif',
+                      fontSize: 'var(--info-title-size)',
+                    }}
+                  >
+                    {RESEARCH_INTRO.title}
+                  </h2>
+
+                  {/* Content at bottom-left */}
+                  <p
+                    className="text-black dark:text-white"
+                    style={{
+                      fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                      fontSize: 'var(--info-content-size)',
+                      lineHeight: '1.4',
+                    }}
+                  >
+                    {RESEARCH_INTRO.content}
+                  </p>
+                </div>
+              )}
               {filteredProjects.map((project) => {
                 // Calculate project start index for global frame numbering
                 const projectStartIndex = orderedProjects.slice(0, orderedProjects.findIndex(p => p.id === project.id))
@@ -903,49 +980,69 @@ export default function Home() {
                   // Determine aspect ratio: landscape = 16:9, portrait = 4:5
                   const isLandscapeGridFrame = item.isLandscape === true;
 
+                  // Image dimensions for PhotoSwipe (based on aspect ratio)
+                  const pswpWidth = isLandscapeGridFrame ? 1920 : 1600;
+                  const pswpHeight = isLandscapeGridFrame ? 1080 : 2000;
+
                   return (
                     <div
                       key={`${project.id}-${mediaIndex}`}
-                      className={`relative cursor-pointer group overflow-hidden flex-shrink-0 ${isLandscapeGridFrame ? 'aspect-video' : 'aspect-[4/5]'}`}
+                      className={`relative group overflow-hidden flex-shrink-0 ${isLandscapeGridFrame ? 'aspect-video' : 'aspect-[4/5]'}`}
                       style={{
                         height: 'var(--grid-row-height)',
                       }}
-                      onClick={() => setExpandedMedia({ item, projectTitle: project.title, globalIndex })}
                     >
                       {item.type === 'video' ? (
-                        item.vimeoId && process.env.NODE_ENV === 'production' ? (
-                          <div className="w-full h-full overflow-hidden transition-transform-smooth group-hover:scale-105">
-                            <iframe
-                              src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                              className="border-0"
-                              allow="autoplay; fullscreen"
-                              style={{
-                                pointerEvents: 'none',
-                                width: item.isLandscape ? '100%' : '177.78%',
-                                height: item.isLandscape ? '100%' : '100%',
-                                marginLeft: item.isLandscape ? '0' : '-38.89%',
-                              }}
+                        // Videos use custom lightbox
+                        <div
+                          className="w-full h-full cursor-pointer"
+                          onClick={() => setExpandedMedia({ item, projectTitle: project.title, globalIndex })}
+                        >
+                          {item.vimeoId && process.env.NODE_ENV === 'production' ? (
+                            <div className="w-full h-full overflow-hidden transition-transform-smooth group-hover:scale-105">
+                              <iframe
+                                src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+                                className="border-0"
+                                allow="autoplay; fullscreen"
+                                style={{
+                                  pointerEvents: 'none',
+                                  width: item.isLandscape ? '100%' : '177.78%',
+                                  height: item.isLandscape ? '100%' : '100%',
+                                  marginLeft: item.isLandscape ? '0' : '-38.89%',
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <video
+                              src={item.src}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              className="w-full h-full object-cover transition-transform-smooth group-hover:scale-105"
                             />
-                          </div>
-                        ) : (
-                          <video
+                          )}
+                        </div>
+                      ) : (
+                        // Images use PhotoSwipe lightbox
+                        <a
+                          href={item.src}
+                          data-pswp-width={pswpWidth}
+                          data-pswp-height={pswpHeight}
+                          data-cropped="true"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block w-full h-full cursor-pointer"
+                        >
+                          <img
                             src={item.src}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
+                            alt=""
                             className="w-full h-full object-cover transition-transform-smooth group-hover:scale-105"
                           />
-                        )
-                      ) : (
-                        <img
-                          src={item.src}
-                          alt=""
-                          className="w-full h-full object-cover transition-transform-smooth group-hover:scale-105"
-                        />
+                        </a>
                       )}
                       {/* Project title on hover */}
-                      <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity-smooth">
+                      <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity-smooth pointer-events-none">
                         <span className="text-white text-sm" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>{project.title}</span>
                       </div>
                     </div>
