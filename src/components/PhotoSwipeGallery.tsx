@@ -34,7 +34,16 @@ export function PhotoSwipeGallery({ galleryId, images, className, renderItem }: 
       pinchToClose: false,
       closeOnVerticalDrag: false,
       clickToCloseNonZoomable: false,
+      // Click/tap to zoom behavior
+      imageClickAction: 'zoom',
       tapAction: 'zoom',
+      doubleTapAction: 'zoom',
+      // Pan when zoomed
+      allowPanToNext: true,
+      // Zoom levels
+      initialZoomLevel: 'fit',
+      secondaryZoomLevel: 2,
+      maxZoomLevel: 4,
       padding: { top: 80, bottom: 80, left: 20, right: 20 },
     });
 
@@ -85,7 +94,16 @@ export function usePhotoSwipe(galleryId: string, enabled: boolean = true) {
         pinchToClose: false,
         closeOnVerticalDrag: false,
         clickToCloseNonZoomable: false,
+        // Click/tap to zoom behavior
+        imageClickAction: 'zoom',
         tapAction: 'zoom',
+        doubleTapAction: 'zoom',
+        // Pan when zoomed
+        allowPanToNext: true,
+        // Zoom levels
+        initialZoomLevel: 'fit',
+        secondaryZoomLevel: 2,
+        maxZoomLevel: 4,
         padding: { top: 80, bottom: 80, left: 20, right: 20 },
       });
 
