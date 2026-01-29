@@ -366,8 +366,8 @@ export const MobileSite = () => {
         {activeView === 'contact' && (
           <div className="px-6 flex flex-col items-center justify-center min-h-[60vh] text-center">
             <p className="text-base text-black/80 dark:text-white/80 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-              Luxury tabletop director.<br/>
-              15 years traditional. Now hybrid.<br/>
+              AI-directed production.<br/>
+              Luxury stills and motion. Built on 15 years of tabletop craft.<br/>
               London.
             </p>
             <div className="space-y-3">
@@ -398,17 +398,16 @@ export const MobileSite = () => {
               </a>
             </div>
             <div className="mt-6">
-              <p className="text-sm text-black/60 dark:text-white/60">Representation</p>
+              <p className="text-sm text-black/60 dark:text-white/60">Traditional photography</p>
               <a
-                href="https://makingpictures.co.uk"
+                href="https://www.samhofman.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-lg hover:opacity-50 transition-opacity"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                Making Pictures
+                samhofman.com
               </a>
-              <p className="text-sm text-black/60 dark:text-white/60">Traditional production</p>
             </div>
           </div>
         )}

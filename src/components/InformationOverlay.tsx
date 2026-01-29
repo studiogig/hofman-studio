@@ -23,7 +23,7 @@ const INFO_SECTIONS = [
   },
   {
     title: 'Contact',
-    content: `Luxury tabletop director.\n15 years traditional. Now hybrid.\nLondon.\n\nhello@hofman.studio\n@Hofman/studio\nLinkedIn\n\nRepresentation: Making Pictures`,
+    content: `AI-directed production.\nLuxury stills and motion. Built on 15 years of tabletop craft.\nLondon.\n\nhello@hofman.studio\n@Hofman/studio\nLinkedIn\n\nTraditional photography: samhofman.com`,
     isContact: true
   }
 ];
@@ -110,8 +110,8 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                         {section.isContact ? (
                           <div className="space-y-4" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
                             <p className="text-base text-black/80">
-                              Luxury tabletop director.<br/>
-                              15 years traditional. Now hybrid.<br/>
+                              AI-directed production.<br/>
+                              Luxury stills and motion. Built on 15 years of tabletop craft.<br/>
                               London.
                             </p>
                             <div className="space-y-2 pt-4">
@@ -120,9 +120,8 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                               <a href="https://linkedin.com/in/samhofman" target="_blank" rel="noopener noreferrer" className="block text-base hover:opacity-50 transition-opacity duration-300">LinkedIn</a>
                             </div>
                             <div className="pt-4">
-                              <p className="text-sm text-black/60">Representation</p>
-                              <a href="https://makingpictures.co.uk" target="_blank" rel="noopener noreferrer" className="text-base hover:opacity-50 transition-opacity duration-300">Making Pictures</a>
-                              <p className="text-sm text-black/60">Traditional production</p>
+                              <p className="text-sm text-black/60">Traditional photography</p>
+                              <a href="https://www.samhofman.com" target="_blank" rel="noopener noreferrer" className="text-base hover:opacity-50 transition-opacity duration-300">samhofman.com</a>
                             </div>
                           </div>
                         ) : section.isEmail ? (
@@ -171,8 +170,8 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                           {section.isContact ? (
                             <div className="space-y-3" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
                               <p className="text-sm text-black/80">
-                                Luxury tabletop director.<br/>
-                                15 years traditional. Now hybrid.<br/>
+                                AI-directed production.<br/>
+                                Luxury stills and motion. Built on 15 years of tabletop craft.<br/>
                                 London.
                               </p>
                               <div className="space-y-1 pt-3">
@@ -181,8 +180,8 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                                 <a href="https://linkedin.com/in/samhofman" target="_blank" rel="noopener noreferrer" className="block text-sm hover:opacity-50 transition-opacity duration-300">LinkedIn</a>
                               </div>
                               <div className="pt-3">
-                                <p className="text-xs text-black/60">Representation</p>
-                                <a href="https://makingpictures.co.uk" target="_blank" rel="noopener noreferrer" className="text-sm hover:opacity-50 transition-opacity duration-300">Making Pictures</a>
+                                <p className="text-xs text-black/60">Traditional photography</p>
+                                <a href="https://www.samhofman.com" target="_blank" rel="noopener noreferrer" className="text-sm hover:opacity-50 transition-opacity duration-300">samhofman.com</a>
                               </div>
                             </div>
                           ) : section.isEmail ? (

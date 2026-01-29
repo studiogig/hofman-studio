@@ -39,11 +39,11 @@ const INFO_CONTENT: InfoItem[] = [
 // Contact content for single frame
 const CONTACT_CONTENT = {
   title: 'Contact',
-  bio: ['Luxury tabletop director.', '15 years traditional. Now hybrid.', 'London.'],
+  bio: ['AI-directed production.', 'Luxury stills and motion. Built on 15 years of tabletop craft.', 'London.'],
   email: 'hello@hofman.studio',
   instagram: { handle: '@Hofman/studio', url: 'https://instagram.com/hofman.studio' },
   linkedin: { display: 'LinkedIn', url: 'https://linkedin.com/in/samhofman' },
-  representation: { name: 'Making Pictures', role: 'Traditional production', url: 'https://makingpictures.co.uk' }
+  traditional: { label: 'Traditional photography', display: 'samhofman.com', url: 'https://www.samhofman.com' }
 };
 
 // Work projects with grouped media
@@ -936,17 +936,16 @@ export default function Home() {
                                 </a>
                               </div>
                               <div className="mt-6">
-                                <p className="text-sm text-black/60 dark:text-white/60">Representation</p>
+                                <p className="text-sm text-black/60 dark:text-white/60">{CONTACT_CONTENT.traditional.label}</p>
                                 <a
-                                  href={CONTACT_CONTENT.representation.url}
+                                  href={CONTACT_CONTENT.traditional.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
                                   style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
                                 >
-                                  {CONTACT_CONTENT.representation.name}
+                                  {CONTACT_CONTENT.traditional.display}
                                 </a>
-                                <p className="text-sm text-black/60 dark:text-white/60">{CONTACT_CONTENT.representation.role}</p>
                               </div>
                             </div>
                           )}
