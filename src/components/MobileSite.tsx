@@ -124,7 +124,7 @@ const RESEARCH_PROJECTS: Project[] = [
 const INFO_SECTIONS = [
   {
     title: 'What we make',
-    content: 'AI product photography and motion for luxury brands.\n\nCampaign imagery. Commercial photography. Social content. Motion for digital.\n\nA London-based AI photography studio for beauty, spirits, fragrance, and fine goods.'
+    content: 'AI product photography and motion for luxury brands.\n\nCampaign imagery. Commercial photography. Editorial. Social content. Motion for digital.\n\nA London-based AI photography studio for beauty, spirits, fragrance, and fine goods.'
   },
   {
     title: 'What we bring',
