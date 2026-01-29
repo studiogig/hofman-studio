@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 type Category = 'all' | 'research';
-type MobileView = 'gallery' | 'research' | 'practice' | 'contact';
+type MobileView = 'gallery' | 'research' | 'info' | 'contact';
 
 type MediaItem = {
   src: string;
@@ -120,8 +120,8 @@ const RESEARCH_PROJECTS: Project[] = [
   },
 ];
 
-// Practice content - 4 simple statements (matching desktop)
-const PRACTICE_SECTIONS = [
+// Info content (matching desktop)
+const INFO_SECTIONS = [
   {
     title: '15 years in still life and tabletop.',
     content: 'Light, materials, motion, control.'
@@ -137,6 +137,10 @@ const PRACTICE_SECTIONS = [
   {
     title: 'Craft remains.',
     content: 'The standard doesn\'t change.'
+  },
+  {
+    title: 'What we make',
+    content: 'AI-directed stills and motion for luxury brands.\n\nCampaign imagery\nProduct photography\nSocial content\nMotion for digital'
   }
 ];
 
@@ -248,10 +252,10 @@ export const MobileSite = () => {
             </button>
             <div className="w-8 h-px bg-black/20 dark:bg-white/20" />
             <button
-              onClick={() => { setActiveView('practice'); setMenuOpen(false); }}
-              className={`text-2xl font-calibre text-left transition-opacity ${activeView === 'practice' ? 'opacity-100' : 'opacity-50'}`}
+              onClick={() => { setActiveView('info'); setMenuOpen(false); }}
+              className={`text-2xl font-calibre text-left transition-opacity ${activeView === 'info' ? 'opacity-100' : 'opacity-50'}`}
             >
-              Practice
+              Info
             </button>
             <a
               href="https://medium.com/@samhofman"
@@ -340,10 +344,10 @@ export const MobileSite = () => {
           </div>
         )}
 
-        {/* Practice View */}
-        {activeView === 'practice' && (
+        {/* Info View */}
+        {activeView === 'info' && (
           <div className="px-6 py-8">
-            {PRACTICE_SECTIONS.map((section, index) => (
+            {INFO_SECTIONS.map((section, index) => (
               <section key={index} className="mb-16 last:mb-0">
                 <h2
                   className="text-lg font-bold uppercase tracking-tight mb-4 font-calibre"

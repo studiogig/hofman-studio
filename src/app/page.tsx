@@ -5,7 +5,6 @@ import { IntroSplash } from '@/components/IntroSplash';
 import { NavFooter } from '@/components/NavFooter';
 import { MobileSite } from '@/components/MobileSite';
 import { InfoOverlay } from '@/components/InfoSection';
-import { InformationOverlay } from '@/components/InformationOverlay';
 import { useIsMobile } from '@/lib/useIsMobile';
 import { usePhotoSwipe } from '@/components/PhotoSwipeGallery';
 
@@ -29,12 +28,13 @@ type Project = {
 
 type InfoItem = { title: string; content: string; isEmail?: boolean };
 
-// Methodology content to display in frames (4 simple statements)
+// Methodology content to display in frames
 const INFO_CONTENT: InfoItem[] = [
   { title: '15 years in still life and tabletop.', content: 'Light, materials, motion, control.' },
   { title: 'Now with new tools.', content: 'Same eye. Different process.' },
   { title: 'Direction first. Tools second.', content: 'Nothing here is one-click.' },
   { title: 'Craft remains.', content: 'The standard doesn\'t change.' },
+  { title: 'What we make', content: 'AI-directed stills and motion for luxury brands.\n\nCampaign imagery\nProduct photography\nSocial content\nMotion for digital' },
 ];
 
 // Contact content for single frame
@@ -198,7 +198,6 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('carousel');
   const [showInfo, setShowInfo] = useState(false);
-  const [showPracticeOverlay, setShowPracticeOverlay] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [visibleFrameIndices, setVisibleFrameIndices] = useState<number[]>([]);
   const [contactFrameIndex, setContactFrameIndex] = useState<number | null>(null);
@@ -301,13 +300,119 @@ export default function Home() {
     return framesToUse;
   };
 
-  // Function to toggle the Practice/Info overlay
+  // Function to detect visible frames and toggle info mode
   const handleInfoToggle = () => {
-    // Close contact if open (mutually exclusive)
-    if (showContact) {
-      setShowContact(false);
+    if (!showInfo) {
+      // Close contact if open (mutually exclusive)
+      if (showContact) {
+        setShowContact(false);
+      }
+      // If in grid mode, crossfade to carousel and mark to return
+      if (viewMode === 'grid') {
+        setReturnToGrid(true);
+        setIsTransitioning(true);
+        // Use random frames for info display when coming from grid
+        setVisibleFrameIndices(getFrameIndicesForInfoCount(INFO_CONTENT.length));
+        setTimeout(() => {
+          setViewMode('carousel');
+          setShowInfo(true);
+          // Reset scroll to 0 so content starts at left edge (no extra padding)
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = 0;
+          }
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
+      } else {
+        // In carousel mode, select the most CENTRAL visible frames for info overlay
+        // Portrait frames show 1 section, landscape frames show 2 sections
+        const container = scrollContainerRef.current;
+        if (container) {
+          const containerRect = container.getBoundingClientRect();
+          const containerCenter = containerRect.left + containerRect.width / 2;
+
+          // Find all visible frames with their distance from center
+          const visibleFrames: { index: number; isLandscape: boolean; distanceFromCenter: number }[] = [];
+
+          frameRefs.current.forEach((el, index) => {
+            const rect = el.getBoundingClientRect();
+            const mediaItem = allMediaItems.find(m => m.globalIndex === index);
+            // Check if frame is at least partially visible
+            if (rect.right > containerRect.left && rect.left < containerRect.right) {
+              const frameCenter = rect.left + rect.width / 2;
+              visibleFrames.push({
+                index,
+                isLandscape: mediaItem?.isLandscape || false,
+                distanceFromCenter: Math.abs(frameCenter - containerCenter)
+              });
+            }
+          });
+
+          // Sort by distance from center (most central first)
+          visibleFrames.sort((a, b) => a.distanceFromCenter - b.distanceFromCenter);
+
+          // Select frames starting from center until we have enough sections
+          const framesToUse: number[] = [];
+          let sectionsUsed = 0;
+
+          for (const frame of visibleFrames) {
+            if (sectionsUsed >= INFO_CONTENT.length) break;
+            framesToUse.push(frame.index);
+            sectionsUsed += frame.isLandscape ? 2 : 1;
+          }
+
+          // If we don't have enough visible frames, add adjacent frames
+          if (sectionsUsed < INFO_CONTENT.length) {
+            const allFrameIndices = allMediaItems.map(m => ({ index: m.globalIndex, isLandscape: m.isLandscape }));
+            const usedIndices = new Set(framesToUse);
+
+            // Get the range of used frames
+            const minUsed = Math.min(...framesToUse);
+            const maxUsed = Math.max(...framesToUse);
+
+            // Alternate between adding frames after and before
+            let addAfter = true;
+            while (sectionsUsed < INFO_CONTENT.length) {
+              const nextAfter = allFrameIndices.find(f => f.index > maxUsed && !usedIndices.has(f.index));
+              const nextBefore = [...allFrameIndices].reverse().find(f => f.index < minUsed && !usedIndices.has(f.index));
+
+              const frameToAdd = addAfter ? (nextAfter || nextBefore) : (nextBefore || nextAfter);
+              if (!frameToAdd) break;
+
+              framesToUse.push(frameToAdd.index);
+              usedIndices.add(frameToAdd.index);
+              sectionsUsed += frameToAdd.isLandscape ? 2 : 1;
+              addAfter = !addAfter;
+            }
+          }
+
+          // Sort final list by index for consistent display order
+          framesToUse.sort((a, b) => a - b);
+          setVisibleFrameIndices(framesToUse);
+        }
+        setShowInfo(true);
+      }
+    } else {
+      // Closing info - return to grid if we came from there
+      if (returnToGrid) {
+        setIsTransitioning(true);
+        setShowInfo(false);
+        setTimeout(() => {
+          setReturnToGrid(false);
+          setViewMode('grid');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+        }, 600);
+      } else {
+        setShowInfo(false);
+      }
     }
-    setShowPracticeOverlay(!showPracticeOverlay);
   };
 
   // Function to detect most central visible frame and toggle contact mode
@@ -1184,14 +1289,11 @@ export default function Home() {
         })()}
       </div>
 
-      {/* Practice/Info Overlay */}
-      <InformationOverlay isOpen={showPracticeOverlay} onClose={() => setShowPracticeOverlay(false)} />
-
       {/* Navigation Footer */}
       <NavFooter
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
-        showInfoOverlay={showPracticeOverlay}
+        showInfoOverlay={showInfo}
         onInfoToggle={handleInfoToggle}
         showContactOverlay={showContact}
         onContactToggle={handleContactToggle}

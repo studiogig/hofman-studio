@@ -85,7 +85,7 @@ export const NavFooter = ({
           onClick={onInfoToggle}
           className="relative text-lg font-normal hover:opacity-50 transition-opacity-smooth font-calibre"
         >
-          Practice
+          Info
           <span
             className={`absolute bottom-0 left-0 right-0 h-[1px] bg-black dark:bg-white transition-all-smooth ${
               showInfoOverlay ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
