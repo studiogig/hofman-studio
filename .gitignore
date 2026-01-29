@@ -26,6 +26,7 @@
 
 # large video files (hosted separately)
 /public/videos/
+!/public/videos/splash/
 
 # debug
 npm-debug.log*
