@@ -78,6 +78,7 @@ const WORK_PROJECTS: Project[] = [
     media: [
       { src: "/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render" },
       { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Absurtist_3.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
     ],
   },
   {
