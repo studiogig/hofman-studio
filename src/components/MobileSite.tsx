@@ -364,23 +364,52 @@ export const MobileSite = () => {
 
         {/* Contact View */}
         {activeView === 'contact' && (
-          <div className="px-6 flex flex-col items-center justify-center min-h-[60vh]">
-            <a
-              href="mailto:hello@hofman.studio"
-              className="text-xl mb-6 hover:opacity-50 transition-opacity"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              hello@hofman.studio
-            </a>
-            <a
-              href="https://instagram.com/hofman.studio"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xl hover:opacity-50 transition-opacity"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              @Hofman/studio
-            </a>
+          <div className="px-6 flex flex-col items-center justify-center min-h-[60vh] text-center">
+            <p className="text-base text-black/80 dark:text-white/80 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+              Luxury tabletop director.<br/>
+              15 years traditional. Now hybrid.<br/>
+              London.
+            </p>
+            <div className="space-y-3">
+              <a
+                href="mailto:hello@hofman.studio"
+                className="block text-lg hover:opacity-50 transition-opacity"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                hello@hofman.studio
+              </a>
+              <a
+                href="https://instagram.com/hofman.studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-lg hover:opacity-50 transition-opacity"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                @Hofman/studio
+              </a>
+              <a
+                href="https://linkedin.com/in/samhofman"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-lg hover:opacity-50 transition-opacity"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                LinkedIn
+              </a>
+            </div>
+            <div className="mt-6">
+              <p className="text-sm text-black/60 dark:text-white/60">Representation</p>
+              <a
+                href="https://makingpictures.co.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-lg hover:opacity-50 transition-opacity"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Making Pictures
+              </a>
+              <p className="text-sm text-black/60 dark:text-white/60">Traditional production</p>
+            </div>
           </div>
         )}
       </main>

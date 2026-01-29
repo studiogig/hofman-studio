@@ -39,8 +39,11 @@ const INFO_CONTENT: InfoItem[] = [
 // Contact content for single frame
 const CONTACT_CONTENT = {
   title: 'Contact',
+  bio: ['Luxury tabletop director.', '15 years traditional. Now hybrid.', 'London.'],
   email: 'hello@hofman.studio',
-  instagram: '@Hofman/studio'
+  instagram: { handle: '@Hofman/studio', url: 'https://instagram.com/hofman.studio' },
+  linkedin: { display: 'LinkedIn', url: 'https://linkedin.com/in/samhofman' },
+  representation: { name: 'Making Pictures', role: 'Traditional production', url: 'https://makingpictures.co.uk' }
 };
 
 // Work projects with grouped media
@@ -901,23 +904,50 @@ export default function Home() {
 
                           {/* Contact overlay on this frame */}
                           {showContact && globalIndex === contactFrameIndex && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-white/50 dark:bg-[#1a1a1a]/50">
-                              <a
-                                href={`mailto:${CONTACT_CONTENT.email}`}
-                                className="text-2xl md:text-3xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white mb-4"
-                                style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                              >
-                                {CONTACT_CONTENT.email}
-                              </a>
-                              <a
-                                href="https://instagram.com/hofman.studio"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-2xl md:text-3xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
-                                style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                              >
-                                {CONTACT_CONTENT.instagram}
-                              </a>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-white/50 dark:bg-[#1a1a1a]/50 p-8">
+                              <p className="text-lg md:text-xl text-black/80 dark:text-white/80 mb-6" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                                {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
+                              </p>
+                              <div className="space-y-2">
+                                <a
+                                  href={`mailto:${CONTACT_CONTENT.email}`}
+                                  className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
+                                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                                >
+                                  {CONTACT_CONTENT.email}
+                                </a>
+                                <a
+                                  href={CONTACT_CONTENT.instagram.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
+                                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                                >
+                                  {CONTACT_CONTENT.instagram.handle}
+                                </a>
+                                <a
+                                  href={CONTACT_CONTENT.linkedin.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
+                                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                                >
+                                  {CONTACT_CONTENT.linkedin.display}
+                                </a>
+                              </div>
+                              <div className="mt-6">
+                                <p className="text-sm text-black/60 dark:text-white/60">Representation</p>
+                                <a
+                                  href={CONTACT_CONTENT.representation.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
+                                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                                >
+                                  {CONTACT_CONTENT.representation.name}
+                                </a>
+                                <p className="text-sm text-black/60 dark:text-white/60">{CONTACT_CONTENT.representation.role}</p>
+                              </div>
                             </div>
                           )}
 
