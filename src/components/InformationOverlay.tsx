@@ -18,8 +18,12 @@ const INFO_SECTIONS = [
     content: `Every project begins with material study. We understand how light interacts with glass, how liquids move, how surfaces reflect. This physical understanding informs how we direct AI tools to achieve craft-quality results at production speed.`
   },
   {
-    title: 'Services',
-    content: `Product photography direction\nMotion and film\nConcept development\nAI workflow consulting`
+    title: 'What we make',
+    subtitle: 'AI-directed stills and motion for luxury brands.',
+    deliverables: ['Campaign imagery', 'Product photography', 'Social content', 'Motion for digital'],
+    positioning: ['Directed, not automated.', 'Every frame reviewed by someone who knows how light hits glass.'],
+    focus: ['Spirits', 'Beauty', 'Fragrance', 'Luxury CPG'],
+    isServices: true
   },
   {
     title: 'Contact',
@@ -107,7 +111,24 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                       {/* Content overlay */}
                       <div className="relative z-10 h-full flex flex-col items-center justify-center p-12 text-center">
                         <h2 className="font-calibre text-2xl mb-6">{section.title}</h2>
-                        {section.isContact ? (
+                        {section.isServices ? (
+                          <div className="space-y-6" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                            <p className="text-base text-black/80">{section.subtitle}</p>
+                            <div className="space-y-1">
+                              {section.deliverables?.map((item, i) => (
+                                <p key={i} className="text-base text-black/80">{item}</p>
+                              ))}
+                            </div>
+                            <div className="pt-4 space-y-1">
+                              {section.positioning?.map((line, i) => (
+                                <p key={i} className="text-sm text-black/60 italic">{line}</p>
+                              ))}
+                            </div>
+                            <div className="pt-2">
+                              <p className="text-xs text-black/40 uppercase tracking-wider">{section.focus?.join(' · ')}</p>
+                            </div>
+                          </div>
+                        ) : section.isContact ? (
                           <div className="space-y-4" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
                             <p className="text-base text-black/80">
                               AI-directed production.<br/>
@@ -124,14 +145,6 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                               <a href="https://www.samhofman.com" target="_blank" rel="noopener noreferrer" className="text-base hover:opacity-50 transition-opacity duration-300">samhofman.com</a>
                             </div>
                           </div>
-                        ) : section.isEmail ? (
-                          <a
-                            href={`mailto:${section.content}`}
-                            className="text-lg hover:opacity-50 transition-opacity duration-300"
-                            style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                          >
-                            {section.content}
-                          </a>
                         ) : (
                           <p
                             className="text-base leading-relaxed text-black/80 max-w-xl whitespace-pre-line"
@@ -167,7 +180,24 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                         />
                         <div className="absolute inset-0 bg-white/60" />
                         <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 text-center">
-                          {section.isContact ? (
+                          {section.isServices ? (
+                            <div className="space-y-4" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                              <p className="text-sm text-black/80">{section.subtitle}</p>
+                              <div className="space-y-1">
+                                {section.deliverables?.map((item, i) => (
+                                  <p key={i} className="text-sm text-black/80">{item}</p>
+                                ))}
+                              </div>
+                              <div className="pt-3 space-y-1">
+                                {section.positioning?.map((line, i) => (
+                                  <p key={i} className="text-xs text-black/60 italic">{line}</p>
+                                ))}
+                              </div>
+                              <div className="pt-2">
+                                <p className="text-[10px] text-black/40 uppercase tracking-wider">{section.focus?.join(' · ')}</p>
+                              </div>
+                            </div>
+                          ) : section.isContact ? (
                             <div className="space-y-3" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
                               <p className="text-sm text-black/80">
                                 AI-directed production.<br/>
@@ -184,14 +214,6 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                                 <a href="https://www.samhofman.com" target="_blank" rel="noopener noreferrer" className="text-sm hover:opacity-50 transition-opacity duration-300">samhofman.com</a>
                               </div>
                             </div>
-                          ) : section.isEmail ? (
-                            <a
-                              href={`mailto:${section.content}`}
-                              className="text-base hover:opacity-50 transition-opacity duration-300"
-                              style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                            >
-                              {section.content}
-                            </a>
                           ) : (
                             <p
                               className="text-sm leading-relaxed text-black/80 whitespace-pre-line"
