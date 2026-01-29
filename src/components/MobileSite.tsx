@@ -120,15 +120,19 @@ const RESEARCH_PROJECTS: Project[] = [
   },
 ];
 
-// Info content (matching desktop - 2 slides)
+// Info content (matching desktop - 3 slides)
 const INFO_SECTIONS = [
   {
     title: 'What we make',
-    content: 'AI-directed stills and motion for luxury brands.\n\nCampaign imagery\nProduct photography\nSocial content\nMotion for digital'
+    content: 'AI product photography and motion for luxury brands.\n\nCampaign imagery. Commercial photography. Social content. Motion for digital.\n\nA London-based AI photography studio for beauty, spirits, fragrance, and fine goods.'
   },
   {
-    title: '15 years of tabletop craft.',
-    content: 'Same eye, new tools. Direction first—nothing here is one-click.'
+    title: 'What we bring',
+    content: 'Fifteen years of lighting glass, liquid, and metal.\n\nWe know how light bends through crystal. How it pools across liquid. How it catches on gold. That knowledge shapes every frame.'
+  },
+  {
+    title: 'How we work',
+    content: 'Brief to delivery in days, not weeks.\n\nYou\'re working with a director, not a software interface. Concepts, revisions, final assets. Same creative process, collapsed timeline.'
   }
 ];
 

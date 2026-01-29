@@ -19,45 +19,34 @@ type InfoSectionProps = {
 };
 
 // Single info section - identical layout for portrait OR each half of landscape
-// Layout: title at top-left, content at bottom-left
+// Layout: large serif text centered in frame
 export function InfoSection({ item }: InfoSectionProps) {
   return (
     <div
-      className="flex flex-col justify-between w-full h-full"
+      className="flex flex-col justify-center items-center w-full h-full"
       style={{ padding: 'var(--info-padding)' }}
     >
-      {/* Title at top-left */}
-      <h2
-        className="font-bold uppercase tracking-tight leading-tight text-black dark:text-white"
-        style={{
-          fontFamily: 'Calibre, Arial, sans-serif',
-          fontSize: 'var(--info-title-size)',
-        }}
-      >
-        {item.title}
-      </h2>
-
-      {/* Content at bottom-left */}
-      <div>
+      {/* Content - large serif text, centered */}
+      <div className="max-w-xl">
         {item.isEmail ? (
           <a
             href={`mailto:${item.content}`}
-            className="hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
+            className="hover:opacity-50 transition-opacity duration-300 text-black dark:text-white block text-center"
             style={{
               fontFamily: 'Georgia, "Times New Roman", Times, serif',
-              fontStyle: 'italic',
-              fontSize: 'var(--info-content-size)',
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+              lineHeight: '1.5',
             }}
           >
             {item.content}
           </a>
         ) : (
           <p
-            className="text-black dark:text-white"
+            className="text-black dark:text-white text-center"
             style={{
               fontFamily: 'Georgia, "Times New Roman", Times, serif',
-              fontSize: 'var(--info-content-size)',
-              lineHeight: '1.4',
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+              lineHeight: '1.5',
             }}
           >
             {item.content.split('\n\n').map((para: string, i: number) => (
