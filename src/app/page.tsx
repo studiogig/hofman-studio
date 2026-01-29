@@ -28,13 +28,10 @@ type Project = {
 
 type InfoItem = { title: string; content: string; isEmail?: boolean };
 
-// Methodology content to display in frames
+// Info content to display in frames (2 slides)
 const INFO_CONTENT: InfoItem[] = [
-  { title: '15 years in still life and tabletop.', content: 'Light, materials, motion, control.' },
-  { title: 'Now with new tools.', content: 'Same eye. Different process.' },
-  { title: 'Direction first. Tools second.', content: 'Nothing here is one-click.' },
-  { title: 'Craft remains.', content: 'The standard doesn\'t change.' },
   { title: 'What we make', content: 'AI-directed stills and motion for luxury brands.\n\nCampaign imagery\nProduct photography\nSocial content\nMotion for digital' },
+  { title: '15 years of tabletop craft.', content: 'Same eye, new tools. Direction first—nothing here is one-click.' },
 ];
 
 // Contact content for single frame
