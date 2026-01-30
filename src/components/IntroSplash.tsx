@@ -9,9 +9,9 @@ type Asset = { type: 'image' | 'video'; src: string };
 
 const ALL_ASSETS: Asset[] = [
     // Stills
-    { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg' },
-    { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg' },
-    { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Gucci_Absurtist_3.jpg' },
+    { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Gucci_Master s1.jpg' },
+    { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Gucci_Master s2_2.jpg' },
+    { type: 'image', src: '/images/Gucci Chrome absurdist/SH_Gucci_Master s3.jpg' },
     { type: 'image', src: '/images/Watch report/freepik__enhance__46843.jpg' },
     { type: 'image', src: '/images/Watch report/freepik__enhance__73551.jpg' },
     { type: 'image', src: '/images/Merit/SH_Merti_s1.jpg' },

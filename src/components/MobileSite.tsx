@@ -49,8 +49,9 @@ const WORK_PROJECTS: Project[] = [
     id: 'gucci',
     title: 'Gucci Beauty',
     media: [
-      { src: "/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg", type: "image", isLandscape: false },
-      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2.jpg", type: "image", isLandscape: false },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s1.jpg", type: "image", isLandscape: false },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2_2.jpg", type: "image", isLandscape: false },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s3.jpg", type: "image", isLandscape: false },
     ],
   },
   {
@@ -140,7 +141,7 @@ const INFO_SECTIONS = [
 const SPLASH_IMAGES = [
   "/images/Watch report/freepik__enhance__46843.jpg",
   "/images/Merit/SH_Merti_s1.jpg",
-  "/images/Gucci Chrome absurdist/SH_Chrome_Absurdist_GucciSH_Nano_Packaging_00132_-standard v2-4x.jpg",
+  "/images/Gucci Chrome absurdist/SH_Gucci_Master s1.jpg",
   "/images/Watch report/freepik__enhance__73551.jpg",
   "/images/Merit/SH_Merti_S2.jpg",
 ];
