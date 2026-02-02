@@ -340,22 +340,50 @@ export const MobileSite = () => {
         {/* Info View */}
         {activeView === 'info' && (
           <div className="px-6 py-8">
-            {INFO_SECTIONS.map((section, index) => (
-              <section key={index} className="mb-16 last:mb-0">
-                <h2
-                  className="text-lg font-bold uppercase tracking-tight mb-4 font-calibre"
-                  style={{ lineHeight: 1.2 }}
-                >
-                  {section.title}
-                </h2>
-                <p
-                  className="text-base opacity-80"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  {section.content}
-                </p>
-              </section>
-            ))}
+            {INFO_SECTIONS.map((section, index) => {
+              const paragraphs = section.content.split('\n\n');
+              const hook = paragraphs[0];
+              const body = paragraphs.slice(1);
+
+              return (
+                <section key={index} className="mb-16 last:mb-0 text-center">
+                  {/* Hook - Calibre */}
+                  <p
+                    className="text-black dark:text-white mb-6"
+                    style={{
+                      fontFamily: 'Calibre, Arial, sans-serif',
+                      fontSize: '1.25rem',
+                      lineHeight: 1.3,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {hook}
+                  </p>
+
+                  {/* Divider line */}
+                  <div
+                    className="mx-auto bg-black/20 dark:bg-white/20 mb-6"
+                    style={{ width: '2rem', height: '1px' }}
+                  />
+
+                  {/* Body - Serif */}
+                  {body.map((para, i) => (
+                    <p
+                      key={i}
+                      className="text-black/80 dark:text-white/80"
+                      style={{
+                        fontFamily: 'Georgia, serif',
+                        fontSize: '1rem',
+                        lineHeight: 1.6,
+                        marginBottom: i < body.length - 1 ? '1rem' : 0,
+                      }}
+                    >
+                      {para}
+                    </p>
+                  ))}
+                </section>
+              );
+            })}
           </div>
         )}
 

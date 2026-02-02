@@ -19,19 +19,23 @@ type InfoSectionProps = {
 };
 
 // Single info section - identical layout for portrait OR each half of landscape
-// Layout: large serif text centered in frame
+// Layout: mixed fonts - Calibre for opening line, serif for body
 export function InfoSection({ item }: InfoSectionProps) {
+  // Split content: first paragraph is the hook (Calibre), rest is body (serif)
+  const paragraphs = item.content.split('\n\n');
+  const hook = paragraphs[0];
+  const body = paragraphs.slice(1);
+
   return (
     <div
       className="flex flex-col justify-center items-center w-full h-full"
       style={{ padding: 'var(--info-padding)' }}
     >
-      {/* Content - large serif text, centered */}
-      <div className="max-w-xl">
+      <div className="max-w-xl text-center">
         {item.isEmail ? (
           <a
             href={`mailto:${item.content}`}
-            className="hover:opacity-50 transition-opacity duration-300 text-black dark:text-white block text-center"
+            className="hover:opacity-50 transition-opacity duration-300 text-black dark:text-white block"
             style={{
               fontFamily: 'Georgia, "Times New Roman", Times, serif',
               fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
@@ -41,21 +45,47 @@ export function InfoSection({ item }: InfoSectionProps) {
             {item.content}
           </a>
         ) : (
-          <p
-            className="text-black dark:text-white text-center"
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", Times, serif',
-              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
-              lineHeight: '1.5',
-            }}
-          >
-            {item.content.split('\n\n').map((para: string, i: number) => (
-              <span key={i}>
-                {i > 0 && <><br /><br /></>}
+          <>
+            {/* Hook - Calibre, larger, bold presence */}
+            <p
+              className="text-black dark:text-white"
+              style={{
+                fontFamily: 'Calibre, Arial, sans-serif',
+                fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+                lineHeight: '1.3',
+                fontWeight: 500,
+                marginBottom: '2rem',
+              }}
+            >
+              {hook}
+            </p>
+
+            {/* Divider line */}
+            <div
+              className="mx-auto bg-black/20 dark:bg-white/20"
+              style={{
+                width: '3rem',
+                height: '1px',
+                marginBottom: '2rem',
+              }}
+            />
+
+            {/* Body - Serif, slightly smaller, more readable */}
+            {body.map((para: string, i: number) => (
+              <p
+                key={i}
+                className="text-black/80 dark:text-white/80"
+                style={{
+                  fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                  fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+                  lineHeight: '1.6',
+                  marginBottom: i < body.length - 1 ? '1.5rem' : 0,
+                }}
+              >
                 {para}
-              </span>
+              </p>
             ))}
-          </p>
+          </>
         )}
       </div>
     </div>
