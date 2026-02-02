@@ -913,10 +913,16 @@ export default function Home() {
                           {/* Contact overlay on this frame */}
                           {showContact && globalIndex === contactFrameIndex && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-white/50 dark:bg-[#1a1a1a]/50 p-8">
-                              <p className="text-lg md:text-xl text-black/80 dark:text-white/80 mb-6" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                              {/* Bio - Calibre */}
+                              <p className="text-lg md:text-xl text-black dark:text-white mb-6" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
                                 {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
                               </p>
-                              <div className="space-y-2">
+
+                              {/* Divider */}
+                              <div className="w-12 h-px bg-black/20 dark:bg-white/20 mb-6" />
+
+                              {/* Contact links - Serif */}
+                              <div className="space-y-3">
                                 <a
                                   href={`mailto:${CONTACT_CONTENT.email}`}
                                   className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
@@ -943,13 +949,15 @@ export default function Home() {
                                   {CONTACT_CONTENT.linkedin.display}
                                 </a>
                               </div>
-                              <div className="mt-6">
-                                <p className="text-sm text-black/60 dark:text-white/60">{CONTACT_CONTENT.traditional.label}</p>
+
+                              {/* Traditional photography link */}
+                              <div className="mt-8">
+                                <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>{CONTACT_CONTENT.traditional.label}</p>
                                 <a
                                   href={CONTACT_CONTENT.traditional.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
+                                  className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black/80 dark:text-white/80"
                                   style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
                                 >
                                   {CONTACT_CONTENT.traditional.display}

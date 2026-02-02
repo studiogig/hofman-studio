@@ -390,15 +390,24 @@ export const MobileSite = () => {
         {/* Contact View */}
         {activeView === 'contact' && (
           <div className="px-6 flex flex-col items-center justify-center min-h-[60vh] text-center">
-            <p className="text-base text-black/80 dark:text-white/80 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+            {/* Bio - Calibre */}
+            <p
+              className="text-base text-black dark:text-white mb-6"
+              style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}
+            >
               AI-directed production.<br/>
               Luxury stills and motion. Built on 15 years of tabletop craft.<br/>
               London.
             </p>
+
+            {/* Divider */}
+            <div className="w-8 h-px bg-black/20 dark:bg-white/20 mb-6" />
+
+            {/* Contact links - Serif */}
             <div className="space-y-3">
               <a
                 href="mailto:sam@hofman.studio"
-                className="block text-lg hover:opacity-50 transition-opacity"
+                className="block text-lg hover:opacity-50 transition-opacity text-black dark:text-white"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 sam@hofman.studio
@@ -407,7 +416,7 @@ export const MobileSite = () => {
                 href="https://www.instagram.com/hofman.studio"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-lg hover:opacity-50 transition-opacity"
+                className="block text-lg hover:opacity-50 transition-opacity text-black dark:text-white"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 @hofman.studio
@@ -416,19 +425,21 @@ export const MobileSite = () => {
                 href="https://linkedin.com/in/samhofman"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-lg hover:opacity-50 transition-opacity"
+                className="block text-lg hover:opacity-50 transition-opacity text-black dark:text-white"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 LinkedIn
               </a>
             </div>
-            <div className="mt-6">
-              <p className="text-sm text-black/60 dark:text-white/60">Traditional photography</p>
+
+            {/* Traditional photography */}
+            <div className="mt-8">
+              <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography</p>
               <a
                 href="https://www.samhofman.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-lg hover:opacity-50 transition-opacity"
+                className="text-lg hover:opacity-50 transition-opacity text-black/80 dark:text-white/80"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 samhofman.com
