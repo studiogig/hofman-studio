@@ -51,7 +51,7 @@ const CONTACT_CONTENT = {
   email: 'sam@hofman.studio',
   instagram: { handle: '@hofman.studio', url: 'https://www.instagram.com/hofman.studio' },
   linkedin: { display: 'LinkedIn', url: 'https://linkedin.com/in/samhofman' },
-  traditional: { label: 'Traditional photography', display: 'samhofman.com', url: 'https://www.samhofman.com' }
+  traditional: { label: 'Traditional photography and film', display: 'samhofman.com', url: 'https://www.samhofman.com' }
 };
 
 // Work projects with grouped media
@@ -914,17 +914,17 @@ export default function Home() {
                           {showContact && globalIndex === contactFrameIndex && (
                             <div className="absolute inset-0 flex flex-col items-center justify-between text-center bg-white/50 dark:bg-[#1a1a1a]/50" style={{ padding: 'var(--info-padding)' }}>
                               {/* Bio - Calibre - top section */}
-                              <div className="flex-1 flex items-end pb-8">
+                              <div className="flex-1 flex items-end">
                                 <p className="text-lg md:text-xl text-black dark:text-white" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
                                   {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
                                 </p>
                               </div>
 
-                              {/* Divider */}
-                              <div className="w-12 h-px bg-black/20 dark:bg-white/20" />
+                              {/* Divider 1 */}
+                              <div className="w-12 h-px bg-black/30 dark:bg-white/30 my-6" />
 
                               {/* Contact links - Serif - middle section */}
-                              <div className="flex-1 flex flex-col justify-center py-8 space-y-4">
+                              <div className="space-y-4">
                                 <a
                                   href={`mailto:${CONTACT_CONTENT.email}`}
                                   className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
@@ -952,10 +952,13 @@ export default function Home() {
                                 </a>
                               </div>
 
+                              {/* Divider 2 */}
+                              <div className="w-12 h-px bg-black/30 dark:bg-white/30 my-6" />
+
                               {/* Traditional photography link - bottom section */}
-                              <div className="flex-1 flex items-start pt-8">
+                              <div className="flex-1 flex items-start">
                                 <div>
-                                  <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>{CONTACT_CONTENT.traditional.label}</p>
+                                  <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography and film</p>
                                   <a
                                     href={CONTACT_CONTENT.traditional.url}
                                     target="_blank"

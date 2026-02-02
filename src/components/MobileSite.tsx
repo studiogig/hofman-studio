@@ -392,7 +392,7 @@ export const MobileSite = () => {
           <div className="px-6 flex flex-col items-center justify-center min-h-[60vh] text-center">
             {/* Bio - Calibre */}
             <p
-              className="text-base text-black dark:text-white mb-8"
+              className="text-base text-black dark:text-white"
               style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}
             >
               AI-directed production.<br/>
@@ -400,8 +400,8 @@ export const MobileSite = () => {
               London.
             </p>
 
-            {/* Divider */}
-            <div className="w-8 h-px bg-black/20 dark:bg-white/20 mb-8" />
+            {/* Divider 1 */}
+            <div className="w-8 h-px bg-black/30 dark:bg-white/30 my-6" />
 
             {/* Contact links - Serif */}
             <div className="space-y-3">
@@ -432,9 +432,12 @@ export const MobileSite = () => {
               </a>
             </div>
 
-            {/* Traditional photography */}
-            <div className="mt-10">
-              <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography</p>
+            {/* Divider 2 */}
+            <div className="w-8 h-px bg-black/30 dark:bg-white/30 my-6" />
+
+            {/* Traditional photography and film */}
+            <div>
+              <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography and film</p>
               <a
                 href="https://www.samhofman.com"
                 target="_blank"
