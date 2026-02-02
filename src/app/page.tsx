@@ -914,12 +914,12 @@ export default function Home() {
                           {showContact && globalIndex === contactFrameIndex && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-white/50 dark:bg-[#1a1a1a]/50 p-8">
                               {/* Bio - Calibre */}
-                              <p className="text-lg md:text-xl text-black dark:text-white mb-6" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
+                              <p className="text-lg md:text-xl text-black dark:text-white mb-10" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
                                 {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
                               </p>
 
                               {/* Divider */}
-                              <div className="w-12 h-px bg-black/20 dark:bg-white/20 mb-6" />
+                              <div className="w-12 h-px bg-black/20 dark:bg-white/20 mb-10" />
 
                               {/* Contact links - Serif */}
                               <div className="space-y-3">
@@ -951,7 +951,7 @@ export default function Home() {
                               </div>
 
                               {/* Traditional photography link */}
-                              <div className="mt-8">
+                              <div className="mt-12">
                                 <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>{CONTACT_CONTENT.traditional.label}</p>
                                 <a
                                   href={CONTACT_CONTENT.traditional.url}
