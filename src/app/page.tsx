@@ -912,17 +912,19 @@ export default function Home() {
 
                           {/* Contact overlay on this frame */}
                           {showContact && globalIndex === contactFrameIndex && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-white/50 dark:bg-[#1a1a1a]/50 p-8">
-                              {/* Bio - Calibre */}
-                              <p className="text-lg md:text-xl text-black dark:text-white mb-10" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
-                                {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
-                              </p>
+                            <div className="absolute inset-0 flex flex-col items-center justify-between text-center bg-white/50 dark:bg-[#1a1a1a]/50" style={{ padding: 'var(--info-padding)' }}>
+                              {/* Bio - Calibre - top section */}
+                              <div className="flex-1 flex items-end pb-8">
+                                <p className="text-lg md:text-xl text-black dark:text-white" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
+                                  {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
+                                </p>
+                              </div>
 
                               {/* Divider */}
-                              <div className="w-12 h-px bg-black/20 dark:bg-white/20 mb-10" />
+                              <div className="w-12 h-px bg-black/20 dark:bg-white/20" />
 
-                              {/* Contact links - Serif */}
-                              <div className="space-y-3">
+                              {/* Contact links - Serif - middle section */}
+                              <div className="flex-1 flex flex-col justify-center py-8 space-y-4">
                                 <a
                                   href={`mailto:${CONTACT_CONTENT.email}`}
                                   className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
@@ -950,18 +952,20 @@ export default function Home() {
                                 </a>
                               </div>
 
-                              {/* Traditional photography link */}
-                              <div className="mt-12">
-                                <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>{CONTACT_CONTENT.traditional.label}</p>
-                                <a
-                                  href={CONTACT_CONTENT.traditional.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black/80 dark:text-white/80"
-                                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                                >
-                                  {CONTACT_CONTENT.traditional.display}
-                                </a>
+                              {/* Traditional photography link - bottom section */}
+                              <div className="flex-1 flex items-start pt-8">
+                                <div>
+                                  <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>{CONTACT_CONTENT.traditional.label}</p>
+                                  <a
+                                    href={CONTACT_CONTENT.traditional.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black/80 dark:text-white/80"
+                                    style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                                  >
+                                    {CONTACT_CONTENT.traditional.display}
+                                  </a>
+                                </div>
                               </div>
                             </div>
                           )}
