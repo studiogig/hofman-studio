@@ -63,7 +63,7 @@ const DEV_INFO_CONTENT = [
 const DEV_CONTACT = {
   email: 'sam@hofman.studio',
   instagram: '@hofman.studio',
-  instagramUrl: 'https://instagram.com/hofman.studio',
+  instagramUrl: 'https://www.instagram.com/hofman.studio',
 };
 
 const DEV_INTRO_IMAGES = [

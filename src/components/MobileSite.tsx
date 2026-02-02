@@ -376,13 +376,13 @@ export const MobileSite = () => {
                 sam@hofman.studio
               </a>
               <a
-                href="https://instagram.com/hofman.studio"
+                href="https://www.instagram.com/hofman.studio"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-lg hover:opacity-50 transition-opacity"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                @Hofman/studio
+                @hofman.studio
               </a>
               <a
                 href="https://linkedin.com/in/samhofman"
