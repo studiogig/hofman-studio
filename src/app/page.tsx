@@ -912,19 +912,17 @@ export default function Home() {
 
                           {/* Contact overlay on this frame */}
                           {showContact && globalIndex === contactFrameIndex && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-between text-center bg-white/50 dark:bg-[#1a1a1a]/50" style={{ padding: 'var(--info-padding)' }}>
-                              {/* Bio - Calibre - top section */}
-                              <div className="flex-1 flex items-end">
-                                <p className="text-lg md:text-xl text-black dark:text-white" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}>
-                                  {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
-                                </p>
-                              </div>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-white/50 dark:bg-[#1a1a1a]/50" style={{ padding: 'var(--info-padding)', gap: '3rem' }}>
+                              {/* Bio - Calibre */}
+                              <p className="text-lg md:text-xl text-black dark:text-white" style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.6 }}>
+                                {CONTACT_CONTENT.bio.map((line, i) => <span key={i}>{line}<br/></span>)}
+                              </p>
 
                               {/* Divider 1 */}
-                              <div className="w-12 h-px bg-black/30 dark:bg-white/30 my-6" />
+                              <div className="w-12 h-px bg-black/30 dark:bg-white/30" />
 
-                              {/* Contact links - Serif - middle section */}
-                              <div className="space-y-4">
+                              {/* Contact links - Serif */}
+                              <div className="space-y-5">
                                 <a
                                   href={`mailto:${CONTACT_CONTENT.email}`}
                                   className="block text-xl md:text-2xl hover:opacity-50 transition-opacity duration-300 text-black dark:text-white"
@@ -953,22 +951,20 @@ export default function Home() {
                               </div>
 
                               {/* Divider 2 */}
-                              <div className="w-12 h-px bg-black/30 dark:bg-white/30 my-6" />
+                              <div className="w-12 h-px bg-black/30 dark:bg-white/30" />
 
-                              {/* Traditional photography link - bottom section */}
-                              <div className="flex-1 flex items-start">
-                                <div>
-                                  <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography and film</p>
-                                  <a
-                                    href={CONTACT_CONTENT.traditional.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black/80 dark:text-white/80"
-                                    style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                                  >
-                                    {CONTACT_CONTENT.traditional.display}
-                                  </a>
-                                </div>
+                              {/* Traditional photography link */}
+                              <div>
+                                <p className="text-sm text-black/50 dark:text-white/50 mb-2" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography and film</p>
+                                <a
+                                  href={CONTACT_CONTENT.traditional.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-lg md:text-xl hover:opacity-50 transition-opacity duration-300 text-black/80 dark:text-white/80"
+                                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                                >
+                                  {CONTACT_CONTENT.traditional.display}
+                                </a>
                               </div>
                             </div>
                           )}
