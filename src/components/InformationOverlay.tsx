@@ -27,7 +27,7 @@ const INFO_SECTIONS = [
   },
   {
     title: 'Contact',
-    content: `AI-directed production.\nLuxury stills and motion. Built on 15 years of tabletop craft.\nLondon.\n\nhello@hofman.studio\n@Hofman/studio\nLinkedIn\n\nTraditional photography: samhofman.com`,
+    content: `AI-directed production.\nLuxury stills and motion. Built on 15 years of tabletop craft.\nLondon.\n\nsam@hofman.studio\n@Hofman/studio\nLinkedIn\n\nTraditional photography: samhofman.com`,
     isContact: true
   }
 ];
@@ -136,7 +136,7 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                               London.
                             </p>
                             <div className="space-y-2 pt-4">
-                              <a href="mailto:hello@hofman.studio" className="block text-base hover:opacity-50 transition-opacity duration-300">hello@hofman.studio</a>
+                              <a href="mailto:sam@hofman.studio" className="block text-base hover:opacity-50 transition-opacity duration-300">sam@hofman.studio</a>
                               <a href="https://instagram.com/hofman.studio" target="_blank" rel="noopener noreferrer" className="block text-base hover:opacity-50 transition-opacity duration-300">@Hofman/studio</a>
                               <a href="https://linkedin.com/in/samhofman" target="_blank" rel="noopener noreferrer" className="block text-base hover:opacity-50 transition-opacity duration-300">LinkedIn</a>
                             </div>
@@ -205,7 +205,7 @@ export const InformationOverlay = ({ isOpen, onClose }: InformationOverlayProps)
                                 London.
                               </p>
                               <div className="space-y-1 pt-3">
-                                <a href="mailto:hello@hofman.studio" className="block text-sm hover:opacity-50 transition-opacity duration-300">hello@hofman.studio</a>
+                                <a href="mailto:sam@hofman.studio" className="block text-sm hover:opacity-50 transition-opacity duration-300">sam@hofman.studio</a>
                                 <a href="https://instagram.com/hofman.studio" target="_blank" rel="noopener noreferrer" className="block text-sm hover:opacity-50 transition-opacity duration-300">@Hofman/studio</a>
                                 <a href="https://linkedin.com/in/samhofman" target="_blank" rel="noopener noreferrer" className="block text-sm hover:opacity-50 transition-opacity duration-300">LinkedIn</a>
                               </div>

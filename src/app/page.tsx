@@ -48,7 +48,7 @@ const INFO_CONTENT: InfoItem[] = [
 const CONTACT_CONTENT = {
   title: 'Contact',
   bio: ['AI-directed production.', 'Luxury stills and motion. Built on 15 years of tabletop craft.', 'London.'],
-  email: 'hello@hofman.studio',
+  email: 'sam@hofman.studio',
   instagram: { handle: '@Hofman/studio', url: 'https://instagram.com/hofman.studio' },
   linkedin: { display: 'LinkedIn', url: 'https://linkedin.com/in/samhofman' },
   traditional: { label: 'Traditional photography', display: 'samhofman.com', url: 'https://www.samhofman.com' }

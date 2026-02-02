@@ -369,11 +369,11 @@ export const MobileSite = () => {
             </p>
             <div className="space-y-3">
               <a
-                href="mailto:hello@hofman.studio"
+                href="mailto:sam@hofman.studio"
                 className="block text-lg hover:opacity-50 transition-opacity"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                hello@hofman.studio
+                sam@hofman.studio
               </a>
               <a
                 href="https://instagram.com/hofman.studio"
