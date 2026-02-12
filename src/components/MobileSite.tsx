@@ -125,15 +125,15 @@ const RESEARCH_PROJECTS: Project[] = [
 const INFO_SECTIONS = [
   {
     title: 'What we make',
-    content: 'AI product photography and motion for luxury brands.\n\nCampaign imagery. Commercial photography. Editorial. Social content. Motion for digital.\n\nA London-based AI photography studio for beauty, spirits, fragrance, and fine goods.'
+    content: 'AI product photography and motion for luxury brands. Campaign imagery. Commercial photography. Editorial. Social content. Motion for digital. A London-based AI photography studio for beauty, spirits, fragrance, and fine goods.'
   },
   {
     title: 'What we bring',
-    content: 'Fifteen years of lighting glass, liquid, and metal.\n\nWe know how light bends through crystal. How it pools across liquid. How it catches on gold. That knowledge shapes every frame.'
+    content: 'Fifteen years of lighting glass, liquid, and metal. We know how light bends through crystal. How it pools across liquid. How it catches on gold. That knowledge shapes every frame.'
   },
   {
     title: 'How we work',
-    content: 'Brief to delivery in days, not weeks.\n\nYou\'re working with a director, not a software interface. Concepts, revisions, final assets. Same creative process, collapsed timeline.'
+    content: 'Brief to delivery in weeks, not months. You\'re working with a director, not a software interface. Concepts, revisions, final assets. Same creative process, collapsed timeline.'
   }
 ];
 
@@ -182,6 +182,84 @@ export const MobileSite = () => {
     project.media.map(item => ({ ...item, projectTitle: project.title }))
   );
 
+  // Menu items with numbered indices (Studio Terrace style)
+  const MENU_ITEMS: { label: string; view?: MobileView; href?: string }[] = [
+    { label: 'Work', view: 'gallery' },
+    { label: 'Research', view: 'research' },
+    { label: 'Info', view: 'info' },
+    { label: 'Writing', href: 'https://medium.com/@samhofman' },
+    { label: 'Contact', view: 'contact' },
+    { label: 'Instagram', href: 'https://instagram.com/hofman.studio' },
+    { label: 'LinkedIn', href: 'https://linkedin.com/in/samhofman' },
+  ];
+
+  // Render a media item (shared between gallery views)
+  const renderMediaItem = (item: MediaItem, idx: number, size: 'hero' | 'thumb') => {
+    const isHero = size === 'hero';
+    return (
+      <div
+        key={idx}
+        className={`relative cursor-pointer overflow-hidden ${item.isLandscape && !isHero ? 'col-span-2' : ''}`}
+        style={{ aspectRatio: isHero ? (item.isLandscape ? '16/9' : '3/4') : (item.isLandscape ? '16/9' : '1/1') }}
+        onClick={() => setExpandedMedia(item)}
+      >
+        {item.type === 'video' ? (
+          item.vimeoId && process.env.NODE_ENV === 'production' ? (
+            <iframe
+              src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+              className="w-full h-full border-0"
+              allow="autoplay; fullscreen"
+              style={{ pointerEvents: 'none' }}
+            />
+          ) : (
+            <video
+              src={item.src}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          )
+        ) : (
+          <img
+            src={item.src}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        )}
+      </div>
+    );
+  };
+
+  // Render a project block — all images full size, stacked
+  const renderProjectBlock = (project: Project) => {
+    return (
+      <div key={project.id} className="mb-8 last:mb-0">
+        {/* Project title */}
+        <div className="px-5 mb-3 flex items-baseline justify-between">
+          <h2
+            className="text-xs tracking-[0.2em] uppercase text-black/40 dark:text-white/40"
+            style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500 }}
+          >
+            {project.title}
+          </h2>
+          <span
+            className="text-xs text-black/25 dark:text-white/25"
+            style={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
+          >
+            {String(project.media.length).padStart(2, '0')}
+          </span>
+        </div>
+
+        {/* All images full width, stacked */}
+        <div className="px-5 space-y-1">
+          {project.media.map((item, idx) => renderMediaItem(item, idx, 'hero'))}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#1a1a1a] flex flex-col" style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}>
       {/* Splash Screen with flickering images */}
@@ -194,256 +272,211 @@ export const MobileSite = () => {
             alt=""
             className="absolute inset-0 w-full h-full object-cover opacity-20"
           />
-          <h1 className="relative z-10 text-2xl tracking-wide">
-            <span className="font-calibre">Hofman</span>
-            <span className="font-calibre">/</span>
-            <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
+          <h1 className="relative z-10 tracking-wide" style={{ fontSize: '3.5rem' }}>
+            <span style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500 }}>Hofman</span>
+            <span style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500 }}> / </span>
+            <span style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontWeight: 600 }}>Studio</span>
           </h1>
         </div>
       )}
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#1a1a1a] px-5 py-4 flex justify-between items-center border-b border-black/10 dark:border-white/10">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-sm px-5 py-5 flex justify-between items-center">
         <button
           onClick={() => { setActiveView('gallery'); setMenuOpen(false); }}
-          className="text-lg tracking-wide"
+          className="tracking-wide"
+          style={{ fontSize: '1.75rem' }}
         >
-          <span className="font-calibre">Hofman</span>
-          <span className="font-calibre">/</span>
-          <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Studio</span>
+          <span style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500 }}>Hofman</span>
+          <span style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500 }}> / </span>
+          <span style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontWeight: 600 }}>Studio</span>
         </button>
-        {/* Hamburger menu icon */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+          className="tracking-[0.15em] uppercase transition-opacity hover:opacity-50"
+          style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, fontSize: '1.25rem' }}
           aria-label="Menu"
         >
-          <span className={`block w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          {menuOpen ? 'Close' : 'Menu'}
         </button>
       </header>
 
-      {/* Menu Overlay */}
-      {menuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-white dark:bg-[#1a1a1a] pt-20 px-6 transition-opacity duration-300"
-          style={{ opacity: menuOpen ? 1 : 0 }}
-        >
-          <nav className="flex flex-col gap-8 pt-10">
-            <button
-              onClick={() => { setActiveView('gallery'); setMenuOpen(false); }}
-              className={`text-2xl font-calibre text-left transition-opacity ${activeView === 'gallery' ? 'opacity-100' : 'opacity-50'}`}
-            >
-              Work
-            </button>
-            <button
-              onClick={() => { setActiveView('research'); setMenuOpen(false); }}
-              className={`text-2xl font-calibre text-left transition-opacity ${activeView === 'research' ? 'opacity-100' : 'opacity-50'}`}
-            >
-              Research
-            </button>
-            <div className="w-8 h-px bg-black/20 dark:bg-white/20" />
-            <button
-              onClick={() => { setActiveView('info'); setMenuOpen(false); }}
-              className={`text-2xl font-calibre text-left transition-opacity ${activeView === 'info' ? 'opacity-100' : 'opacity-50'}`}
-            >
-              Info
-            </button>
-            <a
-              href="https://medium.com/@samhofman"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl font-calibre text-left opacity-50 hover:opacity-100 transition-opacity"
-              onClick={() => setMenuOpen(false)}
-            >
-              Writing
-            </a>
-            <button
-              onClick={() => { setActiveView('contact'); setMenuOpen(false); }}
-              className={`text-2xl font-calibre text-left transition-opacity ${activeView === 'contact' ? 'opacity-100' : 'opacity-50'}`}
-            >
-              Contact
-            </button>
-          </nav>
-        </div>
-      )}
+      {/* Menu Overlay — Studio Terrace style */}
+      <div
+        className={`fixed inset-0 z-40 bg-white dark:bg-[#1a1a1a] flex flex-col transition-opacity duration-300 ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
+        {/* Menu content — vertically centered */}
+        <nav className="flex-1 flex flex-col justify-center" style={{ paddingLeft: '20px', paddingRight: '20px' }}>
+          {MENU_ITEMS.map((item, index) => {
+            const isActive = item.view && activeView === item.view;
+            const number = String(index + 1).padStart(2, '0');
+
+            if (item.href) {
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-baseline justify-between py-5  transition-opacity hover:opacity-60"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className="text-black dark:text-white"
+                    style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, fontSize: '2.5rem' }}
+                  >
+                    {item.label}
+                  </span>
+                  <span
+                    className="text-black/30 dark:text-white/30"
+                    style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '2.5rem' }}
+                  >
+                    {number}
+                  </span>
+                </a>
+              );
+            }
+
+            return (
+              <button
+                key={item.label}
+                onClick={() => { if (item.view) setActiveView(item.view); setMenuOpen(false); }}
+                className={`flex items-baseline justify-between py-5  text-left transition-opacity ${isActive ? 'opacity-100' : 'opacity-100 hover:opacity-60'}`}
+              >
+                <span
+                  className="text-black dark:text-white"
+                  style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, fontSize: '2.5rem' }}
+                >
+                  {item.label}
+                </span>
+                <span
+                  className="text-black/30 dark:text-white/30"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '2.5rem' }}
+                >
+                  {number}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+
+      </div>
 
       {/* Main Content */}
-      <main className="flex-1 pt-20 pb-10 overflow-y-auto">
-        {/* Gallery View (Work) */}
+      <main className="flex-1 pt-16 pb-0 overflow-y-auto">
+        {/* Gallery View (Work) — Editorial layout */}
         {activeView === 'gallery' && (
-          <div className="p-3">
-            <div className="grid grid-cols-2 gap-2">
-              {allMedia.map((item, index) => (
-                <div
-                  key={index}
-                  className={`relative cursor-pointer overflow-hidden ${item.isLandscape ? 'col-span-2' : ''}`}
-                  style={{ aspectRatio: item.isLandscape ? '16/9' : '3/4' }}
-                  onClick={() => setExpandedMedia(item)}
-                >
-                  {item.type === 'video' ? (
-                    item.vimeoId && process.env.NODE_ENV === 'production' ? (
-                      <iframe
-                        src={`https://player.vimeo.com/video/${item.vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-                        className="w-full h-full border-0"
-                        allow="autoplay; fullscreen"
-                        style={{ pointerEvents: 'none' }}
-                      />
-                    ) : (
-                      <video
-                        src={item.src}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                      />
-                    )
-                  ) : (
-                    <img
-                      src={item.src}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
+          <div className="pt-4">
+            {currentProjects.map(renderProjectBlock)}
           </div>
         )}
 
-        {/* Research View */}
+        {/* Research View — Same editorial layout */}
         {activeView === 'research' && (
-          <div className="p-3">
-            <div className="grid grid-cols-2 gap-2">
-              {RESEARCH_PROJECTS.flatMap(project =>
-                project.media.map((item, idx) => ({ ...item, projectTitle: project.title, key: `${project.id}-${idx}` }))
-              ).map((item) => (
-                <div
-                  key={item.key}
-                  className={`relative cursor-pointer overflow-hidden ${item.isLandscape ? 'col-span-2' : ''}`}
-                  style={{ aspectRatio: item.isLandscape ? '16/9' : '3/4' }}
-                  onClick={() => setExpandedMedia(item)}
-                >
-                  <img
-                    src={item.src}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
+          <div className="pt-4">
+            {RESEARCH_PROJECTS.map(renderProjectBlock)}
           </div>
         )}
 
-        {/* Info View */}
+        {/* Info View — each section fills ~screen height for 9:16 feel */}
         {activeView === 'info' && (
-          <div className="px-6 py-8">
-            {INFO_SECTIONS.map((section, index) => {
-              const paragraphs = section.content.split('\n\n');
-              const hook = paragraphs[0];
-              const body = paragraphs.slice(1);
+          <div className="px-8">
+            {INFO_SECTIONS.map((section, index) => (
+              <section key={index} className="flex flex-col items-center justify-center text-center px-4" style={{ minHeight: 'calc(60svh)' }}>
+                {/* Section number */}
+                <span
+                  className="text-black/20 dark:text-white/20 block mb-6"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.5rem' }}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
 
-              return (
-                <section key={index} className="mb-16 last:mb-0 text-center">
-                  {/* Hook - Calibre */}
-                  <p
-                    className="text-black dark:text-white mb-6"
-                    style={{
-                      fontFamily: 'Calibre, Arial, sans-serif',
-                      fontSize: '1.25rem',
-                      lineHeight: 1.3,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {hook}
-                  </p>
+                {/* Title - Calibre */}
+                <h2
+                  className="text-black dark:text-white mb-8"
+                  style={{
+                    fontFamily: 'Calibre, Arial, sans-serif',
+                    fontSize: '1.75rem',
+                    lineHeight: 1.2,
+                    fontWeight: 500,
+                  }}
+                >
+                  {section.title}
+                </h2>
 
-                  {/* Divider line */}
-                  <div
-                    className="mx-auto bg-black/20 dark:bg-white/20 mb-6"
-                    style={{ width: '2rem', height: '1px' }}
-                  />
-
-                  {/* Body - Serif */}
-                  {body.map((para, i) => (
-                    <p
-                      key={i}
-                      className="text-black/80 dark:text-white/80"
-                      style={{
-                        fontFamily: 'Georgia, serif',
-                        fontSize: '1rem',
-                        lineHeight: 1.6,
-                        marginBottom: i < body.length - 1 ? '1rem' : 0,
-                      }}
-                    >
-                      {para}
-                    </p>
-                  ))}
-                </section>
-              );
-            })}
+                {/* Content - Serif, flowing */}
+                <p
+                  className="text-black/55 dark:text-white/55 max-w-[28ch]"
+                  style={{
+                    fontFamily: '"Cormorant Garamond", Georgia, serif',
+                    fontSize: '1.35rem',
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {section.content}
+                </p>
+              </section>
+            ))}
           </div>
         )}
 
-        {/* Contact View */}
+        {/* Contact View — centred in 9:16 viewport */}
         {activeView === 'contact' && (
-          <div className="px-6 flex flex-col items-center justify-center min-h-[60vh] text-center">
-            {/* Bio - Calibre */}
-            <p
-              className="text-base text-black dark:text-white"
-              style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, lineHeight: 1.4 }}
-            >
-              AI-directed production.<br/>
-              Luxury stills and motion. Built on 15 years of tabletop craft.<br/>
-              London.
-            </p>
+          <div className="px-8 flex flex-col items-center text-center" style={{ minHeight: 'calc(100svh - 4rem)' }}>
+            <div className="px-4 max-w-[30ch] flex-1 flex flex-col items-center justify-center">
+              {/* Bio - Calibre */}
+              <p
+                className="text-black dark:text-white mb-14"
+                style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500, fontSize: '1.75rem', lineHeight: 1.3 }}
+              >
+                AI-directed production. Luxury stills and motion. Built on 15 years of tabletop craft. London.
+              </p>
 
-            {/* Divider 1 */}
-            <div className="w-8 h-px bg-black/30 dark:bg-white/30 my-6" />
-
-            {/* Contact links - Serif */}
-            <div className="space-y-3">
-              <a
-                href="mailto:sam@hofman.studio"
-                className="block text-lg hover:opacity-50 transition-opacity text-black dark:text-white"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                sam@hofman.studio
-              </a>
-              <a
-                href="https://www.instagram.com/hofman.studio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-lg hover:opacity-50 transition-opacity text-black dark:text-white"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                @hofman.studio
-              </a>
-              <a
-                href="https://linkedin.com/in/samhofman"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-lg hover:opacity-50 transition-opacity text-black dark:text-white"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                LinkedIn
-              </a>
+              {/* Contact links */}
+              <div className="space-y-7">
+                <a
+                  href="mailto:sam@hofman.studio"
+                  className="block hover:opacity-50 transition-opacity text-black dark:text-white"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontWeight: 600, fontSize: '1.5rem' }}
+                >
+                  sam@hofman.studio
+                </a>
+                <a
+                  href="https://www.instagram.com/hofman.studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:opacity-50 transition-opacity text-black/70 dark:text-white/70"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.5rem' }}
+                >
+                  @hofman.studio
+                </a>
+                <a
+                  href="https://linkedin.com/in/samhofman"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:opacity-50 transition-opacity text-black/70 dark:text-white/70"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.5rem' }}
+                >
+                  LinkedIn
+                </a>
+              </div>
             </div>
 
-            {/* Divider 2 */}
-            <div className="w-8 h-px bg-black/30 dark:bg-white/30 my-6" />
-
-            {/* Traditional photography and film */}
-            <div>
-              <p className="text-sm text-black/50 dark:text-white/50 mb-1" style={{ fontFamily: 'Calibre, Arial, sans-serif' }}>Traditional photography and film</p>
+            {/* Traditional photography — pinned to bottom */}
+            <div className="pb-8">
+              <p
+                className="text-sm tracking-[0.15em] uppercase text-black/40 dark:text-white/40 mb-3"
+                style={{ fontFamily: 'Calibre, Arial, sans-serif' }}
+              >
+                Traditional photography and film
+              </p>
               <a
                 href="https://www.samhofman.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-lg hover:opacity-50 transition-opacity text-black/80 dark:text-white/80"
-                style={{ fontFamily: 'Georgia, serif' }}
+                className="hover:opacity-50 transition-opacity text-black/70 dark:text-white/70"
+                style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.5rem' }}
               >
                 samhofman.com
               </a>
@@ -455,7 +488,7 @@ export const MobileSite = () => {
       {/* Expanded Media Overlay */}
       {expandedMedia && (
         <div
-          className="fixed inset-0 z-[100] bg-white dark:bg-[#1a1a1a] flex items-center justify-center"
+          className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
           onClick={() => setExpandedMedia(null)}
         >
           {expandedMedia.type === 'video' ? (
@@ -483,13 +516,14 @@ export const MobileSite = () => {
             />
           )}
           <button
-            className="absolute top-4 right-4 text-3xl opacity-60 hover:opacity-100 transition-opacity p-2"
+            className="absolute top-5 right-5 text-xs tracking-[0.15em] uppercase text-white/60 hover:text-white transition-colors p-2"
+            style={{ fontFamily: 'Calibre, Arial, sans-serif', fontWeight: 500 }}
             onClick={(e) => {
               e.stopPropagation();
               setExpandedMedia(null);
             }}
           >
-            ×
+            Close
           </button>
         </div>
       )}
