@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.hofman.studio/</loc>
-    <lastmod>2026-02-12</lastmod>
+    <lastmod>2026-02-21</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.hofman.studio/images/Gucci%20Chrome%20absurdist/SH_Gucci_Master%20s1.jpg</image:loc>
+      <image:title>Gucci Beauty AI-generated chrome absurdist still life</image:title>
+      <image:caption>AI product photography for Gucci Beauty by Hofman Studio</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.hofman.studio/images/Merit/SH_Merti_s1.jpg</image:loc>
+      <image:title>Merit Beauty AI product photography</image:title>
+      <image:caption>AI-generated beauty product still life for Merit Beauty</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.hofman.studio/images/Watch%20report/freepik__enhance__73551.jpg</image:loc>
+      <image:title>Luxury watch AI photography — Horlogerie</image:title>
+      <image:caption>AI-generated precision timepiece photography by Hofman Studio</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.hofman.studio/og-image/HOFMAN_OG.png</image:loc>
+      <image:title>Hofman Studio — Material Intelligence for Luxury Production</image:title>
+    </image:image>
   </url>
 </urlset>

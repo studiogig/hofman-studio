@@ -14,6 +14,7 @@ type ViewMode = 'carousel' | 'grid';
 type MediaItem = {
   src: string;
   type: 'image' | 'video';
+  alt?: string; // Descriptive alt text for SEO and accessibility
   isLandscape?: boolean; // true = 16:9 landscape frame, false/undefined = 4:5 portrait frame
   vimeoId?: string; // Vimeo video ID for production streaming
   process?: string; // Process tag: "In-Camera", "AI Still", "AI Motion", "Iterative Render", etc.
@@ -61,25 +62,25 @@ const WORK_PROJECTS: Project[] = [
     id: 'horlogerie',
     title: 'Horlogerie',
     media: [
-      { src: "/images/Watch report/freepik__enhance__46843.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
-      { src: "/images/Watch report/freepik__enhance__73551.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
-      { src: "/images/Watch report/freepik__enhance__83979.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
-      { src: "/images/Watch report/freepik__enhance__83980.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Watch report/freepik__enhance__46843.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "AI-generated luxury watch photography — horlogerie still life" },
+      { src: "/images/Watch report/freepik__enhance__73551.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "AI product photography of a precision timepiece on dark background" },
+      { src: "/images/Watch report/freepik__enhance__83979.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "AI-generated watch macro detail showing crown and dial" },
+      { src: "/images/Watch report/freepik__enhance__83980.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "Luxury watch AI still life with dramatic studio lighting" },
     ],
   },
   {
     id: 'wild-rose',
     title: 'Wild Rose',
     media: [
-      { src: "https://player.vimeo.com/progressive_redirect/playback/1157693117/rendition/1080p/file.mp4%20%281080p%29.mp4?loc=external&log_user=0&signature=6e4eb18541221cac1098afcefbe0b85477331b43046f40115b60adb962c573c7", type: "video" as const, isLandscape: true, vimeoId: "1157693117", process: "AI Motion" },
+      { src: "https://player.vimeo.com/progressive_redirect/playback/1157693117/rendition/1080p/file.mp4%20%281080p%29.mp4?loc=external&log_user=0&signature=6e4eb18541221cac1098afcefbe0b85477331b43046f40115b60adb962c573c7", type: "video" as const, isLandscape: true, vimeoId: "1157693117", process: "AI Motion", alt: "Wild Rose — AI-generated motion piece with botanical elements" },
     ],
   },
   {
     id: 'merit',
     title: 'Merit Beauty',
     media: [
-      { src: "/images/Merit/SH_Merti_s1.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render" },
-      { src: "/images/Merit/SH_Merti_S2.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Merit/SH_Merti_s1.jpg", type: "image" as const, isLandscape: false, process: "Iterative Render", alt: "Merit Beauty AI product photography — clean beauty still life" },
+      { src: "/images/Merit/SH_Merti_S2.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "Merit Beauty cosmetics AI-generated editorial image" },
     ],
   },
   {
@@ -87,18 +88,18 @@ const WORK_PROJECTS: Project[] = [
     title: 'Gucci Beauty',
     priority: 1, // Featured project - appears first
     media: [
-      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s1.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
-      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2_2.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
-      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s3.jpg", type: "image" as const, isLandscape: false, process: "AI Still" },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s1.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "Gucci Beauty AI-generated chrome absurdist still life" },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s2_2.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "Gucci Beauty luxury cosmetics with surreal chrome elements" },
+      { src: "/images/Gucci Chrome absurdist/SH_Gucci_Master s3.jpg", type: "image" as const, isLandscape: false, process: "AI Still", alt: "Gucci Beauty AI product photography — chrome and glass composition" },
     ],
   },
   {
     id: 'abstracts',
     title: 'Abstracts',
     media: [
-      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", isLandscape: false, vimeoId: "1154689508", process: "AI Motion" },
-      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video", isLandscape: false, vimeoId: "1154689448", process: "AI Motion" },
-      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video", isLandscape: false, vimeoId: "1154688746", process: "AI Motion" },
+      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", isLandscape: false, vimeoId: "1154689508", process: "AI Motion", alt: "Abstract AI motion — Sisley luxury cosmetics animation" },
+      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video", isLandscape: false, vimeoId: "1154689448", process: "AI Motion", alt: "Abstract AI-generated motion study with luxury materials" },
+      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video", isLandscape: false, vimeoId: "1154688746", process: "AI Motion", alt: "AI motion — Audemars Piguet chronograph macro tabletop composition" },
       // NOTE: .mov files don't work in browsers - convert to .mp4 to re-enable
       // { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video", isLandscape: false, vimeoId: "1154688698", process: "AI Motion" },
     ],
@@ -150,51 +151,51 @@ const RESEARCH_PROJECTS: Project[] = [
     id: 'mer',
     title: 'Mer',
     media: [
-      { src: "/images/Research/Mer/Emerald_and_diamond_cascade_necklace_pulled_beneath_rough_oce_58973739-9a66-4e86-a428-cd489d31f419_3.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Mer/Pearl_strand_necklace_with_citrine_pendant_on_dark_ocean_surf_62c04ef5-74b6-42df-aedc-6cccf43b5296_2.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Mer/Rose_gold_serpent_necklace_caught_in_rough_dark_ocean_chop_di_a0ca4b1f-1916-4221-8c6b-75bd65be6060_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Mer/White_gold_geometric_necklace_with_blue_sapphires_submerged_i_24f01563-2473-4418-a7d0-538bdf69fb96_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Mer/White_gold_geometric_necklace_with_blue_sapphires_submerged_i_d844512e-109f-4925-bb5d-3c3e0457064d_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Mer/White_gold_statement_necklace_with_radiating_diamond_fringe_c_2f92adca-b6ef-44ea-8fc9-b88952eeb375_3.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Mer/Emerald_and_diamond_cascade_necklace_pulled_beneath_rough_oce_58973739-9a66-4e86-a428-cd489d31f419_3.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI jewellery photography — emerald and diamond cascade necklace submerged in ocean water" },
+      { src: "/images/Research/Mer/Pearl_strand_necklace_with_citrine_pendant_on_dark_ocean_surf_62c04ef5-74b6-42df-aedc-6cccf43b5296_2.png", type: "image", isLandscape: false, process: "AI Still", alt: "Pearl strand necklace with citrine pendant on dark ocean surface" },
+      { src: "/images/Research/Mer/Rose_gold_serpent_necklace_caught_in_rough_dark_ocean_chop_di_a0ca4b1f-1916-4221-8c6b-75bd65be6060_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "Rose gold serpent necklace caught in rough ocean chop — AI still" },
+      { src: "/images/Research/Mer/White_gold_geometric_necklace_with_blue_sapphires_submerged_i_24f01563-2473-4418-a7d0-538bdf69fb96_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "White gold geometric necklace with blue sapphires submerged in water" },
+      { src: "/images/Research/Mer/White_gold_geometric_necklace_with_blue_sapphires_submerged_i_d844512e-109f-4925-bb5d-3c3e0457064d_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI-generated sapphire necklace underwater — luxury jewellery research" },
+      { src: "/images/Research/Mer/White_gold_statement_necklace_with_radiating_diamond_fringe_c_2f92adca-b6ef-44ea-8fc9-b88952eeb375_3.png", type: "image", isLandscape: false, process: "AI Still", alt: "White gold statement necklace with diamond fringe — ocean submerged" },
     ],
   },
   {
     id: 'fork',
     title: 'Fork',
     media: [
-      { src: "/images/Research/Fork/Studio_Gig_httpss.mj.runiL30C6W1slw_A_hyperreal_macro_photogr_94133535-ee2e-47ec-a622-51e607854694_3.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Fork/Studio_Gig_httpss.mj.runiL30C6W1slw_A_hyperreal_macro_photograp_5b5fb539-4501-49ca-9526-9fabf10f2bcc.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Fork/Studio_Gig_httpss.mj.runiL30C6W1slw_A_hyperreal_macro_photogr_94133535-ee2e-47ec-a622-51e607854694_3.png", type: "image", isLandscape: false, process: "AI Still", alt: "Hyperreal macro AI photography of a silver fork — material research" },
+      { src: "/images/Research/Fork/Studio_Gig_httpss.mj.runiL30C6W1slw_A_hyperreal_macro_photograp_5b5fb539-4501-49ca-9526-9fabf10f2bcc.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI-generated macro photography — polished metal fork detail" },
     ],
   },
   {
     id: 'liquids',
     title: 'Liquids',
     media: [
-      { src: "/images/Research/Liquids/Studio_Gig_A_hyper-detailed_macro_photograph_of_clear_and_mil_c9f41145-c091-49dd-ad31-6a596befe070_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Liquids/Studio_Gig_A_hyper-detailed_macro_photograph_of_clear_and_milky_8ee222c4-44ed-4050-b8ea-244b4604b275.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Liquids/Studio_Gig_A_macro_photograph_of_poured_and_smeared_gel-like__d46a86a7-7064-405d-b1fb-8a4629bcb8c3_0.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Liquids/Studio_Gig_A_macro_photograph_of_poured_and_smeared_gel-like_li_d30b057f-c112-4c4e-86b5-a611e0b39adc.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Liquids/Studio_Gig_Black_ink_oil_and_acrylic_paint_on_a_white_backgro_e75a78f3-9ddc-4323-a085-4dbead706d05_2.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Liquids/Studio_Gig_httpss.mj.runu7vJxw1WJjQ_A_hyper-detailed_macro_ph_8be03e22-6a07-4530-80f8-0533fd5f3057_0.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_hyper-detailed_macro_photograph_of_clear_and_mil_c9f41145-c091-49dd-ad31-6a596befe070_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "Hyper-detailed macro of clear and milky liquid — AI material study" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_hyper-detailed_macro_photograph_of_clear_and_milky_8ee222c4-44ed-4050-b8ea-244b4604b275.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI-generated macro photograph of translucent liquid textures" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_macro_photograph_of_poured_and_smeared_gel-like__d46a86a7-7064-405d-b1fb-8a4629bcb8c3_0.png", type: "image", isLandscape: false, process: "AI Still", alt: "Poured and smeared gel-like liquid — AI texture research" },
+      { src: "/images/Research/Liquids/Studio_Gig_A_macro_photograph_of_poured_and_smeared_gel-like_li_d30b057f-c112-4c4e-86b5-a611e0b39adc.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI macro photography of viscous gel-like liquid on surface" },
+      { src: "/images/Research/Liquids/Studio_Gig_Black_ink_oil_and_acrylic_paint_on_a_white_backgro_e75a78f3-9ddc-4323-a085-4dbead706d05_2.png", type: "image", isLandscape: false, process: "AI Still", alt: "Black ink, oil and acrylic paint on white background — AI still" },
+      { src: "/images/Research/Liquids/Studio_Gig_httpss.mj.runu7vJxw1WJjQ_A_hyper-detailed_macro_ph_8be03e22-6a07-4530-80f8-0533fd5f3057_0.png", type: "image", isLandscape: false, process: "AI Still", alt: "Hyper-detailed macro of liquid surface tension — AI research" },
     ],
   },
   {
     id: 'rose',
     title: 'Rose',
     media: [
-      { src: "/images/Research/Rose/Extreme_macro_where_white_petal_kisses_amber_oil_surface_tens_a53bcbf6-e787-4ca1-836b-3218f8d8160a_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Rose/Wild_white_rose_with_golden_stamens_soft_cream_background_bri_485f94b2-2313-4f90-ab2a-cf14fd37882e_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Rose/wild_white_rose_in_soft_cream_void_golden_stamens_tiny_bead_o_b3210fbb-03f1-41cb-8224-a892473f6bc8_3.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Rose/Extreme_macro_where_white_petal_kisses_amber_oil_surface_tens_a53bcbf6-e787-4ca1-836b-3218f8d8160a_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "Extreme macro — white rose petal kissing amber oil surface" },
+      { src: "/images/Research/Rose/Wild_white_rose_with_golden_stamens_soft_cream_background_bri_485f94b2-2313-4f90-ab2a-cf14fd37882e_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "Wild white rose with golden stamens on soft cream background — AI botanical" },
+      { src: "/images/Research/Rose/wild_white_rose_in_soft_cream_void_golden_stamens_tiny_bead_o_b3210fbb-03f1-41cb-8224-a892473f6bc8_3.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI-generated white rose with golden stamens and water beads" },
     ],
   },
   {
     id: 'submerged',
     title: 'Submerged',
     media: [
-      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_blue_iris_flower_immersed__cf107d4a-0a7b-4d9d-828d-677656c621d1_1.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_blue_iris_flower_immersed_in_4fd7d986-48a0-4f48-ac55-07488ac99f21.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_white_iris_flower_immersed_29d38bfb-f42a-4535-ad52-eb297bee9303_3.png", type: "image", isLandscape: false, process: "AI Still" },
-      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_white_iris_flower_immersed_a31e50ff-8e35-4c5e-ad38-b9a3686b2192_3.png", type: "image", isLandscape: false, process: "AI Still" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_blue_iris_flower_immersed__cf107d4a-0a7b-4d9d-828d-677656c621d1_1.png", type: "image", isLandscape: false, process: "AI Still", alt: "Soft blue iris flower immersed in water — AI submerged botanical" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_blue_iris_flower_immersed_in_4fd7d986-48a0-4f48-ac55-07488ac99f21.png", type: "image", isLandscape: false, process: "AI Still", alt: "Blue iris submerged in clear water — AI macro photography" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_white_iris_flower_immersed_29d38bfb-f42a-4535-ad52-eb297bee9303_3.png", type: "image", isLandscape: false, process: "AI Still", alt: "White iris flower immersed in water — AI botanical research" },
+      { src: "/images/Research/Submerged/Studio_Gig_A_macro_image_of_a_soft_white_iris_flower_immersed_a31e50ff-8e35-4c5e-ad38-b9a3686b2192_3.png", type: "image", isLandscape: false, process: "AI Still", alt: "AI-generated submerged white iris with soft light diffusion" },
     ],
   },
 ];
@@ -879,7 +880,8 @@ export default function Home() {
                           ) : (
                             <img
                               src={item.src}
-                              alt=""
+                              alt={item.alt || `${project.title} — Hofman Studio AI production`}
+                              loading={globalIndex < 3 ? 'eager' : 'lazy'}
                               className={`w-full h-full object-cover transition-opacity-smooth ${showInfo || (showContact && globalIndex === contactFrameIndex) ? 'opacity-30' : 'opacity-100'}`}
                             />
                           )}
@@ -1085,7 +1087,8 @@ export default function Home() {
                         >
                           <img
                             src={item.src}
-                            alt=""
+                            alt={item.alt || `${project.title} — Hofman Studio AI production`}
+                            loading="lazy"
                             className="w-full h-full object-cover transition-transform-smooth group-hover:scale-105"
                           />
                         </a>
@@ -1235,7 +1238,7 @@ export default function Home() {
                 ) : (
                   <img
                     src={item.src}
-                    alt=""
+                    alt={item.alt || `${expandedMedia.projectTitle} — Hofman Studio`}
                     draggable={false}
                     className={`select-none object-contain ${isZoomed ? 'w-full h-full' : ''}`}
                     style={isZoomed

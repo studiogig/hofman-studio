@@ -130,7 +130,7 @@ export const IntroSplash = ({ onComplete }: IntroSplashProps) => {
                                 ) : (
                                     <img
                                         src={asset.src}
-                                        alt=""
+                                        alt="Hofman Studio — AI luxury production portfolio"
                                         className="w-full h-full object-cover"
                                     />
                                 )}

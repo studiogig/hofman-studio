@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 type Category = 'all' | 'research';
 type MobileView = 'gallery' | 'research' | 'info' | 'contact';
@@ -58,10 +58,11 @@ const WORK_PROJECTS: Project[] = [
     id: 'abstracts',
     title: 'Abstracts',
     media: [
-      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", isLandscape: true, vimeoId: "1154689508" },
-      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video", isLandscape: true, vimeoId: "1154689448" },
-      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video", isLandscape: true, vimeoId: "1154688746" },
-      { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video", isLandscape: true, vimeoId: "1154688698" },
+      { src: "/videos/Asbstracts/SH_Sisley_Animation.mp4", type: "video", isLandscape: false, vimeoId: "1154689508" },
+      { src: "/videos/Asbstracts/SH_SAB_Motion_02.mp4", type: "video", isLandscape: false, vimeoId: "1154689448" },
+      { src: "/videos/Asbstracts/a_precise_tabletop_macro_composition_of_a_brushed_steel_audemars_piguet_chronograph_resting_on_a_se_5rjxgwuz6vjkyw0wq84x_1.mp4", type: "video", isLandscape: false, vimeoId: "1154688746" },
+      // NOTE: .mov files don't work in browsers - convert to .mp4 to re-enable
+      // { src: "/videos/Asbstracts/Professional_Mode_Camera_is_locked__A_transparent__4_chf3_prob4.mov", type: "video", isLandscape: false, vimeoId: "1154688698" },
     ],
   },
 ];
@@ -133,13 +134,12 @@ const INFO_SECTIONS = [
   },
   {
     title: 'How we work',
-    content: 'Brief to delivery in weeks, not months. You\'re working with a director, not a software interface. Concepts, revisions, final assets. Same creative process, collapsed timeline.'
+    content: 'Brief to delivery in days, not weeks. You\'re working with a director, not a software interface. Concepts, revisions, final assets. Same creative process, collapsed timeline.'
   }
 ];
 
 // Images for splash flicker effect
 const SPLASH_IMAGES = [
-  "/images/Watch report/freepik__enhance__46843.jpg",
   "/images/Merit/SH_Merti_s1.jpg",
   "/images/Gucci Chrome absurdist/SH_Gucci_Master s1.jpg",
   "/images/Watch report/freepik__enhance__73551.jpg",
@@ -176,11 +176,12 @@ export const MobileSite = () => {
     };
   }, []);
 
-  // Get media based on active view
-  const currentProjects = activeView === 'research' ? RESEARCH_PROJECTS : WORK_PROJECTS;
-  const allMedia = currentProjects.flatMap(project =>
-    project.media.map(item => ({ ...item, projectTitle: project.title }))
-  );
+  // Shuffle projects on each mount so gallery order is different every visit
+  const shuffledWork = useMemo(() => [...WORK_PROJECTS].sort(() => Math.random() - 0.5), []);
+  const shuffledResearch = useMemo(() => [...RESEARCH_PROJECTS].sort(() => Math.random() - 0.5), []);
+
+  // Get projects based on active view
+  const currentProjects = activeView === 'research' ? shuffledResearch : shuffledWork;
 
   // Menu items with numbered indices (Studio Terrace style)
   const MENU_ITEMS: { label: string; view?: MobileView; href?: string }[] = [
@@ -200,7 +201,7 @@ export const MobileSite = () => {
       <div
         key={idx}
         className={`relative cursor-pointer overflow-hidden ${item.isLandscape && !isHero ? 'col-span-2' : ''}`}
-        style={{ aspectRatio: isHero ? (item.isLandscape ? '16/9' : '3/4') : (item.isLandscape ? '16/9' : '1/1') }}
+        style={{ aspectRatio: '9/16' }}
         onClick={() => setExpandedMedia(item)}
       >
         {item.type === 'video' ? (
@@ -224,7 +225,8 @@ export const MobileSite = () => {
         ) : (
           <img
             src={item.src}
-            alt=""
+            alt={`${item.type === 'image' ? 'AI product photography' : 'AI motion'} — Hofman Studio`}
+            loading="lazy"
             className="w-full h-full object-cover"
           />
         )}
@@ -269,7 +271,7 @@ export const MobileSite = () => {
         >
           <img
             src={SPLASH_IMAGES[currentImageIndex]}
-            alt=""
+            alt="Hofman Studio — AI luxury production"
             className="absolute inset-0 w-full h-full object-cover opacity-20"
           />
           <h1 className="relative z-10 tracking-wide" style={{ fontSize: '3.5rem' }}>
@@ -511,7 +513,7 @@ export const MobileSite = () => {
           ) : (
             <img
               src={expandedMedia.src}
-              alt=""
+              alt="Hofman Studio — expanded portfolio image"
               className="max-w-full max-h-full object-contain"
             />
           )}
